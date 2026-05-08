@@ -1,0 +1,43 @@
+/* =============================================================================
+   Responsive breakpoints — mobile-first via container queries + media queries.
+   Aliases used across the codebase: sm 640, md 768, lg 1024, xl 1280, 2xl 1536.
+   ========================================================================== */
+:root {
+  --breakpoint-sm:  640px;
+  --breakpoint-md:  768px;
+  --breakpoint-lg:  1024px;
+  --breakpoint-xl:  1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+.container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+@media (min-width: 640px)  { .container { max-width: 640px; } }
+@media (min-width: 768px)  { .container { max-width: 768px; padding-inline: var(--space-6); } }
+@media (min-width: 1024px) { .container { max-width: 1024px; } }
+@media (min-width: 1280px) { .container { max-width: 1280px; } }
+@media (min-width: 1536px) { .container { max-width: var(--container-max); } }
+
+.container-fluid { width: 100%; padding-inline: var(--space-4); }
+
+/* Visibility helpers */
+.hide-on-mobile  { display: initial; }
+.show-on-mobile  { display: none; }
+@media (max-width: 767.98px) {
+  .hide-on-mobile { display: none !important; }
+  .show-on-mobile { display: initial; }
+}
+
+.hide-on-tablet  { display: initial; }
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .hide-on-tablet { display: none !important; }
+}
+
+.hide-on-desktop { display: initial; }
+@media (min-width: 1024px) {
+  .hide-on-desktop { display: none !important; }
+}

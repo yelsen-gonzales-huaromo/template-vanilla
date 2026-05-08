@@ -1,0 +1,221 @@
+.navbar {
+  /* Header NO sticky: scrollea con el contenido. Así, al cambiar tema, no
+     queda un rectángulo del color anterior cubriendo lo de abajo. */
+  position: relative;
+  z-index: var(--z-sticky);
+  height: var(--header-height);
+  /* El header abarca TODO el ancho (sin max-width). Sólo el contenido del
+     page se contiene a --container-max. Los iconos quedan a los extremos. */
+  width: 100%;
+  padding: 0 var(--padding-pagina);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  /* Sin background ni borde — totalmente transparente. La página queda
+     visualmente unificada y el cambio de tema fluye sin escalones. */
+  background-color: transparent;
+  border-block-end: 1px solid transparent;
+}
+
+.navbar__left, .navbar__right {
+  flex-shrink: 0;
+}
+.navbar__right { gap: var(--space-1); }
+
+.navbar__left, .navbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ======= Búsqueda (botón compacto que abre el command palette ⌘K) ======= */
+.navbar__search {
+  width: 16rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2) 0 var(--space-3);
+  background-color: color-mix(in srgb, var(--surface-muted) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--radius);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  font: inherit;
+  cursor: pointer;
+  text-align: start;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+.navbar__search:hover {
+  background-color: var(--surface-muted);
+  border-color: color-mix(in srgb, var(--border-strong) 70%, transparent);
+  color: var(--foreground);
+}
+.navbar__search:focus-visible {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: var(--shadow-focus);
+}
+.navbar__search-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.navbar__search-text {
+  flex: 1;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-normal);
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.navbar__search-kbd {
+  display: inline-flex;
+  align-items: center;
+  height: 1.4rem;
+  padding: 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  background-color: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+@media (max-width: 767.98px) {
+  .navbar__search-kbd { display: none; }
+  .navbar__search-text { display: none; }
+}
+@media (max-width: 479.98px) {
+  .navbar__search { display: none; }
+}
+
+/* ======= Botones-icono del navbar (compactos estilo Shadcn) ======= */
+.navbar__icon-btn {
+  position: relative;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.navbar__icon-btn:hover {
+  background-color: var(--muted);
+  color: var(--foreground);
+}
+.navbar__icon-btn[aria-pressed='true'] { color: var(--primary); }
+
+/* Punto rojo de notificación */
+.navbar__indicator {
+  position: absolute;
+  inset-block-start: 0.4rem;
+  inset-inline-end: 0.4rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background-color: var(--color-danger);
+}
+
+/* Contador (carrito / notificaciones) — naranja estilo Falcon */
+.navbar__count {
+  position: absolute;
+  inset-block-start: 0.2rem;
+  inset-inline-end: 0.2rem;
+  min-width: 1.05rem;
+  height: 1.05rem;
+  padding: 0 0.3rem;
+  border-radius: var(--radius-full);
+  background-color: #f59e0b;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3);
+}
+
+/* ======= Botón avatar (compacto, sólo iniciales) ======= */
+.navbar__avatar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-inline-start: var(--space-1);
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+.navbar__avatar-btn:hover {
+  border-color: var(--border-strong);
+  transform: scale(1.04);
+}
+.navbar__avatar-btn:focus-visible {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: var(--shadow-focus);
+}
+
+/* ======= App launcher (9 puntos) ======= */
+.app-launcher {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  padding: var(--space-3);
+  width: 18rem;
+}
+.app-launcher__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--foreground);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+.app-launcher__item:hover {
+  background-color: var(--muted);
+  border-color: var(--border);
+}
+.app-launcher__icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  color: #fff;
+}
+
+/* ======= Responsive ======= */
+@media (max-width: 767.98px) {
+  .navbar { padding: 0 var(--space-4); gap: var(--space-2); }
+}
+
+/* ============================================================================
+   Header unificado: el navbar mantiene el mismo aspecto en todas las variantes
+   de sidebar (default, transparent, inverted, card, vibrant). No se aplican
+   overrides por [data-sidebar-style] — la consistencia visual es clave.
+   ============================================================================ */

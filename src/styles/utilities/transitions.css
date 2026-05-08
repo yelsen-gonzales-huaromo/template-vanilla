@@ -1,0 +1,139 @@
+/* =============================================================================
+   Transiciones globales — fades suaves al cambiar tema, density, fuente.
+   ========================================================================== */
+
+/*
+ * Transición de tema GLOBAL — solución sin tocar cada componente.
+ *
+ * Estrategia:
+ *   1) Cuando el usuario cambia el tema, JS añade `.cambio-tema` al <html>.
+ *   2) Esa clase activa una regla universal que aplica `transition` a TODOS
+ *      los elementos para las propiedades sensibles a tokens (background,
+ *      border, color, fill, stroke). El `!important` asegura que gane sobre
+ *      cualquier transición específica del componente DURANTE el cambio.
+ *   3) Después de ~550ms (un poco más que --transition-tema), JS quita la
+ *      clase y los componentes vuelven a sus transiciones normales (hover
+ *      rápido, animaciones internas, etc.).
+ *
+ * Resultado: cualquier nuevo componente — card, panel, texto, popover — se
+ * suma automáticamente al efecto de "amanecer/atardecer" sin tocarlo.
+ */
+html {
+  transition: color var(--transition-tema), background-color var(--transition-tema);
+}
+body {
+  transition: background-color var(--transition-tema),
+              color            var(--transition-tema);
+}
+
+html.cambio-tema,
+html.cambio-tema *,
+html.cambio-tema *::before,
+html.cambio-tema *::after {
+  transition:
+    background-color var(--transition-tema),
+    background-image var(--transition-tema),
+    border-color     var(--transition-tema),
+    color            var(--transition-tema),
+    fill             var(--transition-tema),
+    stroke           var(--transition-tema),
+    box-shadow       var(--transition-tema),
+    outline-color    var(--transition-tema)
+    !important;
+}
+
+/* Densidad / tamaño de fuente: animar el reflujo del texto y los espacios.
+   Las propiedades padding/gap/margin animan suave cuando cambian los tokens. */
+.dashboard-layout,
+.dashboard-layout__content,
+.sidebar,
+.sidebar__nav,
+.sidebar__link,
+.sidebar__section-toggle,
+.navbar,
+.card__header,
+.card__body,
+.card__footer,
+.kpi-card,
+.config-panel__body,
+.config-section,
+.btn,
+.input,
+.table th,
+.table td {
+  transition: padding var(--transition-normal) ease,
+              gap     var(--transition-normal) ease,
+              margin  var(--transition-normal) ease,
+              font-size var(--transition-normal) ease,
+              background-color var(--transition-tema),
+              border-color     var(--transition-tema),
+              color            var(--transition-tema);
+}
+
+/* font-size de la raíz (cambio de tamaño de fuente) anima el escalado global */
+html {
+  transition: font-size var(--transition-normal) cubic-bezier(0.65, 0, 0.35, 1),
+              color     var(--transition-tema),
+              background-color var(--transition-tema);
+}
+
+/* =============================================================================
+   View Transitions API — crossfade automático al cambiar de página.
+   Soportado en Chrome/Edge/Safari modernos (degrada limpiamente en Firefox).
+   ========================================================================== */
+::view-transition-old(root) {
+  animation: 240ms cubic-bezier(0.4, 0, 0.2, 1) both fade-out-leve;
+}
+::view-transition-new(root) {
+  animation: 320ms cubic-bezier(0.16, 1, 0.3, 1) both slide-in-suave;
+}
+
+@keyframes fade-out-leve {
+  to { opacity: 0; transform: translateY(-4px); }
+}
+@keyframes slide-in-suave {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================================================
+   Utilidades de animación reutilizables — reactivas al `prefers-reduced-motion`.
+   ========================================================================== */
+.anim-aparecer       { animation: fade-in        var(--transition-normal) ease-out both; }
+.anim-subir          { animation: slide-in-up    var(--transition-normal) ease-out both; }
+.anim-derecha        { animation: slide-in-right var(--transition-normal) ease-out both; }
+.anim-zoom-entrada   { animation: zoom-in        var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes zoom-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Stagger: permite escalonar children con delays */
+.anim-stagger > *  { animation: slide-in-up var(--transition-normal) ease-out both; }
+.anim-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.anim-stagger > *:nth-child(2) { animation-delay: 60ms; }
+.anim-stagger > *:nth-child(3) { animation-delay: 120ms; }
+.anim-stagger > *:nth-child(4) { animation-delay: 180ms; }
+.anim-stagger > *:nth-child(5) { animation-delay: 240ms; }
+.anim-stagger > *:nth-child(6) { animation-delay: 300ms; }
+
+/* =============================================================================
+   Respeto a prefers-reduced-motion (extra safety)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+  .anim-aparecer, .anim-subir, .anim-derecha, .anim-zoom-entrada,
+  .anim-stagger > * {
+    animation: none !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

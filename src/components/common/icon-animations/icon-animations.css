@@ -1,0 +1,360 @@
+/* =============================================================================
+   Banco de animaciones para iconos — clases reutilizables.
+   Aplicables sobre cualquier `<span>` que contenga un Icono SVG.
+
+   Convención: todas las clases usan el prefijo `icon-anim-`.
+   Cada animación respeta `prefers-reduced-motion` (deshabilitada al final).
+   ========================================================================= */
+
+[class^="icon-anim-"], [class*=" icon-anim-"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* transformaciones se aplican respecto al centro del icono */
+  transform-origin: center;
+}
+
+/* ============================================================================
+   1) LOADING
+   ============================================================================ */
+.icon-anim-rotar         { animation: anim-rotar 1.4s linear infinite; }
+.icon-anim-rotar-rapido  { animation: anim-rotar 0.7s linear infinite; }
+.icon-anim-rotar-lento   { animation: anim-rotar 3s   linear infinite; }
+.icon-anim-rotar-reverso { animation: anim-rotar 1.4s linear infinite reverse; }
+@keyframes anim-rotar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.icon-anim-puntos        { animation: anim-puntos 1.2s ease-in-out infinite; }
+@keyframes anim-puntos {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
+}
+
+.icon-anim-barras { animation: anim-barras-pulso 1.2s ease-in-out infinite; }
+@keyframes anim-barras-pulso {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.6; }
+  50%      { transform: scaleY(1);   opacity: 1; }
+}
+
+.icon-anim-saltar { animation: anim-saltar 1.4s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+@keyframes anim-saltar {
+  0%, 100% { transform: translateY(0); }
+  30%      { transform: translateY(-8px); }
+  60%      { transform: translateY(0); }
+}
+
+.icon-anim-rebotar { animation: anim-rebotar 1s cubic-bezier(0.5, 0, 0.5, 1) infinite; }
+@keyframes anim-rebotar {
+  0%, 20%, 60%, 100% { transform: translateY(0); }
+  40%                { transform: translateY(-10px); }
+  80%                { transform: translateY(-4px); }
+}
+
+/* ============================================================================
+   2) ATENCIÓN (highlight / call attention)
+   ============================================================================ */
+.icon-anim-pulso { animation: anim-pulso 1.6s ease-in-out infinite; }
+@keyframes anim-pulso {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.18); }
+}
+
+.icon-anim-latido { animation: anim-latido 1.2s ease-in-out infinite; }
+@keyframes anim-latido {
+  0%, 28%, 70%, 100% { transform: scale(1); }
+  14%, 42%           { transform: scale(1.22); }
+}
+
+.icon-anim-balancear { animation: anim-balancear 2s ease-in-out infinite; }
+@keyframes anim-balancear {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-14deg); }
+  75%      { transform: rotate(14deg); }
+}
+
+.icon-anim-sacudir { animation: anim-sacudir 0.6s ease-in-out infinite; }
+@keyframes anim-sacudir {
+  0%, 100%      { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80%      { transform: translateX(3px); }
+}
+
+.icon-anim-wobble { animation: anim-wobble 2s ease-in-out infinite; }
+@keyframes anim-wobble {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  15%      { transform: translateX(-10%) rotate(-4deg); }
+  30%      { transform: translateX(8%) rotate(3deg); }
+  45%      { transform: translateX(-6%) rotate(-2deg); }
+  60%      { transform: translateX(4%) rotate(1deg); }
+  75%      { transform: translateX(-2%) rotate(-1deg); }
+}
+
+.icon-anim-pulso-anillo {
+  position: relative;
+  animation: anim-pulso-anillo-core 1.8s ease-in-out infinite;
+}
+.icon-anim-pulso-anillo::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: anim-pulso-anillo-onda 1.8s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes anim-pulso-anillo-core {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+@keyframes anim-pulso-anillo-onda {
+  0%   { transform: scale(0.95); opacity: 0.7; }
+  100% { transform: scale(1.7);  opacity: 0; }
+}
+
+/* ============================================================================
+   3) ÉXITO / CONFIRMACIÓN
+   ============================================================================ */
+.icon-anim-aparecer { animation: anim-aparecer 2s ease-in-out infinite; }
+@keyframes anim-aparecer {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.8); }
+}
+
+.icon-anim-pop { animation: anim-pop 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+@keyframes anim-pop {
+  0%, 100% { transform: scale(1); }
+  20%      { transform: scale(1.3); }
+  40%      { transform: scale(0.95); }
+  60%      { transform: scale(1.1); }
+}
+
+.icon-anim-zoom-in { animation: anim-zoom-in 2s ease-out infinite; }
+@keyframes anim-zoom-in {
+  0%   { transform: scale(0.6); opacity: 0; }
+  40%  { transform: scale(1.1); opacity: 1; }
+  60%  { transform: scale(1);   opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+.icon-anim-trazo path,
+.icon-anim-trazo line,
+.icon-anim-trazo polyline,
+.icon-anim-trazo circle,
+.icon-anim-trazo polygon,
+.icon-anim-trazo rect {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: anim-trazo 2.4s ease-in-out infinite;
+}
+@keyframes anim-trazo {
+  0%   { stroke-dashoffset: 100; }
+  60%  { stroke-dashoffset: 0; }
+  90%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 100; }
+}
+
+/* ============================================================================
+   4) MOVIMIENTO
+   ============================================================================ */
+.icon-anim-flotar { animation: anim-flotar 3s ease-in-out infinite; }
+@keyframes anim-flotar {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.icon-anim-deslizar-d { animation: anim-deslizar-d 1.4s ease-in-out infinite; }
+@keyframes anim-deslizar-d {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(6px); }
+}
+
+.icon-anim-subir { animation: anim-subir 1.4s ease-in-out infinite; }
+@keyframes anim-subir {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%      { transform: translateY(-8px); opacity: 0.6; }
+}
+
+.icon-anim-volar-derecha { animation: anim-volar-derecha 2s ease-in infinite; }
+@keyframes anim-volar-derecha {
+  0%   { transform: translateX(-12px); opacity: 0; }
+  20%  { transform: translateX(0);     opacity: 1; }
+  80%  { transform: translateX(0);     opacity: 1; }
+  100% { transform: translateX(12px);  opacity: 0; }
+}
+
+/* ============================================================================
+   5) DECORATIVOS — sparkle, glow, breathe
+   ============================================================================ */
+.icon-anim-twinkle { animation: anim-twinkle 1.8s ease-in-out infinite; }
+@keyframes anim-twinkle {
+  0%, 100% { opacity: 1;   transform: scale(1)   rotate(0deg); }
+  25%      { opacity: 0.4; transform: scale(0.7) rotate(15deg); }
+  50%      { opacity: 1;   transform: scale(1.1) rotate(0deg); }
+  75%      { opacity: 0.4; transform: scale(0.85)rotate(-15deg); }
+}
+
+.icon-anim-resplandor {
+  filter: drop-shadow(0 0 0 currentColor);
+  animation: anim-resplandor 2s ease-in-out infinite;
+}
+@keyframes anim-resplandor {
+  0%, 100% { filter: drop-shadow(0 0 0 currentColor); }
+  50%      { filter: drop-shadow(0 0 8px currentColor); }
+}
+
+.icon-anim-respirar { animation: anim-respirar 3.2s ease-in-out infinite; }
+@keyframes anim-respirar {
+  0%, 100% { transform: scale(1);    opacity: 0.85; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+
+.icon-anim-rebote-suave { animation: anim-rebote-suave 1.5s ease-in-out infinite; }
+@keyframes anim-rebote-suave {
+  0%, 100% { transform: translateY(0)    rotate(0deg); }
+  50%      { transform: translateY(-3px) rotate(6deg); }
+}
+
+.icon-anim-zoom-fuera { animation: anim-zoom-fuera 1.8s ease-out infinite; }
+@keyframes anim-zoom-fuera {
+  0%   { transform: scale(1);   opacity: 1;   }
+  60%  { transform: scale(1.4); opacity: 0;   }
+  100% { transform: scale(1);   opacity: 0;   }
+}
+
+/* ============================================================================
+   Hover-trigger — anima sólo al pasar el cursor por el contenedor padre
+   ============================================================================ */
+.icon-hover-rotar:hover [class^="icon-anim-on-hover"] {
+  animation: anim-rotar 0.8s linear;
+}
+
+/* ============================================================================
+   Estilos del banco/catálogo (página de iconos animados)
+   ============================================================================ */
+.icon-anim-toolbar { margin-block-end: var(--space-3); }
+.icon-anim-buscador {
+  width: 100%;
+  max-width: 28rem;
+  height: 2.5rem;
+  padding: 0 var(--space-3);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.icon-anim-buscador:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: var(--shadow-focus);
+}
+
+.icon-anim-cat-desc {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+.icon-anim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-2);
+}
+
+.icon-anim-grid__vacio {
+  grid-column: 1 / -1;
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  background-color: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+}
+
+.icon-anim-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: start;
+  font: inherit;
+  color: var(--foreground);
+  overflow: hidden;
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+.icon-anim-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+.icon-anim-card--copiado {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-success) 30%, transparent);
+}
+
+.icon-anim-card__lienzo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  background-color: var(--surface-muted);
+  border-block-end: 1px solid var(--border);
+}
+.icon-anim-card__cuerpo {
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.icon-anim-card__nombre {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--foreground);
+}
+.icon-anim-card__clase {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon-anim-howto {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.icon-anim-codigo {
+  margin: 0;
+  padding: var(--space-4);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  background-color: #0f172a;
+  overflow-x: auto;
+}
+
+/* ============================================================================
+   prefers-reduced-motion
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  [class^="icon-anim-"], [class*=" icon-anim-"] {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .icon-anim-pulso-anillo::after { animation: none !important; }
+}

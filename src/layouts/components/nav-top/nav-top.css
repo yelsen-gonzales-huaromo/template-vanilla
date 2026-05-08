@@ -1,0 +1,122 @@
+/* =============================================================================
+   Barra de navegación HORIZONTAL — alternativa al sidebar.
+   Se renderiza cuando estadoUi.posicionNav = 'top' o 'combo'.
+   ========================================================================== */
+.nav-top {
+  /* No sticky, transparente — coherente con el header */
+  position: relative;
+  z-index: calc(var(--z-sticky) - 1);
+  height: 3rem;
+  background-color: transparent;
+  border-block-end: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-5);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-top::-webkit-scrollbar { display: none; }
+
+.nav-top__group {
+  position: relative;
+}
+
+.nav-top__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.nav-top__trigger:hover { background-color: var(--muted); color: var(--foreground); }
+.nav-top__trigger[aria-expanded='true'] {
+  color: var(--primary);
+  background-color: var(--primary-soft);
+}
+.nav-top__trigger[data-active='true'] {
+  color: var(--primary);
+}
+
+.nav-top__caret {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  transition: transform var(--transition-fast);
+}
+.nav-top__trigger[aria-expanded='true'] .nav-top__caret {
+  transform: rotate(180deg);
+}
+
+/* Mega-menu (panel grande con varias columnas) */
+.nav-top__mega {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-2));
+  inset-inline-start: 0;
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-4);
+  z-index: var(--z-popover);
+  min-width: 28rem;
+  animation: nav-top-mega-in var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(11rem, 1fr));
+  gap: var(--space-1) var(--space-4);
+}
+.nav-top__mega--single { grid-template-columns: 1fr; min-width: 14rem; }
+
+@keyframes nav-top-mega-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav-top__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.nav-top__link:hover { background-color: var(--muted); color: var(--primary); }
+.nav-top__link[aria-current='page'] {
+  color: var(--primary);
+  background-color: var(--primary-soft);
+  font-weight: var(--weight-medium);
+}
+.nav-top__link-icon {
+  width: 1rem; height: 1rem;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+.nav-top__link[aria-current='page'] .nav-top__link-icon { color: var(--primary); }
+
+.nav-top__badge {
+  margin-inline-start: auto;
+  padding: 0 var(--space-2);
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--brand-gradient);
+  border-radius: var(--radius-full);
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Esconder en móvil — el sidebar drawer toma el control */
+@media (max-width: 1023.98px) {
+  .nav-top { display: none; }
+}

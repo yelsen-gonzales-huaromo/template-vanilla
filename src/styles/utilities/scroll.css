@@ -1,0 +1,44 @@
+/* =============================================================================
+   Utility: scroll discreto — la scrollbar aparece SOLO cuando el cursor está
+   sobre el contenedor (o tiene foco). Estilo macOS/Linear.
+   Aplicar añadiendo la clase .scroll-discreto a cualquier contenedor con
+   overflow: auto/scroll.
+   ========================================================================== */
+.scroll-discreto {
+  /* Firefox: scrollbar fina, transparente por defecto */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color var(--transition-fast);
+}
+.scroll-discreto:hover,
+.scroll-discreto:focus-within {
+  scrollbar-color: color-mix(in srgb, var(--border-strong) 55%, transparent) transparent;
+}
+
+/* WebKit (Chrome, Safari, Edge) — más control visual */
+.scroll-discreto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-discreto::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll-discreto::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.scroll-discreto::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background-color var(--transition-fast);
+}
+.scroll-discreto:hover::-webkit-scrollbar-thumb,
+.scroll-discreto:focus-within::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--border-strong) 55%, transparent);
+  background-clip: padding-box;
+}
+.scroll-discreto::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+  background-clip: padding-box;
+}

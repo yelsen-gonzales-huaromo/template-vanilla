@@ -1,0 +1,24 @@
+.icono {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  color: currentColor;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+/* Iconos en botones — alineamiento perfecto con el texto */
+.btn .icono {
+  width: 1em;
+  height: 1em;
+}
+
+/* Iconos del sidebar — color hereda del estado */
+.sidebar__section-icon .icono { width: 1.125rem; height: 1.125rem; }
+.sidebar__link-icon .icono   { width: 1rem; height: 1rem; }
+
+/* Iconos en navbar */
+.navbar__icon-btn .icono { width: 1.15rem; height: 1.15rem; }
+
+/* Iconos del config-panel */
+.config-section__label .icono { width: 1.05rem; height: 1.05rem; color: var(--primary); }
+.config-panel__title  .icono  { width: 1.25rem; height: 1.25rem; }

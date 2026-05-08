@@ -1,0 +1,115 @@
+/* =============================================================================
+   Catálogo de componentes — índice con cards navegables
+   ============================================================================= */
+.comp-toolbar {
+  margin-block-end: var(--space-4);
+}
+.comp-buscador {
+  width: 100%;
+  max-width: 24rem;
+  height: 2.5rem;
+  padding: 0 var(--space-3);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.comp-buscador:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: var(--shadow-focus);
+}
+
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-3);
+}
+
+.comp-grid__vacio {
+  grid-column: 1 / -1;
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  background-color: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+}
+
+.comp-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--foreground);
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+.comp-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.comp-card__icon {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.25);
+}
+
+.comp-card__cuerpo { flex: 1; min-width: 0; }
+.comp-card__titulo {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+  letter-spacing: -0.005em;
+}
+.comp-card__descripcion {
+  margin: 2px 0 0;
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.comp-card__caret {
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+.comp-card:hover .comp-card__caret {
+  transform: translateX(2px);
+  color: var(--primary);
+}
+
+/* =============================================================================
+   Search — highlight de coincidencias
+   ============================================================================= */
+.search-match {
+  background: color-mix(in srgb, var(--color-warning) 28%, transparent);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}

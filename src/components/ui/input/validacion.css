@@ -1,0 +1,194 @@
+/* =============================================================================
+   Validación — badges, async, password checklist, resumen sticky
+   ============================================================================= */
+
+/* Wrapper input + badge a la derecha */
+.val-wrap {
+  position: relative;
+}
+.val-wrap > .input { padding-inline-end: 38px; }
+.val-badge {
+  position: absolute;
+  inset-inline-end: 8px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: background 200ms ease, color 200ms ease,
+              transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.val-badge:empty { display: none; }
+.val-badge--ok {
+  background: color-mix(in srgb, var(--color-success) 14%, transparent);
+  color: var(--color-success);
+  animation: val-pop 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.val-badge--err {
+  background: color-mix(in srgb, var(--color-danger) 14%, transparent);
+  color: var(--color-danger);
+}
+.val-badge--load {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+@keyframes val-pop {
+  0%   { transform: translateY(-50%) scale(0.3) rotate(-90deg); opacity: 0; }
+  60%  { transform: translateY(-50%) scale(1.18) rotate(8deg); opacity: 1; }
+  100% { transform: translateY(-50%) scale(1) rotate(0); opacity: 1; }
+}
+
+/* Spinner del async */
+.val-spinner {
+  display: inline-block;
+  width: 13px; height: 13px;
+  border: 2px solid color-mix(in srgb, var(--primary) 25%, transparent);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: val-spin 700ms linear infinite;
+}
+@keyframes val-spin { to { transform: rotate(360deg); } }
+
+/* Mensaje de OK (verde) — para async "Disponible" */
+.campo__ok {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-success);
+  font-weight: 600;
+  animation: val-fade-in 250ms ease-out;
+}
+@keyframes val-fade-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================================================
+   Password Checklist (criterios en vivo + medidor)
+   ============================================================================= */
+.pwd-checklist { gap: 10px; }
+.pwd-checklist__ojo {
+  position: absolute;
+  inset-inline-end: 8px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  background: transparent;
+  border: 0;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 140ms ease, color 140ms ease;
+}
+.pwd-checklist__ojo:hover {
+  background: color-mix(in srgb, var(--foreground) 7%, transparent);
+  color: var(--foreground);
+}
+.pwd-checklist .val-wrap > .input { padding-inline-end: 38px; }
+
+/* Medidor (4 barras) */
+.pwd-medidor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pwd-medidor__barras {
+  display: flex; gap: 4px; flex: 1;
+}
+.pwd-medidor__barra {
+  height: 4px;
+  flex: 1;
+  background: var(--muted);
+  border-radius: 999px;
+  transition: background 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pwd-medidor__lbl {
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lista de criterios */
+.pwd-criterios {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 4px 12px;
+}
+.pwd-criterio {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  transition: color 250ms ease;
+}
+.pwd-criterio__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+  color: transparent;
+  transition: all 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pwd-criterio--ok {
+  color: var(--color-success);
+  font-weight: 500;
+}
+.pwd-criterio--ok .pwd-criterio__icono {
+  background: var(--color-success);
+  color: #fff;
+  animation: val-pop 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =============================================================================
+   Resumen de errores (panel sticky)
+   ============================================================================= */
+.val-resumen {
+  display: none;
+  position: sticky;
+  top: 12px;
+  margin-block-end: var(--space-3);
+  padding: 10px 14px;
+  background: color-mix(in srgb, var(--color-danger) 6%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--color-danger) 35%, var(--border));
+  border-radius: var(--radius-md);
+  z-index: 5;
+  animation: val-fade-in 250ms ease-out;
+}
+.val-resumen--mostrar { display: block; }
+.val-resumen__head {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-danger);
+  margin-block-end: 6px;
+}
+.val-resumen__lista {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.val-resumen__lista a {
+  display: inline-block;
+  font-size: 12.5px;
+  color: var(--color-danger);
+  text-decoration: none;
+  padding: 3px 0;
+  transition: color 140ms ease, transform 140ms ease;
+}
+.val-resumen__lista a:hover {
+  color: color-mix(in srgb, var(--color-danger) 75%, #000);
+  transform: translateX(2px);
+  text-decoration: underline;
+}

@@ -1,0 +1,218 @@
+/* =============================================================================
+   Cargador — base + 6 variantes
+   ============================================================================= */
+
+/* Spinner wrap (con texto) */
+.spinner-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.spinner-wrap__txt {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+
+/* ============================================================================
+   Variante CIRCULAR (default) — border ring rotando
+   ============================================================================ */
+.spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--primary);
+}
+.spinner--circular {
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spinner-rotar 0.7s linear infinite;
+}
+@keyframes spinner-rotar {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   TAMAÑOS (aplican a todas las variantes via custom property)
+   ============================================================================ */
+.spinner--xs { width: 0.625rem; height: 0.625rem; }
+.spinner--sm { width: 0.875rem; height: 0.875rem; }
+.spinner--lg { width: 2rem; height: 2rem; }
+.spinner--xl { width: 3rem; height: 3rem; }
+
+.spinner--xs.spinner--circular { border-width: 1.5px; }
+.spinner--sm.spinner--circular { border-width: 1.5px; }
+.spinner--lg.spinner--circular { border-width: 3px; }
+.spinner--xl.spinner--circular { border-width: 4px; }
+
+/* ============================================================================
+   COLORES SEMÁNTICOS
+   ============================================================================ */
+.spinner--c-success { color: var(--color-success); }
+.spinner--c-warning { color: var(--color-warning); }
+.spinner--c-danger  { color: var(--color-danger); }
+.spinner--c-info    { color: var(--color-info); }
+.spinner--c-white   { color: #fff; }
+.spinner--c-current { color: currentColor; }
+
+/* ============================================================================
+   Variante PUNTOS (3 dots bouncing)
+   ============================================================================ */
+.spinner--puntos {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  height: auto;
+  border: 0;
+  animation: none;
+}
+.spinner--puntos.spinner--xs { gap: 2px; }
+.spinner--puntos.spinner--sm { gap: 3px; }
+.spinner--puntos.spinner--lg { gap: 6px; }
+.spinner--puntos.spinner--xl { gap: 8px; }
+
+.spinner__dot {
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: currentColor;
+  animation: spinner-bounce 1.2s ease-in-out infinite;
+}
+.spinner--puntos { font-size: 1.25rem; }
+.spinner--puntos.spinner--xs { font-size: 0.75rem; }
+.spinner--puntos.spinner--sm { font-size: 1rem; }
+.spinner--puntos.spinner--lg { font-size: 2rem; }
+.spinner--puntos.spinner--xl { font-size: 3rem; }
+.spinner__dot:nth-child(2) { animation-delay: 0.2s; }
+.spinner__dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes spinner-bounce {
+  0%, 80%, 100% { transform: scale(0.5); opacity: 0.5; }
+  40%           { transform: scale(1);   opacity: 1; }
+}
+
+/* ============================================================================
+   Variante PULSO — círculo pulsante con halo
+   ============================================================================ */
+.spinner--pulso {
+  border-radius: 50%;
+  background: currentColor;
+  animation: spinner-pulso 1.4s ease-in-out infinite;
+}
+@keyframes spinner-pulso {
+  0%, 100% { transform: scale(0.6); opacity: 0.5; }
+  50%      { transform: scale(1);   opacity: 1; }
+}
+
+/* ============================================================================
+   Variante BARRAS — equalizer (3 barras)
+   ============================================================================ */
+.spinner--barras {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  border: 0;
+  animation: none;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.spinner--barras.spinner--xs { width: 0.75rem; height: 0.75rem; gap: 1.5px; }
+.spinner--barras.spinner--sm { width: 1rem;    height: 1rem;    gap: 2px; }
+.spinner--barras.spinner--lg { width: 2rem;    height: 2rem;    gap: 4px; }
+.spinner--barras.spinner--xl { width: 3rem;    height: 3rem;    gap: 6px; }
+.spinner__bar {
+  flex: 1;
+  background: currentColor;
+  border-radius: 1px;
+  animation: spinner-eq 1s ease-in-out infinite;
+}
+.spinner__bar:nth-child(1) { animation-delay: 0s; }
+.spinner__bar:nth-child(2) { animation-delay: 0.2s; }
+.spinner__bar:nth-child(3) { animation-delay: 0.4s; }
+@keyframes spinner-eq {
+  0%, 100% { height: 30%; }
+  50%      { height: 100%; }
+}
+
+/* ============================================================================
+   Variante RADIAL — gradient sweep
+   ============================================================================ */
+.spinner--radial {
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg, transparent 0%, currentColor 100%);
+  -webkit-mask: radial-gradient(circle at center, transparent 50%, #000 52%);
+          mask: radial-gradient(circle at center, transparent 50%, #000 52%);
+  animation: spinner-rotar 1s linear infinite;
+}
+
+/* ============================================================================
+   Variante RING — doble anillo girando en sentidos opuestos
+   ============================================================================ */
+.spinner--ring {
+  position: relative;
+  border: 0;
+  animation: none;
+  display: inline-block;
+}
+.spinner__ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+}
+.spinner__ring:nth-child(1) {
+  border-top-color: currentColor;
+  border-right-color: currentColor;
+  animation: spinner-rotar 1s linear infinite;
+}
+.spinner__ring:nth-child(2) {
+  border-bottom-color: currentColor;
+  border-left-color: currentColor;
+  opacity: 0.5;
+  animation: spinner-rotar-rev 1.4s linear infinite;
+}
+.spinner--ring.spinner--lg .spinner__ring,
+.spinner--ring.spinner--xl .spinner__ring { border-width: 3px; }
+@keyframes spinner-rotar-rev {
+  to { transform: rotate(-360deg); }
+}
+
+/* ============================================================================
+   OVERLAY de carga (cubre un container)
+   ============================================================================ */
+.spinner-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: color-mix(in srgb, var(--background) 65%, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: var(--z-overlay, 50);
+  border-radius: inherit;
+}
+.spinner-overlay--oscuro {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.spinner-overlay__contenido {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+.spinner-overlay__texto {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+.spinner-overlay--oscuro .spinner-overlay__texto { color: rgba(255, 255, 255, 0.85); }
+
+/* Respeto a reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .spinner, .spinner__dot, .spinner__bar, .spinner__ring,
+  .spinner--circular, .spinner--pulso, .spinner--radial {
+    animation-duration: 2.5s !important;
+  }
+}

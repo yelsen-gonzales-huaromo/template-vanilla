@@ -1,0 +1,302 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown__menu {
+  /* Portaleado a <body> con position: fixed — escapa de cualquier stacking
+     context del padre (sidebar, navbar) y siempre aparece sobre el UI.
+     La posición exacta (top/left) la calcula el JS según direccion+alineacion. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 14rem;
+  /* Fondo y borde 100% sólidos — el panel no debe verse "ver a través".
+     surface-elevated es opaco por token (light: blanco; dark: #242628). */
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-1);
+  z-index: var(--z-popover);
+  animation: dropdown-in var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== Animaciones por dirección (sólo para variar transform-origin) ===== */
+.dropdown__menu--down { transform-origin: top center; }
+.dropdown__menu--up   { transform-origin: bottom center; animation-name: dropdown-in-up; }
+.dropdown__menu--right { transform-origin: top left; animation-name: dropdown-in-right; }
+
+@keyframes dropdown-in {
+  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes dropdown-in-up {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes dropdown-in-right {
+  from { opacity: 0; transform: scale(0.96) translateX(-4px); }
+  to   { opacity: 1; transform: scale(1) translateX(0); }
+}
+
+.dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: start;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  font-family: inherit;
+}
+.dropdown__item:hover,
+.dropdown__item:focus-visible {
+  background-color: var(--muted);
+  outline: none;
+}
+.dropdown__item--danger { color: var(--color-danger); }
+.dropdown__item--danger:hover { background-color: var(--color-danger-bg); }
+
+.dropdown__item-icono {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.dropdown__item--danger .dropdown__item-icono { color: var(--color-danger); }
+
+.dropdown__item-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.dropdown__item-etiqueta {
+  flex: 1;
+  min-width: 0;
+  font-weight: 500;
+}
+.dropdown__item-desc {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.dropdown__item-atajo {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--muted-foreground);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
+
+.dropdown__item-check {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: auto;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+/* Si hay atajo Y check, el check va antes (el atajo absorbe el margen auto) */
+.dropdown__item-atajo + .dropdown__item-check { margin-inline-start: var(--space-2); }
+
+.dropdown__item--seleccionado {
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent);
+  font-weight: 600;
+}
+.dropdown__item--seleccionado:hover {
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.dropdown__item--deshabilitado {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.dropdown__item--deshabilitado:hover {
+  background: transparent;
+}
+
+.dropdown__separator {
+  height: 1px;
+  background-color: var(--border);
+  margin: var(--space-1) 0;
+}
+
+.dropdown__label {
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: var(--weight-semibold);
+  padding: var(--space-3) var(--space-3) var(--space-1);
+}
+
+/* ===== Mini card de usuario al inicio del dropdown (estilo Vercel) ===== */
+.dropdown__user-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background-color: color-mix(in srgb, var(--surface-muted) 50%, transparent);
+}
+.dropdown__user-text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  line-height: 1.3;
+}
+.dropdown__user-text strong {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dropdown__user-text span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================================================================
+   Patrones avanzados — notificaciones, búsqueda, idiomas, confirmación
+   ============================================================================ */
+
+/* --- Búsqueda dentro del menú --- */
+.dropdown__buscador {
+  position: sticky;
+  inset-block-start: 0;
+  background: var(--surface-elevated);
+  padding: var(--space-2);
+  border-block-end: 1px solid var(--border);
+  margin-inline: calc(-1 * var(--space-1));
+  margin-block-start: calc(-1 * var(--space-1));
+  z-index: 1;
+}
+.dropdown__buscador input {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: var(--text-sm);
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+.dropdown__buscador input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+/* --- Items con avatar (notificaciones, miembros) --- */
+.dropdown__item-avatar {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: start;
+  font-family: inherit;
+  transition: background-color var(--transition-fast);
+}
+.dropdown__item-avatar:hover { background-color: var(--muted); }
+.dropdown__item-avatar > .avatar { flex-shrink: 0; }
+.dropdown__item-avatar__cuerpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.dropdown__item-avatar__texto {
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  line-height: 1.4;
+}
+.dropdown__item-avatar__texto strong { font-weight: 600; }
+.dropdown__item-avatar__tiempo {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+.dropdown__item-avatar--no-leida { background-color: color-mix(in srgb, var(--primary) 5%, transparent); }
+.dropdown__item-avatar--no-leida::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  margin-block-start: 6px;
+  flex-shrink: 0;
+}
+
+/* --- Pie del menú (footer) --- */
+.dropdown__pie {
+  margin-block-start: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-block-start: 1px solid var(--border);
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  text-align: center;
+}
+.dropdown__pie a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.dropdown__pie a:hover { text-decoration: underline; }
+
+/* --- Banderas / iconos a tamaño emoji --- */
+.dropdown__bandera {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* --- Confirmación inline --- */
+.dropdown__confirmar {
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.dropdown__confirmar-mensaje {
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  line-height: 1.5;
+}
+.dropdown__confirmar-acciones {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+

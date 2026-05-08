@@ -1,0 +1,15 @@
+{
+  "name": "Launchpad — Enterprise Native Template",
+  "short_name": "Launchpad",
+  "description": "Plantilla empresarial nativa, reactiva y escalable.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "lang": "es",
+  "dir": "ltr",
+  "icons": [
+    { "src": "/favicon.ico", "sizes": "any", "type": "image/x-icon" }
+  ]
+}

@@ -1,0 +1,150 @@
+/* =============================================================================
+   Ilustraciones SVG para los intro cards de páginas de componentes.
+   Animaciones sutiles — duración generosa, easing suave (no distraen).
+   Respetan prefers-reduced-motion.
+   ========================================================================= */
+
+.ilus {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+}
+
+/* ============== Acordeón: panel abierto pulsa, panel cerrado glow ============== */
+.ilus-acordeon__abierto {
+  animation: ilus-acordeon-pulso 3s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes ilus-acordeon-pulso {
+  0%, 100% { stroke-opacity: 0.5; }
+  50%      { stroke-opacity: 1;   }
+}
+
+/* ============== Alertas: leve respiración del fondo ============== */
+.ilus-alertas rect {
+  transition: opacity 220ms;
+}
+
+/* ============== Botones: el primary "presiona" cíclicamente ============== */
+.ilus-botones__primary {
+  transform-origin: center;
+  animation: ilus-boton-press 2.4s ease-in-out infinite;
+}
+@keyframes ilus-boton-press {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(2px); }
+}
+
+/* ============== Tarjetas: la del frente flota suave ============== */
+.ilus-tarjetas__front {
+  transform-origin: center;
+  animation: ilus-card-flotar 3.2s ease-in-out infinite;
+}
+@keyframes ilus-card-flotar {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* ============== Modales: card central pulsa ligeramente ============== */
+.ilus-modales__card {
+  transform-origin: center;
+  animation: ilus-modal-aparecer 2.8s ease-in-out infinite;
+}
+@keyframes ilus-modal-aparecer {
+  0%, 100% { transform: scale(1);    opacity: 1;   }
+  50%      { transform: scale(1.02); opacity: 0.95; }
+}
+
+/* ============== Dropdowns: item activo "respira" ============== */
+.ilus-dropdowns__activo {
+  animation: ilus-dropdown-hover 2s ease-in-out infinite;
+}
+@keyframes ilus-dropdown-hover {
+  0%, 100% { opacity: 1;   }
+  50%      { opacity: 0.55; }
+}
+.ilus-dropdowns__menu {
+  transform-origin: top left;
+  animation: ilus-dropdown-aparecer 4s ease-in-out infinite;
+}
+@keyframes ilus-dropdown-aparecer {
+  0%      { transform: scale(0.94); opacity: 0.4; }
+  20%, 80% { transform: scale(1);   opacity: 1;   }
+  100%    { transform: scale(0.94); opacity: 0.4; }
+}
+
+/* ============== Toasts: salida progresiva (desde la derecha) ============== */
+.ilus-toasts rect:nth-child(5n+1) {
+  animation: ilus-toast-flotar 3.6s ease-in-out infinite;
+}
+@keyframes ilus-toast-flotar {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(2px); }
+}
+
+/* ============== Tooltips: bubble flota arriba/abajo ============== */
+.ilus-tooltips__bubble {
+  transform-origin: center bottom;
+  animation: ilus-tooltip-flotar 2.6s ease-in-out infinite;
+}
+@keyframes ilus-tooltip-flotar {
+  0%, 100% { transform: translateY(0)    scale(1);    opacity: 1;   }
+  50%      { transform: translateY(-3px) scale(1.02); opacity: 0.92; }
+}
+
+/* ============== Spinners: rotación continua ============== */
+.ilus-spinners__arc {
+  transform-box: fill-box;
+  animation: ilus-spin 1.4s linear infinite;
+  transform-origin: center;
+}
+@keyframes ilus-spin {
+  from { transform: rotate(-90deg); }
+  to   { transform: rotate(270deg); }
+}
+
+/* ============== Pestañas: indicador inferior se desliza ============== */
+.ilus-pestanas__indicador {
+  animation: ilus-tab-slide 4s ease-in-out infinite;
+}
+@keyframes ilus-tab-slide {
+  0%, 100% { transform: translateX(0);   width: 54px;  x: 76; }
+  33%      { transform: translateX(-52px); }
+  66%      { transform: translateX(72px);  }
+}
+
+/* ============== Progreso: barras se llenan ============== */
+.ilus-progreso__valor {
+  transform-origin: left center;
+  animation: ilus-progress-llenar 3.4s ease-in-out infinite;
+}
+@keyframes ilus-progress-llenar {
+  0%, 100% { transform: scaleX(1);    }
+  50%      { transform: scaleX(0.55); }
+}
+
+/* ============== Timeline: punto activo pulsa ============== */
+.ilus-timeline__activo {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ilus-pulso 2s ease-in-out infinite;
+}
+@keyframes ilus-pulso {
+  0%, 100% { transform: scale(1);    opacity: 1;   }
+  50%      { transform: scale(1.15); opacity: 0.8; }
+}
+
+/* ============== Reduced motion: deshabilitar todo ============== */
+@media (prefers-reduced-motion: reduce) {
+  .ilus *, .ilus {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============== Tema dark: ajustes de stroke para contraste ============== */
+[data-theme='dark'] .ilus rect[stroke="var(--border)"],
+[data-theme='dark'] .ilus circle[stroke="var(--border)"] {
+  stroke: color-mix(in srgb, var(--border) 80%, transparent);
+}

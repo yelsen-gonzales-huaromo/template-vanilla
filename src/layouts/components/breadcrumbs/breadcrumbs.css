@@ -1,0 +1,157 @@
+/* =============================================================================
+   Migas (Breadcrumbs) profesional — variantes × separadores × tamaños
+   ========================================================================= */
+.migas {
+  display: flex;
+  align-items: center;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin-block-end: var(--space-4);
+}
+
+.migas__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.migas__item {
+  display: inline-flex;
+  align-items: center;
+}
+.migas__item--actual { color: var(--foreground); font-weight: var(--weight-medium); }
+
+.migas__separador {
+  display: inline-flex;
+  align-items: center;
+  color: var(--border-strong);
+  font-weight: var(--weight-normal);
+  user-select: none;
+  margin-inline: 4px;
+}
+
+/* Link / actual / icono */
+.migas__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  padding: 2px 4px;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+.migas__link:hover { color: var(--foreground); background-color: var(--muted); }
+.migas__link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.migas__actual {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 4px;
+  color: var(--foreground);
+  font-weight: var(--weight-medium);
+}
+
+.migas__icon { display: inline-flex; align-items: center; }
+.migas__caret {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: 2px;
+  opacity: 0.6;
+  transition: transform var(--transition-fast);
+}
+.migas__link--dropdown:hover .migas__caret { opacity: 1; transform: translateY(1px); }
+
+/* Botón … de items truncados */
+.migas__truncado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 6px;
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  background-color: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.migas__truncado:hover { background-color: var(--muted); color: var(--foreground); }
+
+/* ============================================================================
+   TAMAÑOS
+   ============================================================================ */
+.migas--sm { font-size: var(--text-sm); }
+.migas--md { font-size: var(--text-base); }
+.migas--lg { font-size: var(--text-lg); }
+.migas--lg .migas__separador { font-size: var(--text-xl); }
+
+/* ============================================================================
+   VARIANTES
+   ============================================================================ */
+
+/* --- Pills: cada item en una pastilla con fondo --- */
+.migas--pills .migas__lista { gap: 6px; }
+.migas--pills .migas__separador { display: none; }
+.migas--pills .migas__link,
+.migas--pills .migas__actual {
+  padding: 4px 10px;
+  background-color: var(--surface-muted);
+  border-radius: var(--radius-full);
+}
+.migas--pills .migas__link:hover {
+  background-color: var(--muted);
+}
+.migas--pills .migas__item--actual .migas__actual {
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+}
+
+/* --- Bordeada: contenedor con padding/borde, separadores grandes --- */
+.migas--bordeada {
+  padding: 6px var(--space-3);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  width: fit-content;
+}
+
+/* ============================================================================
+   SEPARADORES — variaciones tipográficas
+   ============================================================================ */
+.migas--sep-chevron .migas__separador { font-size: 1.1em; }
+.migas--sep-flecha  .migas__separador { font-size: 1em; }
+.migas--sep-punto   .migas__separador { font-weight: 700; }
+.migas--sep-pipe    .migas__separador { opacity: 0.5; }
+
+/* ============================================================================
+   Compatibilidad con la clase vieja `.breadcrumbs` (por si quedó algún uso)
+   ============================================================================ */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin-block-end: var(--space-4);
+}
+.breadcrumbs__item { display: inline-flex; align-items: center; }
+.breadcrumbs__separator::after {
+  content: '/';
+  margin-inline: var(--space-2);
+  color: var(--border-strong);
+}
+[dir='rtl'] .breadcrumbs__separator::after { content: '\\'; }
+.breadcrumbs__item:last-child { color: var(--foreground); font-weight: var(--weight-medium); }
+.breadcrumbs__item a:hover { color: var(--foreground); }

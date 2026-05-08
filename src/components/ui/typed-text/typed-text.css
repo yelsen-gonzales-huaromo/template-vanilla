@@ -1,0 +1,80 @@
+/* =============================================================================
+   Texto tipeado (typewriter)
+   ============================================================================= */
+.tipeado {
+  display: inline-flex;
+  align-items: baseline;
+}
+.tipeado__texto {
+  color: var(--foreground);
+  white-space: pre;
+}
+
+/* ===== Colores del texto ===== */
+.tipeado__texto--gradient {
+  background: linear-gradient(90deg, #06b6d4, #3b82f6, #8b5cf6, #ec4899);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+          color: transparent;
+  animation: tipeado-gradient 6s linear infinite;
+}
+@keyframes tipeado-gradient {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+.tipeado__texto--success    { color: var(--color-success); }
+.tipeado__texto--warning    { color: var(--color-warning); }
+.tipeado__texto--danger     { color: var(--color-danger); }
+.tipeado__texto--foreground { color: var(--foreground); }
+
+/* ===== Cursor variants ===== */
+.tipeado__cursor {
+  display: inline-block;
+  margin-inline-start: 2px;
+  background-color: var(--primary);
+  animation: tipeado-parpadeo 1s steps(2) infinite;
+  align-self: stretch;
+}
+.tipeado__cursor--line {
+  width: 2px;
+  height: 1.1em;
+  border-radius: 1px;
+  align-self: center;
+}
+.tipeado__cursor--block {
+  width: 0.55em;
+  height: 1.1em;
+  align-self: center;
+  border-radius: 2px;
+  margin-inline-start: 3px;
+}
+.tipeado__cursor--underscore {
+  width: 0.55em;
+  height: 3px;
+  border-radius: 1.5px;
+  align-self: flex-end;
+  margin-block-end: 0.15em;
+  margin-inline-start: 3px;
+}
+
+@keyframes tipeado-parpadeo {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Cuando termina (loop:false), el cursor se queda quieto opaco */
+.tipeado--terminado .tipeado__cursor {
+  animation: none;
+  opacity: 1;
+}
+
+/* ===== Cursores con color custom ===== */
+.tipeado__cursor--c-success    { background-color: var(--color-success); }
+.tipeado__cursor--c-warning    { background-color: var(--color-warning); }
+.tipeado__cursor--c-danger     { background-color: var(--color-danger); }
+.tipeado__cursor--c-foreground { background-color: var(--foreground); }
+.tipeado__cursor--c-gradient {
+  background: linear-gradient(180deg, #06b6d4, #8b5cf6);
+}

@@ -1,0 +1,417 @@
+/* =============================================================================
+   Línea de tiempo — base moderna (cards + hover)
+   ============================================================================= */
+.linea-tiempo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  padding-inline-start: var(--space-7, 3rem);
+}
+.linea-tiempo::before {
+  content: '';
+  position: absolute;
+  inset-block: 1.25rem 0;
+  inset-inline-start: 1.25rem;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--foreground) 14%, transparent) 0%,
+    color-mix(in srgb, var(--foreground) 8%, transparent)  100%);
+  border-radius: 1px;
+}
+
+.linea-tiempo__item {
+  position: relative;
+  padding-block-end: var(--space-5);
+}
+.linea-tiempo__item:last-child { padding-block-end: 0; }
+
+/* ============================================================================
+   Punto / icono coloreado (modernizado: 40px, sombra, ring)
+   ============================================================================ */
+.linea-tiempo__punto {
+  position: absolute;
+  inset-inline-start: -2.5rem;
+  inset-block-start: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  z-index: 1;
+  box-shadow: 0 0 0 4px var(--background);
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.linea-tiempo__punto svg { width: 1rem; height: 1rem; }
+
+.linea-tiempo__punto--primary {
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 60%, #000));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--background), 0 4px 12px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+.linea-tiempo__punto--success {
+  background: linear-gradient(135deg, var(--color-success), color-mix(in srgb, var(--color-success) 60%, #000));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--background), 0 4px 12px color-mix(in srgb, var(--color-success) 35%, transparent);
+}
+.linea-tiempo__punto--warning {
+  background: linear-gradient(135deg, var(--color-warning), color-mix(in srgb, var(--color-warning) 60%, #000));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--background), 0 4px 12px color-mix(in srgb, var(--color-warning) 35%, transparent);
+}
+.linea-tiempo__punto--danger {
+  background: linear-gradient(135deg, var(--color-danger), color-mix(in srgb, var(--color-danger) 60%, #000));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--background), 0 4px 12px color-mix(in srgb, var(--color-danger) 35%, transparent);
+}
+.linea-tiempo__punto--info {
+  background: linear-gradient(135deg, var(--color-info), color-mix(in srgb, var(--color-info) 60%, #000));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--background), 0 4px 12px color-mix(in srgb, var(--color-info) 35%, transparent);
+}
+
+/* Pendiente — outline + dashed */
+.linea-tiempo__punto--pendiente {
+  background: var(--background) !important;
+  border: 2px dashed color-mix(in srgb, var(--foreground) 25%, transparent) !important;
+  color: var(--muted-foreground) !important;
+  box-shadow: 0 0 0 4px var(--background) !important;
+}
+.linea-tiempo__item--pendiente .linea-tiempo__titulo,
+.linea-tiempo__item--pendiente .linea-tiempo__mensaje { opacity: 0.7; }
+
+/* Avatar reemplaza al punto — mismo tamaño */
+.linea-tiempo__avatar {
+  position: absolute;
+  inset-inline-start: -2.5rem;
+  inset-block-start: 0;
+  display: inline-flex;
+  z-index: 1;
+}
+.linea-tiempo__avatar > * {
+  box-shadow: 0 0 0 4px var(--background), 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* ============================================================================
+   Cuerpo del item — card con hover
+   ============================================================================ */
+.linea-tiempo__cuerpo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 180ms, transform 180ms, box-shadow 180ms;
+}
+.linea-tiempo__item:hover .linea-tiempo__cuerpo {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.linea-tiempo__item:hover .linea-tiempo__punto {
+  transform: scale(1.06);
+}
+
+.linea-tiempo__fecha {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.linea-tiempo__cabezal {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.linea-tiempo__titulo {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+.linea-tiempo__etiqueta { display: inline-flex; }
+.linea-tiempo__mensaje {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+
+/* Adjuntos — chips modernos */
+.linea-tiempo__adjuntos {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-block-start: var(--space-2);
+}
+.linea-tiempo__adjunto {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  color: var(--foreground);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.linea-tiempo__adjunto-tam {
+  color: var(--muted-foreground);
+  font-weight: 400;
+  padding-inline-start: 4px;
+  border-inline-start: 1px solid var(--border);
+  margin-inline-start: 4px;
+}
+
+/* Acciones */
+.linea-tiempo__acciones {
+  display: flex; gap: var(--space-2); flex-wrap: wrap;
+  margin-block-start: var(--space-2);
+}
+
+/* =============================================================================
+   Variante CENTRADA (zigzag) — moderna
+   ============================================================================= */
+.linea-tiempo--centrada {
+  padding-inline-start: 0;
+  display: grid;
+  grid-template-columns: 1fr 3rem 1fr;
+  gap: 0;
+  position: relative;
+}
+.linea-tiempo--centrada::before {
+  inset-inline-start: 50%;
+  margin-inline-start: -1px;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--primary) 30%, transparent) 0%,
+    color-mix(in srgb, var(--foreground) 8%, transparent) 100%);
+}
+.linea-tiempo--centrada .linea-tiempo__item {
+  display: contents;
+}
+.linea-tiempo--centrada .linea-tiempo__cuerpo {
+  padding-block-end: var(--space-5);
+}
+.linea-tiempo--centrada .linea-tiempo__item:nth-child(odd) .linea-tiempo__cuerpo {
+  grid-column: 1;
+  text-align: end;
+  margin-inline-end: var(--space-3);
+}
+.linea-tiempo--centrada .linea-tiempo__item:nth-child(odd) .linea-tiempo__cabezal,
+.linea-tiempo--centrada .linea-tiempo__item:nth-child(odd) .linea-tiempo__acciones,
+.linea-tiempo--centrada .linea-tiempo__item:nth-child(odd) .linea-tiempo__adjuntos {
+  justify-content: flex-end;
+}
+.linea-tiempo--centrada .linea-tiempo__item:nth-child(even) .linea-tiempo__cuerpo {
+  grid-column: 3;
+  margin-inline-start: var(--space-3);
+}
+.linea-tiempo--centrada .linea-tiempo__punto,
+.linea-tiempo--centrada .linea-tiempo__avatar {
+  position: relative;
+  inset: auto;
+  grid-column: 2;
+  justify-self: center;
+  margin-block-start: 0.5rem;
+}
+
+@media (max-width: 767.98px) {
+  .linea-tiempo--centrada {
+    grid-template-columns: 3rem 1fr;
+  }
+  .linea-tiempo--centrada::before {
+    inset-inline-start: 1.25rem;
+    margin-inline-start: 0;
+  }
+  .linea-tiempo--centrada .linea-tiempo__item:nth-child(odd) .linea-tiempo__cuerpo,
+  .linea-tiempo--centrada .linea-tiempo__item:nth-child(even) .linea-tiempo__cuerpo {
+    grid-column: 2;
+    text-align: start;
+    margin-inline: 0;
+  }
+  .linea-tiempo--centrada .linea-tiempo__item:nth-child(odd) .linea-tiempo__cabezal,
+  .linea-tiempo--centrada .linea-tiempo__item:nth-child(odd) .linea-tiempo__acciones,
+  .linea-tiempo--centrada .linea-tiempo__item:nth-child(odd) .linea-tiempo__adjuntos {
+    justify-content: flex-start;
+  }
+  .linea-tiempo--centrada .linea-tiempo__punto,
+  .linea-tiempo--centrada .linea-tiempo__avatar {
+    grid-column: 1;
+  }
+}
+
+/* =============================================================================
+   Variante COMPACTA — sin cards, dots pequeños, dense
+   ============================================================================= */
+.linea-tiempo--compacta { padding-inline-start: var(--space-5); }
+.linea-tiempo--compacta::before {
+  inset-block: 0.65rem 0.5rem;
+  inset-inline-start: 0.4375rem;
+  background: color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+.linea-tiempo--compacta .linea-tiempo__item { padding-block-end: var(--space-3); }
+.linea-tiempo--compacta .linea-tiempo__punto {
+  width: 0.875rem; height: 0.875rem;
+  inset-inline-start: -1.5rem;
+  inset-block-start: 0.4rem;
+  border: 2px solid var(--background);
+  box-shadow: none;
+}
+.linea-tiempo--compacta .linea-tiempo__punto svg { display: none; }
+.linea-tiempo--compacta .linea-tiempo__cuerpo {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+}
+.linea-tiempo--compacta .linea-tiempo__item:hover .linea-tiempo__cuerpo {
+  border-color: transparent;
+  transform: none;
+  box-shadow: none;
+}
+.linea-tiempo--compacta .linea-tiempo__titulo { font-size: var(--text-sm); }
+.linea-tiempo--compacta .linea-tiempo__fecha { text-transform: none; letter-spacing: 0; }
+
+/* =============================================================================
+   Variante GLASS — fondo con gradient + cards translúcidas
+   ============================================================================= */
+.linea-tiempo--glass {
+  padding: var(--space-5) var(--space-5) var(--space-5) calc(var(--space-7, 3rem) + var(--space-3));
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--primary) 10%, transparent),
+    color-mix(in srgb, #8b5cf6 10%, transparent));
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--primary) 22%, var(--border));
+}
+.linea-tiempo--glass::before {
+  inset-inline-start: calc(var(--space-5) + 1.25rem);
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.5),
+    rgba(255,255,255,0.15));
+}
+.linea-tiempo--glass .linea-tiempo__cuerpo {
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-color: color-mix(in srgb, var(--surface) 60%, transparent);
+}
+
+/* =============================================================================
+   Variante SIMPLE — sólo línea + punto + texto al lado, sin card
+   ============================================================================= */
+.linea-tiempo--simple .linea-tiempo__cuerpo {
+  background: transparent;
+  border: 0;
+  padding: 6px 0;
+  border-radius: 0;
+}
+.linea-tiempo--simple .linea-tiempo__item:hover .linea-tiempo__cuerpo {
+  border: 0;
+  transform: none;
+  box-shadow: none;
+}
+
+/* =============================================================================
+   LineaTiempoHorizontal — steps cronológicos modernos
+   ============================================================================= */
+.linea-tiempo-h {
+  list-style: none;
+  margin: 0; padding: var(--space-2) 0;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  overflow-x: auto;
+}
+.linea-tiempo-h__item {
+  display: flex; align-items: flex-start; flex: 1; min-width: 0;
+}
+.linea-tiempo-h__paso {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  flex: 0 0 auto;
+  text-align: center;
+  min-width: 110px;
+}
+.linea-tiempo-h__punto {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--muted-foreground);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: var(--text-sm);
+  flex-shrink: 0;
+  transition: background 280ms, border-color 280ms, color 280ms, transform 280ms;
+  position: relative;
+  z-index: 1;
+}
+.linea-tiempo-h__paso--completado .linea-tiempo-h__punto {
+  background: linear-gradient(135deg, var(--color-success), color-mix(in srgb, var(--color-success) 60%, #000));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-success) 30%, transparent);
+}
+.linea-tiempo-h__paso--activo .linea-tiempo-h__punto {
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 60%, #000));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary) 18%, transparent),
+              0 4px 12px color-mix(in srgb, var(--primary) 30%, transparent);
+  transform: scale(1.05);
+}
+.linea-tiempo-h__textos {
+  display: flex; flex-direction: column; gap: 2px;
+  max-width: 140px;
+}
+.linea-tiempo-h__titulo {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted-foreground);
+}
+.linea-tiempo-h__paso--activo .linea-tiempo-h__titulo,
+.linea-tiempo-h__paso--completado .linea-tiempo-h__titulo {
+  color: var(--foreground);
+}
+.linea-tiempo-h__mensaje {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+
+/* Línea conectora moderna */
+.linea-tiempo-h__linea {
+  flex: 1 1 auto;
+  height: 3px;
+  background: var(--border);
+  margin: 22px 8px 0;
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+  min-width: 24px;
+}
+.linea-tiempo-h__linea::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--color-success), color-mix(in srgb, var(--color-success) 60%, #000));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 540ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.linea-tiempo-h__linea--completada::after { transform: scaleX(1); }
+
+@media (max-width: 639.98px) {
+  .linea-tiempo-h__textos { max-width: 80px; }
+  .linea-tiempo-h__mensaje { display: none; }
+  .linea-tiempo-h__punto { width: 36px; height: 36px; }
+}

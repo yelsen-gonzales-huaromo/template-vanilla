@@ -1,0 +1,136 @@
+/* =============================================================================
+   Punto de entrada CSS — cargado vía <link> desde index.html.
+   Todos los demás CSS se importan aquí en orden de cascada.
+   ============================================================================= */
+@import url('./themes/tokens.css');
+@import url('./base/reset.css');
+@import url('./base/typography.css');
+@import url('./base/breakpoints.css');
+@import url('./utilities/spacing.css');
+@import url('./utilities/layout.css');
+@import url('./utilities/animations.css');
+@import url('./utilities/transitions.css');
+@import url('./utilities/scroll.css');
+
+/* Layouts */
+@import url('../layouts/dashboard-layout/dashboard-layout.css');
+@import url('../layouts/auth-layout/auth-layout.css');
+@import url('../layouts/blank-layout/blank-layout.css');
+@import url('../layouts/components/sidebar/sidebar.css');
+@import url('../layouts/components/navbar/navbar.css');
+@import url('../layouts/components/navbar/notifications-panel.css');
+@import url('../layouts/components/navbar/apps-panel.css');
+@import url('../layouts/components/footer/footer.css');
+@import url('../layouts/components/breadcrumbs/breadcrumbs.css');
+@import url('../layouts/components/nav-top/nav-top.css');
+
+/* Componentes UI */
+@import url('../components/ui/button/button.css');
+@import url('../components/ui/card/card.css');
+@import url('../components/ui/input/input.css');
+@import url('../components/ui/input/layout.css');
+@import url('../components/ui/input/editor.css');
+@import url('../components/ui/input/emoji.css');
+@import url('../components/ui/input/uploader.css');
+@import url('../components/ui/input/mascara.css');
+@import url('../components/ui/input/slider.css');
+@import url('../components/ui/input/rating.css');
+@import url('../components/ui/input/wizard.css');
+@import url('../components/ui/input/validacion.css');
+@import url('../pages/errors/error-page.css');
+@import url('../pages/settings/perfil-ajustes.css');
+@import url('../pages/app/kanban/kanban.css');
+@import url('../pages/app/chat/chat.css');
+@import url('../pages/panel/dash.css');
+@import url('../components/ui/select/select.css');
+@import url('../components/ui/badge/badge.css');
+@import url('../components/ui/avatar/avatar.css');
+@import url('../components/ui/spinner/spinner.css');
+@import url('../components/ui/skeleton/skeleton.css');
+@import url('../components/ui/modal/modal.css');
+@import url('../components/ui/dropdown/dropdown.css');
+@import url('../components/ui/table/table.css');
+@import url('../components/ui/pagination/pagination.css');
+@import url('../components/ui/tooltip/tooltip.css');
+@import url('../components/ui/empty-state/empty-state.css');
+@import url('../components/ui/toast/toast.css');
+@import url('../components/ui/chart/chart.css');
+@import url('../components/ui/kpi-card/kpi-card.css');
+@import url('../components/ui/icon/icon.css');
+@import url('../components/ui/config-panel/config-panel.css');
+@import url('../components/ui/command-palette/command-palette.css');
+@import url('../components/ui/code-preview/code-preview.css');
+@import url('../components/ui/accordion/accordion.css');
+@import url('../components/ui/alert/alert.css');
+@import url('../components/ui/progress/progress.css');
+@import url('../components/ui/tabs/tabs.css');
+@import url('../components/ui/timeline/timeline.css');
+@import url('../components/ui/collapse/collapse.css');
+@import url('../components/ui/list-group/list-group.css');
+@import url('../components/ui/popover/popover.css');
+@import url('../components/ui/countup/countup.css');
+@import url('../components/ui/typed-text/typed-text.css');
+@import url('../components/ui/bottom-bar/bottom-bar.css');
+@import url('../components/ui/cookie-notice/cookie-notice.css');
+@import url('../components/ui/treeview/treeview.css');
+@import url('../components/ui/carousel/carousel.css');
+@import url('../components/ui/anchor/anchor.css');
+@import url('../components/ui/calendar/calendar.css');
+@import url('../components/ui/video/video.css');
+
+/* Componentes comunes (showcase, etc.) */
+@import url('../components/common/showcase/showcase.css');
+@import url('../components/common/illustrations/illustrations.css');
+@import url('../components/common/icon-animations/icon-animations.css');
+@import url('../components/common/animations-pro/animations-pro.css');
+
+/* Componentes formularios */
+@import url('../components/forms/form-field/form-field.css');
+
+/* Estilos compartidos de páginas */
+@import url('../pages/dashboard/dashboard.css');
+@import url('../pages/modulos/componentes.css');
+@import url('../pages/modulos/componentes/nav-mocks.css');
+
+/* App shell */
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pantalla de carga inicial */
+.boot {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background-color: var(--background);
+  color: var(--muted-foreground);
+  z-index: 9999;
+}
+.boot__mark {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #60a5fa, #1d4ed8);
+  box-shadow: 0 8px 24px -8px rgb(59 130 246 / 0.6);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+/* Skip link para accesibilidad. */
+.skip-link {
+  position: absolute;
+  inset-block-start: -40px;
+  inset-inline-start: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: var(--radius-sm);
+  z-index: var(--z-tooltip);
+  transition: inset-block-start var(--transition-fast);
+}
+.skip-link:focus { inset-block-start: var(--space-2); }

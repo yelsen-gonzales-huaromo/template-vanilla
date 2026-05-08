@@ -1,0 +1,66 @@
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-height: 100vh;
+  background-color: var(--background);
+  /* Sutil gradiente de fondo para añadir profundidad sin saturar */
+  background-image:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--primary) 4%, transparent), transparent 30%),
+    radial-gradient(circle at 0% 100%, color-mix(in srgb, var(--color-accent-500) 3%, transparent), transparent 30%);
+  background-attachment: fixed;
+  transition: background-color var(--transition-tema), padding var(--transition-normal);
+}
+
+.dashboard-layout__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dashboard-layout__content {
+  flex: 1;
+  /* Padding horizontal FIJO en ambos lados — los gutters son los mismos
+     ya sea que el sidebar esté expandido o colapsado. El contenido
+     fluye dentro del espacio disponible (no tiene max-width). Cuando el
+     sidebar colapsa, el contenido se EXPANDE naturalmente. */
+  padding: var(--space-6) var(--padding-pagina);
+  width: 100%;
+  animation: fade-in var(--transition-normal) ease-out;
+  transition: padding var(--transition-normal),
+              background-color var(--transition-tema),
+              box-shadow var(--transition-fast);
+}
+
+/* Variante TOP: sin sidebar, todo el ancho disponible */
+.dashboard-layout--top {
+  grid-template-columns: 1fr;
+}
+
+/* Variante COMBO: sidebar + nav superior — comparte la columna 'auto 1fr' del default */
+.dashboard-layout--combo .dashboard-layout__content { padding-block-start: var(--space-4); }
+
+/* === Estilo CARD: el dashboard-layout usa gap para separar las cards === */
+[data-sidebar-style='card'] .dashboard-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+[data-sidebar-style='card'] .dashboard-layout--top {
+  grid-template-columns: 1fr;
+}
+[data-sidebar-style='card'] .dashboard-layout__main {
+  min-width: 0;
+}
+
+@media (max-width: 1023.98px) {
+  .dashboard-layout { grid-template-columns: 1fr; }
+  .dashboard-layout__content { padding: var(--space-4); }
+  [data-sidebar-style='card'] .dashboard-layout { padding: 0; gap: 0; }
+  [data-sidebar-style='card'] .dashboard-layout__content { border-radius: 0; }
+  [data-sidebar-style='transparent'] .dashboard-layout__content { margin: var(--space-3); }
+}
+
+/* En pantallas <768 reducimos el padding de página para no comerse demasiado
+   espacio cuando los viewports son pequeños. */
+@media (max-width: 767.98px) {
+  :root { --padding-pagina: 1rem; }
+}

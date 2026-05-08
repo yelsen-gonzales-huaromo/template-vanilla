@@ -1,0 +1,207 @@
+/* =============================================================================
+   Acordeón profesional — múltiples variantes y opciones
+   ========================================================================= */
+.acordeon {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* ---- Item base ---- */
+.acordeon__item + .acordeon__item {
+  border-block-start: 1px solid var(--border);
+}
+
+/* ---- Cabezal (clickeable) ---- */
+.acordeon__cabezal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--foreground);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: start;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+.acordeon__cabezal:hover { background-color: var(--muted); }
+.acordeon__cabezal:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--ring);
+}
+.acordeon__cabezal--deshabilitado {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.acordeon__cabezal--deshabilitado:hover { background-color: transparent; }
+
+/* Bloques internos del cabezal */
+.acordeon__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  transition: color var(--transition-fast);
+}
+.acordeon__titulo-bloque {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.acordeon__titulo {
+  font-weight: var(--weight-medium);
+  letter-spacing: -0.005em;
+}
+.acordeon__subtitulo {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-normal);
+  color: var(--muted-foreground);
+  line-height: 1.4;
+}
+.acordeon__badge-slot {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Icono toggle (chevron / flecha) */
+.acordeon__icon-toggle {
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  transition: transform var(--transition-base), color var(--transition-fast);
+}
+.acordeon__item[data-abierto='true'] > .acordeon__cabezal .acordeon__icon-toggle {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+
+/* Toggle "más / menos" — dos líneas que forman + cuando cerrado y − cuando abierto */
+.acordeon__mm {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.acordeon__mm-h, .acordeon__mm-v {
+  position: absolute;
+  background-color: var(--muted-foreground);
+  border-radius: 1px;
+  transition: transform var(--transition-base), background-color var(--transition-fast);
+}
+.acordeon__mm-h { inset-block-start: 6px; inset-inline: 0; height: 2px; }
+.acordeon__mm-v { inset-inline-start: 6px; inset-block: 0; width: 2px; }
+.acordeon__item[data-abierto='true'] > .acordeon__cabezal .acordeon__mm-v {
+  transform: scaleY(0);
+}
+.acordeon__item[data-abierto='true'] > .acordeon__cabezal .acordeon__mm-h,
+.acordeon__item[data-abierto='true'] > .acordeon__cabezal .acordeon__mm-v {
+  background-color: var(--primary);
+}
+
+/* Estado abierto del cabezal */
+.acordeon__item[data-abierto='true'] > .acordeon__cabezal {
+  color: var(--primary);
+  background-color: color-mix(in srgb, var(--primary) 6%, transparent);
+}
+.acordeon__item[data-abierto='true'] > .acordeon__cabezal .acordeon__icono {
+  color: var(--primary);
+}
+
+/* ---- Cuerpo expandible (animación con grid-rows) ---- */
+.acordeon__cuerpo {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.acordeon__item[data-abierto='true'] > .acordeon__cuerpo {
+  grid-template-rows: 1fr;
+}
+.acordeon__contenido {
+  overflow: hidden;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.65;
+}
+.acordeon__item[data-abierto='true'] > .acordeon__cuerpo .acordeon__contenido {
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border-block-start: 1px solid var(--border);
+}
+
+/* ============================================================================
+   TAMAÑOS
+   ============================================================================ */
+.acordeon--sm .acordeon__cabezal { padding: var(--space-2) var(--space-3); font-size: var(--text-xs); }
+.acordeon--sm .acordeon__icono   { width: 1.25rem; height: 1.25rem; }
+
+.acordeon--lg .acordeon__cabezal { padding: var(--space-4) var(--space-5); font-size: var(--text-base); }
+.acordeon--lg .acordeon__titulo  { font-size: var(--text-base); font-weight: var(--weight-semibold); }
+.acordeon--lg .acordeon__subtitulo { font-size: var(--text-sm); }
+.acordeon--lg .acordeon__icono   { width: 2rem; height: 2rem; }
+
+/* ============================================================================
+   VARIANTES
+   ============================================================================ */
+
+/* --- Flush: sin bordes externos, sólo separadores --- */
+.acordeon--flush {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+.acordeon--flush .acordeon__item + .acordeon__item {
+  border-block-start: 1px solid var(--border);
+}
+.acordeon--flush .acordeon__cabezal {
+  padding-inline: 0;
+}
+
+/* --- Bordeada: borde lateral en color de cada item --- */
+.acordeon--bordeada > .acordeon__item {
+  border-inline-start: 3px solid transparent;
+  transition: border-color var(--transition-fast);
+}
+.acordeon--bordeada > .acordeon__item--primary { border-inline-start-color: var(--primary); }
+.acordeon--bordeada > .acordeon__item--success { border-inline-start-color: var(--color-success); }
+.acordeon--bordeada > .acordeon__item--warning { border-inline-start-color: var(--color-warning); }
+.acordeon--bordeada > .acordeon__item--danger  { border-inline-start-color: var(--color-danger); }
+.acordeon--bordeada > .acordeon__item--info    { border-inline-start-color: var(--color-info); }
+
+/* --- Con cards: cada item es una tarjeta independiente con sombra --- */
+.acordeon--con-cards {
+  background: transparent;
+  border: none;
+  gap: var(--space-2);
+}
+.acordeon--con-cards .acordeon__item {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+.acordeon--con-cards .acordeon__item + .acordeon__item {
+  border-block-start: 1px solid var(--border);  /* mantiene si por algún caso */
+}
+.acordeon--con-cards .acordeon__item[data-abierto='true'] {
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--primary) 50%, var(--border));
+}
+
+/* Por defecto la animación queda muy elegante en todas las variantes */

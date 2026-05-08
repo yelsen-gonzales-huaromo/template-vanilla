@@ -1,0 +1,282 @@
+/* =============================================================================
+   Rating — 6 tipos de valoración
+   ============================================================================= */
+
+/* ============= 1 · Estrellas ============= */
+.rating-estrellas {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.rating-estrellas__stars {
+  display: inline-flex;
+  gap: 2px;
+}
+.rating-estrellas__btn {
+  position: relative;
+  width: 1em; height: 1em;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in srgb, var(--foreground) 22%, transparent);
+  transition: transform 140ms ease;
+}
+.rating-estrellas__btn:disabled { cursor: default; }
+.rating-estrellas--lectura .rating-estrellas__btn { cursor: default; }
+.rating-estrellas__btn--hover { transform: scale(1.18); }
+.rating-estrellas__fondo {
+  display: block;
+  width: 100%; height: 100%;
+}
+.rating-estrellas__relleno {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  overflow: hidden;
+  color: #f59e0b;             /* amarillo dorado clásico */
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  pointer-events: none;
+  transition: width 120ms ease;
+}
+.rating-estrellas__relleno svg {
+  width: 1em; height: 1em;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+.rating-estrellas__lbl {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============= 2 · Caritas ============= */
+.rating-caritas {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.rating-caritas__fila { display: inline-flex; gap: 6px; }
+.rating-caritas__btn {
+  width: 44px; height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  filter: grayscale(0.6);
+  opacity: 0.65;
+  transition: all 200ms ease;
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+  padding: 0;
+}
+.rating-caritas__btn:hover {
+  filter: grayscale(0);
+  opacity: 1;
+  transform: scale(1.12);
+}
+.rating-caritas__btn--sel {
+  filter: grayscale(0);
+  opacity: 1;
+  border-color: var(--c-sel, var(--primary));
+  background: color-mix(in srgb, var(--c-sel, var(--primary)) 12%, transparent);
+  transform: scale(1.08);
+}
+.rating-caritas__lbl {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  min-height: 1.2em;
+  transition: color 200ms ease;
+}
+
+/* ============= 3 · Pulgares ============= */
+.rating-pulgares {
+  display: inline-flex;
+  gap: 6px;
+}
+.rating-pulgares__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+  font-family: inherit;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 80ms ease;
+}
+.rating-pulgares__btn:hover {
+  border-color: color-mix(in srgb, var(--foreground) 25%, var(--border));
+  color: var(--foreground);
+}
+.rating-pulgares__btn:active { transform: scale(0.96); }
+.rating-pulgares__btn--up.rating-pulgares__btn--activo {
+  background: color-mix(in srgb, #22c55e 14%, transparent);
+  border-color: #22c55e;
+  color: #22c55e;
+}
+.rating-pulgares__btn--down.rating-pulgares__btn--activo {
+  background: color-mix(in srgb, #ef4444 14%, transparent);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+.rating-pulgares__count { font-weight: 700; }
+
+/* ============= 4 · NPS ============= */
+.rating-nps {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 460px;
+}
+.rating-nps__fila {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 2px;
+}
+.rating-nps__btn {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 80ms ease;
+}
+.rating-nps__btn:hover {
+  border-color: var(--c);
+  color: var(--c);
+  transform: scale(1.06);
+  z-index: 1;
+}
+.rating-nps__btn--sel {
+  background: var(--c);
+  border-color: var(--c);
+  color: #fff;
+}
+.rating-nps__labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+/* ============= 5 · Corazones ============= */
+.rating-corazones {
+  display: inline-flex;
+  gap: 4px;
+}
+.rating-corazones__btn {
+  width: 1em; height: 1em;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--foreground) 22%, transparent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 140ms ease, transform 140ms ease;
+}
+.rating-corazones__btn svg {
+  width: 1em; height: 1em;
+  fill: none;
+  transition: fill 140ms ease;
+}
+.rating-corazones__btn--on {
+  color: #ec4899;             /* rosa clásico */
+}
+.rating-corazones__btn--on svg {
+  fill: currentColor;
+}
+.rating-corazones__btn--hover { transform: scale(1.18); }
+
+/* ============= 6 · Resumen reviews ============= */
+.rating-resumen {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+@media (max-width: 500px) {
+  .rating-resumen { grid-template-columns: 1fr; }
+}
+.rating-resumen__izq {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.rating-resumen__nota {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--foreground);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.rating-resumen__total {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.rating-resumen__hist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rating-resumen__fila {
+  display: grid;
+  grid-template-columns: 28px 1fr 36px;
+  gap: 8px;
+  align-items: center;
+}
+.rating-resumen__num {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+.rating-resumen__barra {
+  height: 6px;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.rating-resumen__barra-fill {
+  height: 100%;
+  background: #f59e0b;
+  border-radius: 999px;
+  transition: width 400ms ease;
+}
+.rating-resumen__pct {
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}

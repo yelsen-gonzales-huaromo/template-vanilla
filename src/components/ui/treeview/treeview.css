@@ -1,0 +1,128 @@
+/* =============================================================================
+   Vista de árbol
+   ============================================================================= */
+.arbol, .arbol__sub {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.arbol__item--rama > .arbol__sub { display: none; }
+.arbol__item--rama[data-abierto='true'] > .arbol__sub { display: block; }
+.arbol__item--oculto { display: none; }
+
+/* ============================================================================
+   Cabezal del nodo
+   ============================================================================ */
+.arbol__cabezal {
+  width: 100%;
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: start;
+  border-radius: var(--radius-sm);
+  transition: background-color 140ms;
+  position: relative;
+}
+.arbol__cabezal:hover {
+  background-color: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+.arbol__cabezal--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.arbol__cabezal--disabled:hover { background: transparent; }
+
+/* Item seleccionado/activo */
+.arbol__cabezal[data-activo='true'] {
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  font-weight: 600;
+}
+.arbol__cabezal[data-activo='true'] .arbol__icon {
+  color: var(--primary) !important;
+}
+
+/* Caret de expand/collapse */
+.arbol__caret {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  color: var(--muted-foreground);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+}
+.arbol__hueco { width: 14px; flex-shrink: 0; }
+.arbol__item--rama[data-abierto='true'] > .arbol__cabezal .arbol__caret {
+  transform: rotate(90deg);
+  color: var(--foreground);
+}
+
+/* Icono del archivo/carpeta */
+.arbol__icon {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Checkbox */
+.arbol__check {
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--primary);
+  width: 14px; height: 14px;
+}
+
+/* Etiqueta */
+.arbol__etiqueta {
+  flex: 1;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Meta (info adicional a la derecha del nombre — tamaño, fecha) */
+.arbol__meta {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  margin-inline-start: var(--space-2);
+}
+
+/* Badge (count, alerta, etc.) */
+.arbol__badge {
+  display: inline-flex;
+}
+
+/* Highlight de coincidencia (filtro) */
+.arbol__match {
+  background: color-mix(in srgb, var(--color-warning) 32%, transparent);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* ============================================================================
+   Líneas guía (vertical line connecting siblings)
+   ============================================================================ */
+.arbol__sub {
+  position: relative;
+  margin-inline-start: 1.4rem;
+}
+.arbol__sub::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -0.5rem;
+  width: 1px;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+}

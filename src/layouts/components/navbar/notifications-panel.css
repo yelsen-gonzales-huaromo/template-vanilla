@@ -1,0 +1,193 @@
+/* =============================================================================
+   Panel de Notificaciones (campana del navbar) — referencia: Falcon
+   ============================================================================= */
+
+.inbox {
+  width: 22rem;
+  max-width: calc(100vw - var(--space-6));
+  display: flex;
+  flex-direction: column;
+  max-height: 32rem;
+}
+
+/* ---- Cabecera ---- */
+.inbox__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-block-end: 1px solid var(--border);
+}
+.inbox__titulo {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+.inbox__accion {
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+.inbox__accion:hover {
+  background-color: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+/* ---- Lista scrolleable ---- */
+.inbox__lista {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-1) 0;
+}
+
+.inbox__seccion {
+  padding-block: var(--space-1);
+}
+.inbox__seccion + .inbox__seccion {
+  border-block-start: 1px solid var(--border);
+  margin-block-start: var(--space-1);
+  padding-block-start: var(--space-2);
+}
+.inbox__seccion-titulo {
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.6875rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  background-color: color-mix(in srgb, var(--surface-muted) 50%, transparent);
+}
+
+/* ---- Item de notificación ---- */
+.inbox__item {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: start;
+  transition: background-color var(--transition-fast);
+  position: relative;
+}
+.inbox__item:hover {
+  background-color: var(--muted);
+}
+.inbox__item--no-leida {
+  background-color: color-mix(in srgb, var(--primary) 4%, transparent);
+}
+.inbox__item--no-leida:hover {
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+/* Avatar (iniciales o icono) */
+.inbox__avatar {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.02em;
+}
+.inbox__avatar--icono {
+  font-size: 0;  /* el icono pone su propio tamaño */
+}
+
+/* Cuerpo del item */
+.inbox__cuerpo {
+  flex: 1;
+  min-width: 0;
+}
+.inbox__texto {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--foreground);
+  /* Truncar a 3 líneas para mantener el panel compacto */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.inbox__texto strong {
+  font-weight: var(--weight-semibold);
+}
+.inbox__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-block-start: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+.inbox__meta-icono {
+  display: inline-flex;
+  color: var(--muted-foreground);
+}
+
+/* Punto azul: notificación sin leer */
+.inbox__punto {
+  position: absolute;
+  inset-inline-end: var(--space-3);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ---- Estado vacío ---- */
+.inbox__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4);
+  color: var(--muted-foreground);
+  text-align: center;
+}
+.inbox__vacio p { margin: 0; font-size: var(--text-sm); }
+
+/* ---- Pie: ver todas ---- */
+.inbox__pie {
+  border-block-start: 1px solid var(--border);
+  padding: var(--space-1);
+}
+.inbox__ver-todas {
+  width: 100%;
+  padding: var(--space-2);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--primary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+.inbox__ver-todas:hover {
+  background-color: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+@media (max-width: 479.98px) {
+  .inbox { width: calc(100vw - var(--space-4)); }
+}

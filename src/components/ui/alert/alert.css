@@ -1,0 +1,185 @@
+/* =============================================================================
+   Alerta profesional — variantes × estilos × tamaños
+   ========================================================================= */
+.alerta {
+  --alerta-color: var(--color-info);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    box-shadow var(--transition-fast);
+  overflow: hidden;
+}
+.alerta--saliendo {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+/* ---- Bloques ---- */
+.alerta__visual {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-block-start: 1px;
+  color: var(--alerta-color);
+}
+.alerta__visual--avatar { margin-block-start: 0; }
+.alerta__visual--imagen img {
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.alerta__cuerpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.alerta__titulo {
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.005em;
+  color: var(--alerta-color);
+}
+.alerta__mensaje { margin: 0; }
+.alerta__mensaje p { margin: 0; }
+.alerta__acciones {
+  margin-block-start: var(--space-2);
+  display: inline-flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.alerta__cerrar {
+  margin-inline-start: auto;
+  width: 1.5rem; height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity var(--transition-fast), background-color var(--transition-fast);
+}
+.alerta__cerrar:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Barra de progreso inferior */
+.alerta__progreso {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: 3px;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+.alerta__progreso-valor {
+  height: 100%;
+  width: 0;
+  background-color: var(--alerta-color);
+  transition: width 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================================
+   VARIANTES SEMÁNTICAS — establecen --alerta-color
+   ============================================================================ */
+.alerta--info     { --alerta-color: var(--color-info); }
+.alerta--success  { --alerta-color: var(--color-success); }
+.alerta--warning  { --alerta-color: var(--color-warning); }
+.alerta--danger   { --alerta-color: var(--color-danger); }
+.alerta--neutral  { --alerta-color: var(--muted-foreground); }
+
+/* ============================================================================
+   ESTILOS VISUALES
+   ============================================================================ */
+
+/* --- Soft (default) — fondo suave + borde tenue + texto en color --- */
+.alerta--soft {
+  background-color: color-mix(in srgb, var(--alerta-color) 10%, var(--surface));
+  border-color: color-mix(in srgb, var(--alerta-color) 35%, transparent);
+  color: color-mix(in srgb, var(--alerta-color) 85%, var(--foreground));
+}
+
+/* --- Solid — fondo lleno con texto blanco --- */
+.alerta--solido {
+  background-color: var(--alerta-color);
+  border-color: var(--alerta-color);
+  color: #fff;
+}
+.alerta--solido .alerta__titulo,
+.alerta--solido .alerta__visual { color: #fff; }
+.alerta--solido .alerta__cerrar:hover { background-color: rgba(255, 255, 255, 0.18); }
+.alerta--solido .alerta__progreso { background-color: rgba(255, 255, 255, 0.25); }
+.alerta--solido .alerta__progreso-valor { background-color: #fff; }
+
+/* --- Outline — sólo borde, fondo transparente --- */
+.alerta--outline {
+  background-color: transparent;
+  border-color: var(--alerta-color);
+  color: var(--alerta-color);
+}
+
+/* --- Lateral — borde grueso a la izquierda, resto suave --- */
+.alerta--lateral {
+  background-color: color-mix(in srgb, var(--alerta-color) 6%, var(--surface));
+  border-color: color-mix(in srgb, var(--alerta-color) 25%, transparent);
+  border-inline-start: 4px solid var(--alerta-color);
+  padding-inline-start: var(--space-4);
+  color: var(--foreground);
+}
+.alerta--lateral .alerta__titulo { color: var(--alerta-color); }
+
+/* ============================================================================
+   TAMAÑOS
+   ============================================================================ */
+.alerta--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  gap: var(--space-2);
+}
+.alerta--sm .alerta__visual { transform: scale(0.85); }
+
+.alerta--lg {
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-base);
+  gap: var(--space-4);
+}
+.alerta--lg .alerta__titulo { font-size: var(--text-lg); }
+
+/* ============================================================================
+   MODOS ESPECIALES
+   ============================================================================ */
+
+/* --- Compacta — todo en una línea --- */
+.alerta--compacta {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.alerta--compacta .alerta__cuerpo {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2);
+}
+.alerta--compacta .alerta__visual { margin-block-start: 0; }
+
+/* --- Banner — full-width sin border-radius --- */
+.alerta--banner {
+  border-radius: 0;
+  border-inline: none;
+}

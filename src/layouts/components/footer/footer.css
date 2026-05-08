@@ -1,0 +1,16 @@
+/* Footer transparente sin borde — coherente con el header.
+   Comparte el padding lateral del page para alinearse visualmente. */
+.footer {
+  padding: var(--space-4) var(--padding-pagina);
+  background-color: transparent;
+  border-top: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+.footer__links { display: flex; gap: var(--space-4); }
+.footer__links a:hover { color: var(--foreground); }

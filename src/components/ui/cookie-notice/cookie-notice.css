@@ -1,0 +1,309 @@
+/* ============================================================================
+   AvisoCookies — banner simple
+   ============================================================================ */
+.cookie-aviso {
+  position: relative;
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-md);
+  z-index: 50;
+}
+.cookie-aviso__cuerpo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.cookie-aviso__icono {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 44px; height: 44px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cookie-aviso__icono img { width: 32px; height: 32px; object-fit: contain; }
+.cookie-aviso__texto-wrap {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cookie-aviso__texto {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+.cookie-aviso__enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  align-self: flex-start;
+  transition: gap var(--transition-fast);
+}
+.cookie-aviso__enlace:hover { gap: 8px; text-decoration: underline; }
+.cookie-aviso__acciones {
+  display: inline-flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* Variante compacta — todo en una sola línea, padding reducido */
+.cookie-aviso--compacto { padding: var(--space-2) var(--space-3); }
+.cookie-aviso--compacto .cookie-aviso__icono { width: 32px; height: 32px; }
+.cookie-aviso--compacto .cookie-aviso__icono img { width: 22px; height: 22px; }
+.cookie-aviso--compacto .cookie-aviso__texto { font-size: var(--text-xs); }
+
+/* ----- Posiciones ----- */
+.cookie-aviso--top, .cookie-aviso--bottom,
+.cookie-aviso--flotante-bd, .cookie-aviso--flotante-bi {
+  position: fixed;
+  z-index: 1000;
+}
+.cookie-aviso--top    { inset-block-start: 0; inset-inline: 0; border-radius: 0; border-block-start: 0; }
+.cookie-aviso--bottom { inset-block-end: 0;   inset-inline: 0; border-radius: 0; border-block-end: 0; }
+.cookie-aviso--flotante-bd {
+  inset-block-end: var(--space-4);
+  inset-inline-end: var(--space-4);
+  max-width: 380px;
+}
+.cookie-aviso--flotante-bi {
+  inset-block-end: var(--space-4);
+  inset-inline-start: var(--space-4);
+  max-width: 380px;
+}
+
+/* En showcase: position: absolute para vivir dentro del marco preview */
+.cookie-aviso--simulado {
+  position: absolute;
+}
+.cookie-aviso--simulado.cookie-aviso--flotante-bd {
+  inset-block-end: var(--space-3); inset-inline-end: var(--space-3);
+  inset-block-start: auto; inset-inline-start: auto;
+}
+.cookie-aviso--simulado.cookie-aviso--flotante-bi {
+  inset-block-end: var(--space-3); inset-inline-start: var(--space-3);
+  inset-block-start: auto; inset-inline-end: auto;
+}
+.cookie-aviso--simulado.cookie-aviso--top    { inset-block-start: 0; }
+.cookie-aviso--simulado.cookie-aviso--bottom { inset-block-end: 0; }
+
+/* En posiciones flotantes/banner los hijos se reorganizan vertical */
+.cookie-aviso--flotante-bd .cookie-aviso__cuerpo,
+.cookie-aviso--flotante-bi .cookie-aviso__cuerpo {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.cookie-aviso--flotante-bd .cookie-aviso__acciones,
+.cookie-aviso--flotante-bi .cookie-aviso__acciones {
+  width: 100%;
+  justify-content: flex-end;
+}
+
+/* ============================================================================
+   AvisoCookiesGDPR — banner con preferencias granulares
+   ============================================================================ */
+.cookie-gdpr {
+  position: relative;
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  z-index: 50;
+}
+.cookie-gdpr.cookie-aviso--simulado { position: absolute; }
+.cookie-gdpr.cookie-aviso--bottom    { position: fixed; inset-block-end: 0; inset-inline: 0; max-width: 720px; margin-inline: auto; margin-block-end: var(--space-4); }
+.cookie-gdpr.cookie-aviso--simulado.cookie-aviso--bottom { position: absolute; inset-block-end: var(--space-3); inset-inline-start: 50%; transform: translateX(-50%); max-width: 720px; }
+
+.cookie-gdpr__cabezal {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.cookie-gdpr__icono {
+  display: inline-flex;
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+.cookie-gdpr__textos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cookie-gdpr__titulo {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--foreground);
+}
+.cookie-gdpr__mensaje {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+
+/* Detalles colapsables (categorías) */
+.cookie-gdpr__detalles {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cookie-gdpr__detalles[data-abierto='true'] { grid-template-rows: 1fr; }
+.cookie-gdpr__detalles > * {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-block-start: var(--space-2);
+}
+.cookie-gdpr__detalles[data-abierto='true'] > * { padding-block-end: var(--space-1); }
+
+.cookie-gdpr__categoria {
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.cookie-gdpr__cat-cabezal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.cookie-gdpr__cat-titulo {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--foreground);
+  cursor: pointer;
+}
+.cookie-gdpr__cat-desc {
+  margin: 4px 0 0;
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+.cookie-gdpr__cat-tag {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--primary);
+  padding: 2px 8px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  border-radius: 999px;
+}
+
+/* Switch simple */
+.cookie-gdpr__switch { position: relative; display: inline-block; cursor: pointer; }
+.cookie-gdpr__check {
+  position: absolute;
+  width: 0; height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.cookie-gdpr__switch-track {
+  display: inline-block;
+  width: 38px; height: 22px;
+  background: color-mix(in srgb, var(--foreground) 18%, transparent);
+  border-radius: 999px;
+  position: relative;
+  transition: background var(--transition-fast);
+}
+.cookie-gdpr__switch-track::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 2px; inset-inline-start: 2px;
+  width: 18px; height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.cookie-gdpr__check:checked + .cookie-gdpr__switch-track {
+  background: var(--primary);
+}
+.cookie-gdpr__check:checked + .cookie-gdpr__switch-track::after {
+  transform: translateX(16px);
+}
+
+/* Acciones */
+.cookie-gdpr__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--border);
+}
+.cookie-gdpr__acciones-principal {
+  display: inline-flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+/* Marco preview — para showcase, contenedor que simula viewport */
+.cookie-marco {
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+  background: color-mix(in srgb, var(--foreground) 4%, var(--background));
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-image:
+    linear-gradient(45deg, color-mix(in srgb, var(--foreground) 3%, transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in srgb, var(--foreground) 3%, transparent) 25%, transparent 25%);
+  background-size: 16px 16px;
+}
+.cookie-marco__etiqueta {
+  position: absolute;
+  inset-block-start: var(--space-2); inset-inline-start: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  background: var(--surface);
+  border-radius: 999px;
+  z-index: 1;
+}
+
+/* ============================================================================
+   Responsive
+   ============================================================================ */
+@media (max-width: 639.98px) {
+  .cookie-aviso { padding: var(--space-3); }
+  .cookie-aviso__cuerpo { gap: var(--space-2); }
+  .cookie-aviso__icono { width: 36px; height: 36px; }
+  .cookie-aviso__acciones { width: 100%; justify-content: flex-end; }
+
+  .cookie-aviso--flotante-bd, .cookie-aviso--flotante-bi {
+    inset-inline: var(--space-2);
+    max-width: none;
+  }
+
+  .cookie-gdpr { padding: var(--space-3); }
+  .cookie-gdpr__acciones { flex-direction: column; align-items: stretch; }
+  .cookie-gdpr__acciones-principal { width: 100%; justify-content: stretch; }
+  .cookie-gdpr__acciones-principal > * { flex: 1; }
+}

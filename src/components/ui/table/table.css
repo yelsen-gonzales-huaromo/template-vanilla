@@ -1,0 +1,735 @@
+/* =============================================================================
+   Tabla — estilo limpio, jerarquía suave (referencia: Linear / Notion).
+   Sin borde duro alrededor (el wrapper interior ya tiene scroll si hace falta).
+   Cuando vive dentro de un .card, no duplica frame.
+   ========================================================================== */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--radius);
+  background-color: var(--card);
+  transition:
+    background-color var(--transition-tema),
+    border-color var(--transition-tema);
+}
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-sm);
+}
+.table th,
+.table td {
+  padding: 10px var(--space-4);
+  text-align: start;
+  vertical-align: middle;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  transition:
+    border-color var(--transition-tema),
+    color var(--transition-tema);
+}
+/* Primera columna cuando contiene un checkbox: menos padding lateral
+   y altura proporcional al check, no al texto. */
+.table th:first-child:has(.tabla-check),
+.table td:first-child:has(.tabla-check) {
+  width: 40px;
+  padding-inline: 14px 8px;
+}
+.table th {
+  background-color: transparent;
+  color: var(--muted-foreground);
+  font-weight: var(--weight-medium);
+  font-size: var(--text-xs);
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  /* Sin uppercase: más moderno y legible */
+}
+.table tbody tr:last-child td { border-bottom: none; }
+.table tbody tr {
+  transition: background-color var(--transition-fast);
+}
+.table tbody tr:hover {
+  background-color: color-mix(in srgb, var(--muted) 60%, transparent);
+}
+
+.table--compact th,
+.table--compact td {
+  padding: var(--space-2) var(--space-3);
+}
+.table--striped tbody tr:nth-child(2n) {
+  background-color: color-mix(in srgb, var(--surface-muted) 50%, transparent);
+}
+
+.table-empty {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+/* ======= Cuando la tabla está dentro de un card, evitamos doble frame ======= */
+.card .table-wrapper,
+.card__body .table-wrapper {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+/* =============================================================================
+   Variantes avanzadas: sortable, sticky, hover-row con accent, denso, ghost
+   ============================================================================= */
+
+/* Header sortable: cursor + chevron icon (mismo estilo que TablaPro) */
+.table th.table__th--sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-inline-end: 26px;
+}
+.table th.table__th--sortable:hover { color: var(--foreground); }
+.table th.table__th--sortable::after {
+  /* Doble chevron SVG: data URL inline */
+  content: '';
+  position: absolute;
+  inset-inline-end: var(--space-3);
+  inset-block-start: 50%;
+  width: 12px; height: 12px;
+  transform: translateY(-50%);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m7 15 5 5 5-5'/><path d='m7 9 5-5 5 5'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  color: currentColor;
+}
+.table th.table__th--sortable[data-orden="asc"]::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='18 15 12 9 6 15'/></svg>");
+  opacity: 1;
+  color: var(--primary);
+}
+.table th.table__th--sortable[data-orden="desc"]::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  opacity: 1;
+  color: var(--primary);
+}
+
+/* Sticky header */
+.table--sticky thead th {
+  position: sticky;
+  inset-block-start: 0;
+  background: var(--card);
+  z-index: 2;
+  box-shadow: 0 1px 0 0 color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+/* Densa */
+.table--dense th,
+.table--dense td {
+  padding: 6px var(--space-3);
+  font-size: 12.5px;
+}
+
+/* Sin bordes inferiores (look "ghost" tipo Linear) */
+.table--ghost td,
+.table--ghost th { border-bottom: 1px solid color-mix(in srgb, var(--border) 22%, transparent); }
+
+/* Acentos de fila por estado */
+.table tbody tr.row--ok    { box-shadow: inset 3px 0 0 #10b981; }
+.table tbody tr.row--warn  { box-shadow: inset 3px 0 0 #f59e0b; }
+.table tbody tr.row--err   { box-shadow: inset 3px 0 0 #ef4444; }
+.table tbody tr.row--info  { box-shadow: inset 3px 0 0 #3b82f6; }
+.table tbody tr.row--seleccionada {
+  background: color-mix(in srgb, var(--primary) 7%, transparent);
+}
+.table tbody tr.row--seleccionada:hover {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+/* Cell helpers reutilizables */
+.cell-id        { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: var(--muted-foreground); }
+.cell-num       { font-variant-numeric: tabular-nums; text-align: end; }
+.cell-money     { font-variant-numeric: tabular-nums; font-weight: 600; }
+.cell-acciones  { display: inline-flex; gap: 4px; align-items: center; }
+.cell-acciones button {
+  width: 28px; height: 28px; border-radius: 6px; border: 0;
+  background: transparent; color: var(--muted-foreground);
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: background 120ms ease, color 120ms ease;
+}
+.cell-acciones button:hover { background: var(--muted); color: var(--foreground); }
+.cell-acciones button.danger:hover { background: color-mix(in srgb, #ef4444 14%, transparent); color: #ef4444; }
+
+/* Avatar + nombre + email en una sola celda */
+.cell-persona {
+  display: flex; align-items: center; gap: 10px;
+}
+.cell-persona__av {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #fff; font-weight: 700; font-size: 12px;
+  flex-shrink: 0;
+}
+.cell-persona__txt { display: flex; flex-direction: column; min-width: 0; }
+.cell-persona__nombre { font-weight: 600; color: var(--foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cell-persona__sub { font-size: 11px; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Tag/chip dentro de celdas */
+.cell-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px;
+  background: color-mix(in srgb, var(--muted-foreground) 14%, transparent);
+  color: var(--muted-foreground);
+  border-radius: 999px;
+  font-size: 11px; font-weight: 600;
+}
+.cell-tag--ok    { background: color-mix(in srgb, #10b981 14%, transparent); color: #10b981; }
+.cell-tag--warn  { background: color-mix(in srgb, #f59e0b 14%, transparent); color: #f59e0b; }
+.cell-tag--err   { background: color-mix(in srgb, #ef4444 14%, transparent); color: #ef4444; }
+.cell-tag--info  { background: color-mix(in srgb, #3b82f6 14%, transparent); color: #3b82f6; }
+.cell-tag--purple{ background: color-mix(in srgb, #8b5cf6 14%, transparent); color: #8b5cf6; }
+
+/* Mini-bar para progress en celda */
+.cell-bar {
+  display: flex; align-items: center; gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.cell-bar__track {
+  width: 80px; height: 6px;
+  background: color-mix(in srgb, var(--muted-foreground) 14%, transparent);
+  border-radius: 999px; overflow: hidden;
+  flex-shrink: 0;
+}
+.cell-bar__fill {
+  height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), #8b5cf6);
+  transition: width 240ms ease;
+}
+
+/* Sparkline placeholder en celda */
+.cell-spark {
+  width: 80px; height: 24px;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+/* Toolbar superior de tabla */
+.tabla-toolbar {
+  display: flex; flex-wrap: wrap; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--radius);
+  align-items: center;
+}
+.tabla-toolbar__buscador {
+  flex: 1; min-width: 200px;
+  position: relative;
+}
+.tabla-toolbar__buscador input {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.tabla-toolbar__buscador input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent);
+}
+.tabla-toolbar__buscador svg {
+  position: absolute;
+  inset-inline-start: 11px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+
+/* Footer con paginación */
+.tabla-footer {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-block-start: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  font-size: var(--text-sm); color: var(--muted-foreground);
+}
+
+/* Bulk action bar (aparece cuando hay filas seleccionadas) */
+.bulk-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-3);
+  padding: 10px var(--space-4);
+  background: linear-gradient(135deg, var(--primary), #8b5cf6);
+  color: #fff;
+  border-radius: var(--radius);
+  margin-block-end: var(--space-3);
+  box-shadow: 0 8px 24px -8px color-mix(in srgb, var(--primary) 50%, transparent);
+  animation: bulk-bar-aparecer 200ms ease;
+}
+@keyframes bulk-bar-aparecer {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.bulk-bar__count {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 700;
+}
+.bulk-bar__count .badge {
+  background: rgba(255,255,255,0.22);
+  padding: 2px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 800;
+}
+.bulk-bar__acciones {
+  display: flex; gap: 6px;
+}
+.bulk-bar__acciones button {
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.12);
+  color: #fff; cursor: pointer;
+  padding: 6px 12px; border-radius: 6px;
+  font-size: 12.5px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 5px;
+  transition: background 140ms ease;
+}
+.bulk-bar__acciones button:hover { background: rgba(255,255,255,0.24); }
+.bulk-bar__acciones button.danger { background: rgba(239,68,68,0.85); border-color: rgba(239,68,68,0.95); }
+.bulk-bar__acciones button.danger:hover { background: rgba(239,68,68,1); }
+
+/* Checkbox custom dentro de tabla — modernized (18px, rounded, ring focus) */
+.tabla-check {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+  background: var(--background);
+  position: relative;
+  transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+.tabla-check:hover { border-color: color-mix(in srgb, var(--primary) 50%, var(--border)); }
+.tabla-check:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent);
+}
+.tabla-check:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.tabla-check:checked::after {
+  content: ''; position: absolute;
+  inset-inline-start: 5.5px; inset-block-start: 2px;
+  width: 5px; height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.tabla-check:indeterminate {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.tabla-check:indeterminate::after {
+  content: ''; position: absolute;
+  inset-inline-start: 3px; inset-block-start: 7.5px;
+  width: 10px; height: 2px;
+  background: #fff;
+  border-radius: 1px;
+}
+
+/* Filter chips */
+.filter-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.filter-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+.filter-chip:hover { border-color: var(--primary); }
+.filter-chip[data-activo="true"] {
+  background: var(--primary); color: #fff; border-color: var(--primary);
+}
+.filter-chip__count {
+  padding: 1px 6px; border-radius: 999px;
+  background: color-mix(in srgb, var(--muted-foreground) 18%, transparent);
+  font-size: 10px; font-weight: 800;
+}
+.filter-chip[data-activo="true"] .filter-chip__count {
+  background: rgba(255,255,255,0.25);
+}
+
+/* Botón de paginación */
+.pag-btn {
+  min-width: 32px; height: 32px;
+  padding: 0 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--foreground); cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: all 120ms ease;
+}
+.pag-btn:hover:not(:disabled) { border-color: var(--primary); }
+.pag-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.pag-btn[data-activo="true"] {
+  background: var(--foreground); color: var(--background); border-color: var(--foreground);
+}
+
+/* =============================================================================
+   TablaPro — Componente completo TanStack-style
+   ============================================================================= */
+.tpro {
+  display: flex; flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+}
+.tpro__head {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  align-items: center;
+}
+.tpro__search {
+  flex: 1; min-width: 220px;
+  max-width: 320px;
+  position: relative;
+}
+.tpro__search input {
+  width: 100%;
+  padding: 7px 12px 7px 12px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px; color: var(--foreground);
+  outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+.tpro__search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+/* Filter chip con + ícono */
+.tpro__filtro-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  background: var(--background);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  font-size: 13px; font-weight: 500;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 140ms ease;
+  position: relative;
+}
+.tpro__filtro-chip:hover { border-color: var(--primary); border-style: solid; }
+.tpro__filtro-chip[data-activo="true"] {
+  border-style: solid;
+  background: var(--surface);
+}
+.tpro__filtro-chip__pills {
+  display: inline-flex; gap: 4px; align-items: center;
+  padding-inline-start: 6px;
+  border-inline-start: 1px solid var(--border);
+}
+.tpro__filtro-chip__pill {
+  padding: 1px 6px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  border-radius: 4px;
+  font-size: 11px; font-weight: 700;
+}
+
+/* Dropdown del filtro */
+.tpro__dropdown {
+  position: absolute;
+  inset-block-start: calc(100% + 6px);
+  inset-inline-start: 0;
+  min-width: 220px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px -8px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
+  padding: 4px;
+  z-index: 100;
+  display: flex; flex-direction: column;
+  max-height: 360px;
+}
+.tpro__dropdown-search-wrap {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  border-block-end: 1px solid var(--border);
+  margin-block-end: 4px;
+  color: var(--muted-foreground);
+}
+.tpro__dropdown-search {
+  flex: 1; min-width: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  outline: none;
+  font-size: 13px;
+  color: var(--foreground);
+}
+.tpro__dropdown-list {
+  display: flex; flex-direction: column; gap: 1px;
+  overflow: auto;
+  max-height: 280px;
+}
+.tpro__dropdown-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 10px;
+  border: 0; border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px; color: var(--foreground);
+  text-align: start;
+  width: 100%;
+  transition: background 100ms ease;
+}
+.tpro__dropdown-item:hover { background: var(--muted); }
+.tpro__dropdown-item__check {
+  width: 14px; height: 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  background: var(--background);
+}
+.tpro__dropdown-item[data-activo="true"] .tpro__dropdown-item__check {
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
+}
+.tpro__dropdown-item__count {
+  margin-inline-start: auto;
+  padding: 0 8px;
+  background: var(--muted);
+  border-radius: 999px;
+  font-size: 11px; font-weight: 600;
+  color: var(--muted-foreground);
+}
+.tpro__dropdown-divider {
+  height: 1px; background: var(--border);
+  margin: 4px 0;
+}
+
+/* Botón "View" (column toggle) */
+.tpro__view-btn {
+  margin-inline-start: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px; font-weight: 500;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 140ms ease;
+  position: relative;
+}
+.tpro__view-btn:hover { border-color: var(--primary); }
+
+/* Pill flotante FIXED al fondo del viewport — siempre visible al hacer scroll */
+.tpro { position: relative; }
+.tpro__bulk-floating {
+  position: fixed;
+  inset-block-end: 24px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 6px 5px 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px -4px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
+  z-index: 200;
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tpro__bulk-floating[data-visible="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-4px);
+}
+/* Botón close (X) — sin borde, sutil */
+.tpro__bulk-floating__cerrar {
+  width: 28px; height: 28px;
+  border: 0; border-radius: 6px;
+  background: transparent;
+  color: var(--muted-foreground); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 120ms ease, color 120ms ease;
+  position: relative;
+}
+.tpro__bulk-floating__cerrar:hover { background: var(--muted); color: var(--foreground); }
+
+/* Botones de acción — siempre con look de botón (border + bg) */
+.tpro__bulk-floating__btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--foreground); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  position: relative;
+}
+.tpro__bulk-floating__btn:hover {
+  border-color: color-mix(in srgb, var(--foreground) 20%, var(--border));
+  background: var(--surface);
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.tpro__bulk-floating__btn:active { transform: scale(1.02); }
+
+/* Variante peligrosa — siempre rojo */
+.tpro__bulk-floating__btn.danger {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #fff;
+}
+.tpro__bulk-floating__btn.danger:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* (tooltip ya no se renderiza con CSS pseudo-elements; ahora usamos
+   .tip-global, un elemento DOM compartido — ver más abajo) */
+
+/* Counter pill */
+.tpro__bulk-floating__count {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 4px;
+  font-size: 13px; font-weight: 500;
+}
+.tpro__bulk-floating__count-badge {
+  padding: 2px 9px;
+  background: var(--foreground); color: var(--background);
+  border-radius: 999px;
+  font-size: 12px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.tpro__bulk-floating__divider {
+  width: 1px; height: 18px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+/* Footer con paginación TanStack — todos los controles a la DERECHA */
+.tpro__footer {
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  padding-block-start: 4px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.tpro__footer-grupo {
+  display: inline-flex; align-items: center; gap: 8px;
+}
+/* Grupo derecho: filas-por-página + página X de Y + pagination, todo agrupado */
+.tpro__footer-derecha {
+  display: inline-flex; align-items: center;
+  gap: var(--space-4);
+  margin-inline-start: auto;
+  flex-wrap: wrap;
+}
+.tpro__page-select {
+  padding: 5px 10px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px; font-weight: 500;
+  color: var(--foreground);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 140ms ease;
+}
+.tpro__page-select:hover, .tpro__page-select:focus { border-color: var(--primary); }
+
+/* Kebab menu (3 puntos en cada fila) */
+.tpro__kebab {
+  width: 28px; height: 28px;
+  border: 0; border-radius: 6px;
+  background: transparent;
+  color: var(--muted-foreground); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 120ms ease, color 120ms ease;
+}
+.tpro__kebab:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+.tpro__kebab-menu {
+  position: absolute;            /* fijado en coords de PÁGINA via inline style */
+  min-width: 180px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 40px -8px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.05);
+  padding: 4px;
+  z-index: 1000;
+  display: flex; flex-direction: column; gap: 1px;
+}
+.tpro__kebab-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px;
+  border: 0; border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px; color: var(--foreground);
+  text-align: start;
+  transition: background 100ms ease;
+}
+.tpro__kebab-item:hover { background: var(--muted); }
+.tpro__kebab-item.danger { color: #ef4444; }
+.tpro__kebab-item.danger:hover { background: color-mix(in srgb, #ef4444 14%, transparent); }
+.tpro__kebab-item__icono {
+  display: inline-flex; flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.tpro__kebab-item.danger .tpro__kebab-item__icono { color: #ef4444; }
+.tpro__kebab-item__atajo {
+  margin-inline-start: auto;
+  font-size: 11px;
+  color: var(--muted-foreground);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Sortable header — chevron SVG via Icono('chevron_v|u|d') */
+.tpro__th-sort {
+  display: inline-flex; align-items: center; gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  color: inherit;
+}
+.tpro__th-sort:hover { color: var(--foreground); }
+.tpro__th-sort-arrows {
+  display: inline-flex; align-items: center;
+  color: var(--muted-foreground);
+  opacity: 0.55;
+  transition: opacity 120ms ease, color 120ms ease;
+}
+.tpro__th-sort:hover .tpro__th-sort-arrows { opacity: 0.85; }
+.tpro__th-sort[data-orden] .tpro__th-sort-arrows {
+  color: var(--foreground);
+  opacity: 1;
+}
+
+/* (tooltips usan el sistema global tooltip-portal.js + .tooltip-portal CSS,
+   instalado en main.js — el sidebar y la bulk pill comparten el mismo) */

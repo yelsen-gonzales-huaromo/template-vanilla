@@ -1,0 +1,776 @@
+/* =============================================================================
+   Wizard — 10 variantes modernas con animaciones reales
+   Animaciones: progreso fluido, número→check morph, halo pulsante,
+   shimmer en barras, spring transitions, confetti al completar.
+   ============================================================================= */
+
+/* ==== Easings reusables ==== */
+/* Spring suave (Notion/Linear feel) */
+/* cubic-bezier(0.16, 1, 0.3, 1) */
+/* Spring bouncy (más vivo) */
+/* cubic-bezier(0.34, 1.56, 0.64, 1) */
+
+/* Shimmer animado para las barras */
+@keyframes wiz-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes wiz-pulso {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary) 40%, transparent); }
+  50%      { box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 0%, transparent); }
+}
+@keyframes wiz-pop {
+  0%   { transform: scale(0.6) rotate(-90deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes wiz-slide-in-der {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes wiz-slide-in-izq {
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes wiz-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==== Botones de navegación común ==== */
+.wiz-error {
+  font-size: 12.5px; color: var(--color-danger);
+  margin-block-end: 6px; min-height: 0;
+}
+.wiz-error:empty { display: none; }
+.wiz-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding-block-start: 16px;
+  border-block-start: 1px solid var(--border);
+  margin-block-start: 16px;
+}
+.wiz-nav__paso {
+  font-size: 12px; color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+/* =============================================================================
+   1 · WizardHorizontal — stepper centrado, ícono arriba + texto abajo,
+   línea conectora a la altura del centro de los círculos
+   ============================================================================= */
+.wiz-h {
+  display: flex; flex-direction: column; gap: 24px;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+.wiz-h__stepper {
+  display: flex; list-style: none; padding: 0; margin: 0;
+  position: relative;
+  /* Variable interna para alinear la línea con el centro del círculo */
+  --circle-size: 36px;
+  --circle-half: 18px;
+}
+.wiz-h__paso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  position: relative;
+  padding-block: 0;
+  min-width: 0;
+  gap: 10px;
+}
+/* Línea conectora base (gris) — pasa por el CENTRO de los círculos */
+.wiz-h__paso:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-inline-end: -50%;
+  inset-block-start: var(--circle-half);
+  height: 2px;
+  background: var(--border);
+  border-radius: 999px;
+  margin-inline-start: var(--circle-half);
+  margin-inline-end: calc(var(--circle-half) * -1);
+  z-index: 0;
+}
+/* Línea conectora de progreso (verde) — anima con scaleX */
+.wiz-h__paso:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-inline-end: -50%;
+  inset-block-start: var(--circle-half);
+  height: 2px;
+  background: linear-gradient(90deg,
+    var(--color-success) 0%,
+    color-mix(in srgb, var(--color-success) 70%, var(--primary)) 100%);
+  border-radius: 999px;
+  margin-inline-start: var(--circle-half);
+  margin-inline-end: calc(var(--circle-half) * -1);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 0;
+}
+.wiz-h__paso--completo:not(:last-child)::after { transform: scaleX(1); }
+
+/* Círculo del paso (siempre por encima de las líneas) */
+.wiz-h__circulo {
+  width: var(--circle-size); height: var(--circle-size);
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  color: var(--muted-foreground);
+  font-size: 13px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  transition:
+    background 350ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 350ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms ease,
+    transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1;
+  position: relative;
+}
+.wiz-h__paso--activo .wiz-h__circulo {
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 80%, #fff));
+  border-color: var(--primary);
+  color: #fff;
+  transform: scale(1.08);
+  animation: wiz-pulso 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.wiz-h__paso--completo .wiz-h__circulo {
+  background: linear-gradient(135deg, var(--color-success), color-mix(in srgb, var(--color-success) 75%, #fff));
+  border-color: var(--color-success);
+  color: #fff;
+}
+.wiz-h__paso--completo .wiz-h__circulo svg {
+  animation: wiz-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Textos del paso (van DEBAJO del círculo, centrados) */
+.wiz-h__textos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-width: 100%;
+  padding-inline: 4px;
+}
+.wiz-h__titulo {
+  font-size: 13px; font-weight: 600; color: var(--foreground);
+  text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+  transition: color 250ms ease;
+}
+.wiz-h__paso:not(.wiz-h__paso--activo):not(.wiz-h__paso--completo) .wiz-h__titulo {
+  color: var(--muted-foreground); font-weight: 500;
+}
+.wiz-h__paso--activo .wiz-h__titulo { color: var(--primary); }
+.wiz-h__desc {
+  font-size: 11.5px; color: var(--muted-foreground);
+  text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+  line-height: 1.35;
+}
+
+.wiz-h__panel {
+  padding-block-start: 4px;
+  animation: wiz-fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-h__panel-titulo { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
+.wiz-h__panel-desc { margin: 0 0 16px; font-size: 13px; color: var(--muted-foreground); line-height: 1.5; }
+
+/* =============================================================================
+   2 · WizardVertical
+   ============================================================================= */
+.wiz-v {
+  display: grid; grid-template-columns: 240px 1fr; gap: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  position: relative; overflow: hidden;
+}
+@media (max-width: 640px) { .wiz-v { grid-template-columns: 1fr; } }
+.wiz-v__stepper {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column;
+  --circle-size: 28px;
+  --circle-half: 14px;
+}
+.wiz-v__paso {
+  display: flex;
+  gap: 14px;
+  position: relative;
+  padding-block-end: 20px;     /* espacio para que la línea llegue al sig. círculo */
+}
+.wiz-v__paso:last-child { padding-block-end: 0; }
+
+/* Línea base (gris) — desde debajo del círculo hasta el sig. círculo */
+.wiz-v__paso:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(var(--circle-size) + 4px);
+  inset-block-end: -2px;
+  inset-inline-start: calc(var(--circle-half) - 1px);
+  width: 2px;
+  background: var(--border);
+  border-radius: 999px;
+  z-index: 0;
+}
+/* Línea verde de progreso (anima con scaleY) */
+.wiz-v__paso:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(var(--circle-size) + 4px);
+  inset-block-end: -2px;
+  inset-inline-start: calc(var(--circle-half) - 1px);
+  width: 2px;
+  background: linear-gradient(180deg, var(--color-success), var(--primary));
+  border-radius: 999px;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 600ms cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 0;
+}
+.wiz-v__paso--completo:not(:last-child)::after { transform: scaleY(1); }
+
+/* La columna ya solo contiene el círculo (la línea ahora es absolute en el paso) */
+.wiz-v__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.wiz-v__linea { display: none; }     /* ya no se usa — la línea es ::before/::after */
+
+.wiz-v__circulo {
+  width: var(--circle-size); height: var(--circle-size);
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  color: var(--muted-foreground);
+  font-size: 12px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  transition: all 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 1;
+}
+.wiz-v__paso--activo .wiz-v__circulo {
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 80%, #fff));
+  border-color: var(--primary); color: #fff;
+  transform: scale(1.08);
+  animation: wiz-pulso 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.wiz-v__paso--completo .wiz-v__circulo {
+  background: linear-gradient(135deg, var(--color-success), color-mix(in srgb, var(--color-success) 75%, #fff));
+  border-color: var(--color-success); color: #fff;
+}
+.wiz-v__paso--completo .wiz-v__circulo svg { animation: wiz-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+.wiz-v__cuerpo { padding-block-start: 2px; min-width: 0; }
+.wiz-v__titulo { font-size: 13px; font-weight: 600; color: var(--foreground); transition: color 250ms ease; }
+.wiz-v__paso:not(.wiz-v__paso--activo):not(.wiz-v__paso--completo) .wiz-v__titulo {
+  color: var(--muted-foreground); font-weight: 500;
+}
+.wiz-v__paso--activo .wiz-v__titulo { color: var(--primary); }
+.wiz-v__desc { font-size: 11.5px; color: var(--muted-foreground); margin-block-start: 2px; }
+.wiz-v__panel-titulo { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
+.wiz-v__panel-desc { margin: 0 0 16px; font-size: 13px; color: var(--muted-foreground); line-height: 1.5; }
+.wiz-v__panel { animation: wiz-fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* =============================================================================
+   3 · WizardProgreso — barra con shimmer animado
+   ============================================================================= */
+.wiz-p {
+  display: flex; flex-direction: column; gap: 16px;
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  position: relative; overflow: hidden;
+}
+.wiz-p__top { display: flex; flex-direction: column; gap: 8px; }
+.wiz-p__meta {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.wiz-p__meta-pct {
+  font-weight: 700; font-size: 14px;
+  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 60%, var(--color-success)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.wiz-p__barra {
+  width: 100%; height: 6px;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 999px; overflow: hidden;
+  position: relative;
+}
+.wiz-p__barra-fill {
+  height: 100%;
+  background: linear-gradient(90deg,
+    var(--primary) 0%,
+    color-mix(in srgb, var(--primary) 70%, #fff) 50%,
+    var(--primary) 100%);
+  background-size: 200% 100%;
+  border-radius: 999px;
+  transition: width 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  animation: wiz-shimmer 2.5s ease-in-out infinite;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--primary) 40%, transparent);
+}
+.wiz-p__panel { animation: wiz-fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1); }
+.wiz-p__panel-titulo { margin: 0 0 4px; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.wiz-p__panel-desc { margin: 0 0 16px; font-size: 13.5px; color: var(--muted-foreground); }
+
+/* =============================================================================
+   4 · WizardTabs — underline animado
+   ============================================================================= */
+.wiz-t {
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+}
+.wiz-t__tabs {
+  display: flex;
+  background: var(--surface-muted);
+  border-block-end: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none;
+  position: relative;
+}
+.wiz-t__tabs::-webkit-scrollbar { display: none; }
+.wiz-t__tab {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 16px;
+  background: transparent; border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--muted-foreground);
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  cursor: pointer; white-space: nowrap;
+  transition: color 200ms ease, border-color 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+.wiz-t__tab:hover { color: var(--foreground); }
+.wiz-t__tab--activa {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.wiz-t__tab--activa::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0; inset-block-end: -1px;
+  height: 2px;
+  background: var(--primary);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--primary) 60%, transparent);
+}
+.wiz-t__tab-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+  font-size: 10.5px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition: all 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.wiz-t__tab--activa .wiz-t__tab-num {
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 80%, #fff));
+  color: #fff;
+  transform: scale(1.1);
+}
+.wiz-t__panel {
+  padding: var(--space-4) var(--space-5);
+  animation: wiz-fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-t > .wiz-nav { padding: var(--space-3) var(--space-5); margin: 0; }
+
+/* =============================================================================
+   5 · WizardCards — grid con hover lift y selección con glow
+   ============================================================================= */
+.wiz-c {
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex; flex-direction: column; gap: 16px;
+  position: relative; overflow: hidden;
+}
+.wiz-c__progreso {
+  display: flex; gap: 6px; justify-content: center; margin-block-end: 6px;
+}
+.wiz-c__dot {
+  width: 32px; height: 4px;
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+  border-radius: 999px;
+  transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-c__dot--on {
+  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, #fff));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 50%, transparent);
+}
+.wiz-c__titulo {
+  margin: 0; font-size: 24px; font-weight: 700; text-align: center;
+  letter-spacing: -0.015em;
+  animation: wiz-fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-c__desc {
+  margin: 0; font-size: 14px; color: var(--muted-foreground); text-align: center;
+  animation: wiz-fade-up 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-c__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px; margin-block-start: 8px;
+}
+.wiz-c__card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  padding: 16px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: start;
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  position: relative; overflow: hidden;
+  animation: wiz-fade-up 500ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.wiz-c__card:nth-child(1) { animation-delay: 0ms; }
+.wiz-c__card:nth-child(2) { animation-delay: 60ms; }
+.wiz-c__card:nth-child(3) { animation-delay: 120ms; }
+.wiz-c__card:nth-child(4) { animation-delay: 180ms; }
+.wiz-c__card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at top right,
+    color-mix(in srgb, var(--primary) 8%, transparent), transparent 60%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+.wiz-c__card:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--foreground) 18%, transparent);
+}
+.wiz-c__card:hover::before { opacity: 1; }
+.wiz-c__card--sel {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 5%, var(--surface));
+  box-shadow:
+    0 0 0 1px var(--primary),
+    0 8px 24px -6px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+.wiz-c__card--sel::before { opacity: 1; }
+.wiz-c__card-icono {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  margin-block-end: 4px;
+  transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.wiz-c__card:hover .wiz-c__card-icono { transform: scale(1.08) rotate(-3deg); }
+.wiz-c__card--sel .wiz-c__card-icono {
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 80%, #fff));
+  color: #fff;
+  transform: scale(1.05);
+}
+.wiz-c__card-titulo { font-size: 14px; font-weight: 700; color: var(--foreground); position: relative; }
+.wiz-c__card-desc { font-size: 12px; color: var(--muted-foreground); line-height: 1.45; position: relative; }
+
+/* =============================================================================
+   6 · WizardChat — slides con spring physics + barra superior animada
+   ============================================================================= */
+.wiz-ch {
+  position: relative;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.wiz-ch__progreso {
+  position: absolute; inset-block-start: 0; inset-inline: 0;
+  height: 4px;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.wiz-ch__progreso-fill {
+  height: 100%;
+  background: linear-gradient(90deg,
+    var(--primary), color-mix(in srgb, var(--primary) 70%, #fff));
+  background-size: 200% 100%;
+  border-radius: 0 999px 999px 0;
+  transition: width 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: wiz-shimmer 3s linear infinite;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--primary) 50%, transparent);
+}
+.wiz-ch__slide {
+  display: flex; flex-direction: column; gap: 14px;
+  padding-block-start: 18px;
+}
+.wiz-ch__slide--enter-der {
+  animation: wiz-slide-in-der 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.wiz-ch__slide--enter-izq {
+  animation: wiz-slide-in-izq 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.wiz-ch__contador {
+  font-size: 11.5px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 60%, var(--color-success)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.wiz-ch__pregunta {
+  margin: 0; font-size: 26px; font-weight: 700; line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+.wiz-ch__desc { margin: 0; font-size: 14px; color: var(--muted-foreground); line-height: 1.55; }
+.wiz-ch__input-area { margin-block: 8px; }
+.wiz-ch__acciones { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.wiz-ch__back {
+  background: transparent; border: 0;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font-size: 12px; font-family: inherit;
+  padding: 4px 0;
+  transition: color 140ms ease, transform 140ms ease;
+}
+.wiz-ch__back:hover { color: var(--foreground); transform: translateX(-2px); }
+
+/* =============================================================================
+   7 · WizardAcordeon — expansión con animación suave
+   ============================================================================= */
+.wiz-a {
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  position: relative; overflow: hidden;
+}
+.wiz-a__item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+  transition: all 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-a__item--activo {
+  border-color: var(--primary);
+  box-shadow:
+    0 0 0 1px var(--primary),
+    0 8px 24px -8px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+.wiz-a__item--completo {
+  background: color-mix(in srgb, var(--color-success) 4%, var(--surface));
+  border-color: color-mix(in srgb, var(--color-success) 30%, var(--border));
+}
+.wiz-a__head {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent; border: 0;
+  cursor: pointer; text-align: start;
+  font-family: inherit;
+  transition: background 200ms ease;
+}
+.wiz-a__item--completo .wiz-a__head:hover {
+  background: color-mix(in srgb, var(--color-success) 6%, transparent);
+}
+.wiz-a__head:disabled { cursor: default; }
+.wiz-a__circulo {
+  width: 28px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  font-size: 12px; font-weight: 700;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  transition: all 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-a__item--activo .wiz-a__circulo {
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 80%, #fff));
+  border-color: var(--primary);
+  color: #fff;
+  transform: scale(1.08);
+  animation: wiz-pulso 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.wiz-a__item--completo .wiz-a__circulo {
+  background: linear-gradient(135deg, var(--color-success), color-mix(in srgb, var(--color-success) 75%, #fff));
+  border-color: var(--color-success);
+  color: #fff;
+}
+.wiz-a__item--completo .wiz-a__circulo svg {
+  animation: wiz-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.wiz-a__head-textos { display: flex; flex-direction: column; gap: 2px; }
+.wiz-a__titulo { font-size: 13.5px; font-weight: 600; color: var(--foreground); }
+.wiz-a__item:not(.wiz-a__item--activo):not(.wiz-a__item--completo) .wiz-a__titulo {
+  color: var(--muted-foreground);
+}
+.wiz-a__item--activo .wiz-a__titulo { color: var(--primary); }
+.wiz-a__desc { font-size: 12px; color: var(--muted-foreground); }
+.wiz-a__cuerpo {
+  padding: 4px 16px 16px;
+  display: flex; flex-direction: column; gap: 12px;
+  animation: wiz-fade-up 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-a__acciones {
+  display: flex; gap: 8px;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--border);
+}
+
+/* =============================================================================
+   8 · WizardBranching — extiende horizontal + badge animada
+   ============================================================================= */
+.wiz-br__badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--primary);
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--primary) 14%, transparent),
+    color-mix(in srgb, var(--primary) 8%, transparent));
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-block-end: 12px;
+  animation: wiz-fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =============================================================================
+   9 · WizardResumen — lista con stagger animation
+   ============================================================================= */
+.wiz-r__lista {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.wiz-r__fila {
+  display: grid; grid-template-columns: 1fr 2fr auto;
+  align-items: center; gap: 12px;
+  padding: 12px 14px;
+  border-block-end: 1px solid var(--border);
+  font-size: 13px;
+  transition: background 200ms ease;
+  animation: wiz-fade-up 400ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.wiz-r__fila:nth-child(1) { animation-delay: 0ms; }
+.wiz-r__fila:nth-child(2) { animation-delay: 80ms; }
+.wiz-r__fila:nth-child(3) { animation-delay: 160ms; }
+.wiz-r__fila:nth-child(4) { animation-delay: 240ms; }
+.wiz-r__fila:hover { background: color-mix(in srgb, var(--foreground) 3%, transparent); }
+.wiz-r__fila:last-child { border-block-end: 0; }
+.wiz-r__fila-lbl {
+  font-weight: 600; color: var(--muted-foreground); font-size: 12.5px;
+}
+.wiz-r__fila-val { color: var(--foreground); word-break: break-word; }
+.wiz-r__editar {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: transparent; border: 0;
+  color: var(--primary);
+  cursor: pointer; font-size: 12px; font-weight: 600;
+  font-family: inherit; padding: 5px 10px;
+  border-radius: 999px;
+  transition: all 200ms ease;
+}
+.wiz-r__editar:hover {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  transform: scale(1.05);
+}
+
+/* =============================================================================
+   10 · WizardCompacto — modal mini con dots elegantes
+   ============================================================================= */
+.wiz-cp {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  max-width: 380px;
+  box-shadow: 0 12px 40px -12px color-mix(in srgb, var(--foreground) 14%, transparent);
+  position: relative; overflow: hidden;
+}
+.wiz-cp__header { display: flex; align-items: center; gap: 12px; }
+.wiz-cp__dots { display: flex; gap: 4px; flex-shrink: 0; align-items: center; }
+.wiz-cp__dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--foreground) 14%, transparent);
+  transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.wiz-cp__dot--ok {
+  background: var(--color-success);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--color-success) 50%, transparent);
+}
+.wiz-cp__dot--actual {
+  background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 70%, #fff));
+  width: 22px;
+  border-radius: 999px;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 50%, transparent);
+}
+.wiz-cp__head-textos { display: flex; flex-direction: column; min-width: 0; }
+.wiz-cp__contador {
+  font-size: 10.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+.wiz-cp__titulo { font-size: 15px; font-weight: 700; color: var(--foreground); }
+.wiz-cp__cuerpo {
+  display: flex; flex-direction: column; gap: 10px;
+  animation: wiz-fade-up 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wiz-cp__acciones {
+  display: flex; align-items: center; gap: 8px;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--border);
+}
+
+/* =============================================================================
+   Confetti / celebración al completar (overlay sobre el wizard)
+   ============================================================================= */
+.wiz-celebrar {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10;
+}
+.wiz-celebrar__particula {
+  position: absolute;
+  width: 8px; height: 14px;
+  background: var(--primary);
+  opacity: 0;
+  border-radius: 1px;
+  animation: wiz-confetti 1500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes wiz-confetti {
+  0%   { opacity: 0; transform: translate(0, 0) rotate(0); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 200px)) rotate(var(--dr, 360deg)); }
+}

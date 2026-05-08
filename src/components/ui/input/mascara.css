@@ -1,0 +1,72 @@
+/* =============================================================================
+   Input mask wrapper — input + badge de validación + brand logo (tarjetas)
+   ============================================================================= */
+
+.mask-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.mask-wrap > .input {
+  padding-inline-end: 36px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Badge de validación al final del input (check verde / X rojo) */
+.mask-badge {
+  position: absolute;
+  inset-inline-end: 8px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: background 140ms ease, color 140ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.mask-badge:empty { display: none; }
+.mask-badge--ok {
+  background: color-mix(in srgb, var(--color-success) 14%, transparent);
+  color: var(--color-success);
+}
+.mask-badge--err {
+  background: color-mix(in srgb, var(--color-danger) 14%, transparent);
+  color: var(--color-danger);
+}
+
+/* =============================================================================
+   Tarjeta de crédito (CardInput)
+   ============================================================================= */
+.mask-wrap--card > .input {
+  padding-inline-start: 12px;
+  padding-inline-end: 70px;       /* espacio para logo + badge */
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.04em;
+}
+.mask-card-brand {
+  position: absolute;
+  inset-inline-end: 38px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+.mask-card-brand:empty {
+  opacity: 0;
+}
+.mask-card-logo {
+  display: inline-flex;
+  align-items: center;
+}
+.mask-card-logo svg {
+  height: 22px;
+  width: auto;
+  border-radius: 3px;
+  display: block;
+}

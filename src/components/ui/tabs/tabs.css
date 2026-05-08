@@ -1,0 +1,126 @@
+/* =============================================================================
+   Pestañas — variantes underline / pills / segmented
+   ============================================================================= */
+.pestanas { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.pestanas__lista {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+.pestanas__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.pestanas__tab:hover { color: var(--foreground); }
+.pestanas__tab:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Variante underline (default) */
+.pestanas--underline > .pestanas__lista {
+  border-block-end: 1px solid var(--border);
+  gap: 0;
+}
+.pestanas--underline .pestanas__tab {
+  border-radius: 0;
+  border-block-end: 2px solid transparent;
+  margin-block-end: -1px;
+  padding-block: var(--space-2);
+}
+.pestanas--underline .pestanas__tab--activo {
+  color: var(--primary);
+  border-block-end-color: var(--primary);
+}
+
+/* Variante pills */
+.pestanas--pills .pestanas__tab--activo {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Variante segmented (estilo iOS) */
+.pestanas--segmented > .pestanas__lista {
+  padding: 2px;
+  background-color: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: inline-flex;
+}
+.pestanas--segmented .pestanas__tab--activo {
+  background-color: var(--surface);
+  color: var(--foreground);
+  box-shadow: var(--shadow-sm);
+}
+
+.pestanas__panel {
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  line-height: 1.6;
+}
+
+/* Variante lateral — tabs verticales a la izquierda, contenido a la derecha */
+.pestanas--lateral {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-5);
+}
+.pestanas--lateral > .pestanas__lista {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  padding-inline-end: var(--space-3);
+  border-inline-end: 1px solid var(--border);
+}
+.pestanas--lateral .pestanas__tab {
+  width: 100%;
+  justify-content: flex-start;
+  padding: var(--space-2) var(--space-3);
+}
+.pestanas--lateral .pestanas__tab--activo {
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Variante cards — tabs como tarjetas separadas (Notion / Stripe style) */
+.pestanas--cards > .pestanas__lista {
+  gap: var(--space-2);
+}
+.pestanas--cards .pestanas__tab {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+}
+.pestanas--cards .pestanas__tab--activo {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 5%, var(--surface));
+  color: var(--foreground);
+  box-shadow: var(--shadow-sm);
+}
+
+/* En móvil, lateral se vuelve horizontal */
+@media (max-width: 639.98px) {
+  .pestanas--lateral {
+    grid-template-columns: 1fr;
+  }
+  .pestanas--lateral > .pestanas__lista {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--border);
+    padding-inline-end: 0;
+    padding-block-end: var(--space-2);
+  }
+}

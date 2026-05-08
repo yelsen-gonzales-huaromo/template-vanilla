@@ -1,0 +1,164 @@
+/* =============================================================================
+   Paginación
+   ============================================================================= */
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+.pagination__btn {
+  min-width: 2.25rem; height: 2.25rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 4px;
+  padding: 0 var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  font-family: inherit;
+  background-color: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+.pagination__btn:hover:not(:disabled) {
+  background-color: var(--muted);
+  border-color: color-mix(in srgb, var(--foreground) 20%, var(--border));
+}
+.pagination__btn[aria-current='page'] {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+.pagination__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.pagination__ellipsis {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 2.25rem; height: 2.25rem;
+  padding: 0 var(--space-2);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
+/* ---- Tamaños ---- */
+.pagination--sm .pagination__btn,
+.pagination--sm .pagination__ellipsis {
+  min-width: 1.75rem; height: 1.75rem;
+  padding: 0 6px;
+  font-size: var(--text-xs);
+}
+.pagination--lg .pagination__btn,
+.pagination--lg .pagination__ellipsis {
+  min-width: 2.75rem; height: 2.75rem;
+  font-size: var(--text-base);
+}
+
+/* ---- Variante PILLS (rounded) ---- */
+.pagination--pills .pagination__btn { border-radius: 999px; }
+
+/* ---- Variante BORDEADA — un solo grupo unido (Bootstrap-style) ---- */
+.pagination--bordeada { gap: 0; }
+.pagination--bordeada .pagination__btn,
+.pagination--bordeada .pagination__ellipsis {
+  border-radius: 0;
+  border-inline-start: 0;
+}
+.pagination--bordeada .pagination__btn:first-child,
+.pagination--bordeada .pagination__ellipsis:first-child {
+  border-inline-start: 1px solid var(--border);
+  border-start-start-radius: var(--radius-sm);
+  border-end-start-radius: var(--radius-sm);
+}
+.pagination--bordeada .pagination__btn:last-child {
+  border-start-end-radius: var(--radius-sm);
+  border-end-end-radius: var(--radius-sm);
+}
+.pagination--bordeada .pagination__btn[aria-current='page'] { z-index: 1; }
+
+/* ---- Variante SIMPLE ---- */
+.pagination--simple .pagination__indicador {
+  padding: 0 var(--space-3);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Variante COMPACTA ---- */
+.pagination--compacta .pagination__input {
+  width: 3.5rem; height: 2.25rem;
+  padding: 0 var(--space-2);
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  font-family: inherit;
+}
+.pagination--compacta .pagination__input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+.pagination--compacta .pagination__indicador {
+  padding: 0 var(--space-1);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* =============================================================================
+   InfoPaginacion — "Mostrando 11-20 de 145"
+   ============================================================================= */
+.pagination-info {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* =============================================================================
+   SelectorTamano — "10 por página"
+   ============================================================================= */
+.pagination-selector__wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+.pagination-selector {
+  height: 2.25rem;
+  padding: 0 6px;
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* =============================================================================
+   BarraPaginacion — info + selector + paginacion (estilo tabla)
+   ============================================================================= */
+.pagination-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  flex-wrap: wrap;
+}
+.pagination-barra__izq,
+.pagination-barra__centro,
+.pagination-barra__der { display: inline-flex; align-items: center; }
+.pagination-barra__izq    { flex: 0 0 auto; }
+.pagination-barra__centro { flex: 1 1 auto; justify-content: center; }
+.pagination-barra__der    { flex: 0 0 auto; justify-content: flex-end; }
+
+@media (max-width: 639.98px) {
+  .pagination-barra { flex-direction: column; align-items: stretch; gap: var(--space-2); }
+  .pagination-barra__izq, .pagination-barra__centro, .pagination-barra__der { justify-content: center; }
+}

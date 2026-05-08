@@ -1,0 +1,380 @@
+/* =============================================================================
+   Design tokens — fuente única de verdad para colores, espaciado, tipografía.
+   ========================================================================== */
+:root {
+  color-scheme: light;
+
+  /* Paleta de marca (azul vibrante con tinte cyan) */
+  --color-primary-50:  #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+
+  /* Acentos */
+  --color-accent-300: #67e8f9;
+  --color-accent-500: #06b6d4;
+  --color-accent-600: #0891b2;
+
+  /* Escala neutra */
+  --color-neutral-0:   #ffffff;
+  --color-neutral-50:  #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+  --color-neutral-950: #030712;
+
+  /* Semánticos */
+  --color-success: #10b981;
+  --color-success-bg: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fef3c7;
+  --color-danger:  #ef4444;
+  --color-danger-bg: #fee2e2;
+  --color-info:    #06b6d4;
+  --color-info-bg: #cffafe;
+
+  /* Superficies (semánticas, theme-aware) */
+  --background: var(--color-neutral-50);
+  --foreground: var(--color-neutral-900);
+  --surface: var(--color-neutral-0);
+  --surface-foreground: var(--color-neutral-900);
+  --surface-muted: var(--color-neutral-100);
+  --surface-elevated: var(--color-neutral-0);
+
+  --card: var(--color-neutral-0);
+  --card-foreground: var(--color-neutral-900);
+
+  --primary: var(--color-primary-600);
+  --primary-foreground: var(--color-neutral-0);
+  --primary-hover: var(--color-primary-700);
+  --primary-soft: color-mix(in srgb, var(--color-primary-500) 12%, transparent);
+
+  --secondary: var(--color-neutral-100);
+  --secondary-foreground: var(--color-neutral-900);
+  --secondary-hover: var(--color-neutral-200);
+
+  --accent: var(--color-primary-50);
+  --accent-foreground: var(--color-primary-700);
+
+  --muted: var(--color-neutral-100);
+  --muted-foreground: var(--color-neutral-500);
+
+  --border: var(--color-neutral-200);
+  --border-strong: var(--color-neutral-300);
+  --input: var(--color-neutral-200);
+  --ring: var(--color-primary-500);
+
+  /* Brand gradient */
+  --brand-gradient: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-700));
+  --brand-gradient-soft: linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100));
+
+  /* Spacing (4px baseline) */
+  --space-0:  0;
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Radius */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius:    0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+  --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.06);
+  --shadow:    0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.06);
+  --shadow-md: 0 10px 20px -6px rgb(15 23 42 / 0.10), 0 4px 6px -4px rgb(15 23 42 / 0.08);
+  --shadow-lg: 0 24px 40px -12px rgb(15 23 42 / 0.18), 0 10px 14px -6px rgb(15 23 42 / 0.10);
+  --shadow-focus: 0 0 0 3px rgb(59 130 246 / 0.35);
+  --shadow-brand: 0 12px 28px -10px rgb(37 99 235 / 0.45);
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.875rem;
+  --text-4xl:  2.25rem;
+  --text-5xl:  3rem;
+
+  --leading-tight:  1.25;
+  --leading-snug:   1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold: 600;
+  --weight-bold:    700;
+
+  /* Layout */
+  --header-height: 4rem;
+  --sidebar-width: 17rem;
+  --sidebar-width-collapsed: 4.25rem;
+  /* Padding horizontal compartido entre navbar y contenido para que ambos
+     formen una "columna" visual unificada (referencia: Vercel / Linear). */
+  /* Padding lateral FIJO del page (idéntico en sidebar expandido o colapsado).
+     Usa clamp para escalar con el viewport: nunca menor a 2rem, crece con
+     7vw, capado en 9rem. Gutters generosos para sensación moderna y
+     espaciada (referencia: Vercel, Notion, Stripe Dashboard). */
+  --padding-pagina: clamp(2rem, 7vw, 9rem);
+  --footer-height: 3rem;
+  /* Ancho máximo del contenido — afecta TODAS las páginas (regla global).
+     1100px da gutters generosos en pantallas grandes (~400px sobrantes en
+     monitores 1920px), lookeo "feed contenido" tipo Facebook/Notion. */
+  --container-max: 1100px;
+
+  /* Transitions */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   400ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* --transition-tema: dramático y simétrico — amanecer/atardecer.
+     500ms con ease-in-out simétrico para que la interpolación se sienta
+     gradual sin ser sluggish. Toda la UI (body, sidebar, navbar, cards)
+     usa este token para cambiar al unísono. */
+  --transition-tema:   500ms cubic-bezier(0.45, 0, 0.55, 1);
+
+  /* Z-index */
+  --z-base:     1;
+  --z-dropdown: 1000;
+  --z-sticky:   1020;
+  --z-fixed:    1030;
+  --z-overlay:  1040;
+  --z-modal:    1050;
+  --z-popover:  1060;
+  --z-toast:    1070;
+  --z-tooltip:  1080;
+}
+
+/* =============================================================================
+   Modo oscuro — paleta neutra estilo Facebook / X / Discord, ligeramente
+   refinada: gris carbón muy oscuro de fondo, superficies sutilmente más
+   claras para crear jerarquía sin saturación. Sin tinte azulado pesado —
+   los acentos vienen del color de marca, no del fondo.
+   ============================================================================ */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Fondos en escala de grises neutra (no azul-cárdeno) */
+  --background: #0f1011;          /* casi negro, cálido */
+  --foreground: #e4e6eb;          /* texto principal blanco humo */
+  --surface: #1a1b1d;             /* sidebar, navbar bg base */
+  --surface-foreground: #e4e6eb;
+  --surface-muted: #232527;       /* hover sutil, badges */
+  --surface-elevated: #242628;    /* dropdowns, modales (un toque más claro) */
+
+  --card: #1a1b1d;                /* mismo nivel que surface — flat profesional */
+  --card-foreground: #e4e6eb;
+
+  --primary: var(--color-primary-500);
+  --primary-foreground: #fff;
+  --primary-hover: var(--color-primary-400);
+  --primary-soft: color-mix(in srgb, var(--color-primary-400) 16%, transparent);
+
+  --secondary: #2a2c2e;
+  --secondary-foreground: #e4e6eb;
+  --secondary-hover: #34373a;
+
+  --accent: rgb(59 130 246 / 0.14);
+  --accent-foreground: var(--color-primary-300);
+
+  --muted: #232527;
+  --muted-foreground: #a8abb0;    /* gris medio para subtítulos */
+
+  --border: #2c2e30;              /* línea sutil pero visible */
+  --border-strong: #3a3c3f;       /* hover de inputs/cards */
+  --input: #2c2e30;
+  --ring: var(--color-primary-400);
+
+  /* Sombras más oscuras y neutras (sin azul) */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow:    0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 10px 20px -6px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.35);
+  --shadow-lg: 0 24px 40px -12px rgb(0 0 0 / 0.65), 0 10px 14px -6px rgb(0 0 0 / 0.45);
+}
+
+[data-theme='high-contrast'] {
+  --background: #000;
+  --foreground: #fff;
+  --surface: #000;
+  --surface-foreground: #fff;
+  --primary: #ffd400;
+  --primary-foreground: #000;
+  --border: #fff;
+  --ring: #ffd400;
+  --brand-gradient: linear-gradient(135deg, #ffd400, #ff7a00);
+}
+
+/* ============================================================================
+   Familia tipográfica — selector global. La fuente se carga bajo demanda
+   (ver ui.store.js → cargarGoogleFont).
+   ============================================================================ */
+[data-font='inter']      { --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+[data-font='system']     { --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+[data-font='roboto']     { --font-sans: 'Roboto', system-ui, sans-serif; }
+[data-font='poppins']    { --font-sans: 'Poppins', system-ui, sans-serif; }
+[data-font='dmsans']     { --font-sans: 'DM Sans', system-ui, sans-serif; }
+[data-font='sourcesans'] { --font-sans: 'Source Sans 3', system-ui, sans-serif; }
+[data-font='ibm']        { --font-sans: 'IBM Plex Sans', system-ui, sans-serif; }
+[data-font='nunito']     { --font-sans: 'Nunito', system-ui, sans-serif; }
+[data-font='georgia']    { --font-sans: Georgia, 'Times New Roman', serif; }
+[data-font='playfair']   { --font-sans: 'Playfair Display', Georgia, serif; }
+[data-font='jetbrains']  { --font-sans: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; }
+
+/* Body usa la familia activa */
+body { font-family: var(--font-sans); }
+
+/* ============================================================================
+   Tamaño de fuente — escala global (todas las medidas en `rem` se ajustan)
+   ============================================================================ */
+html { font-size: 16px; }
+html[data-font-size='sm'] { font-size: 14px; }
+html[data-font-size='lg'] { font-size: 18px; }
+
+/* ============================================================================
+   Densidad — modifica el espaciado base (compacto / cómodo / espacioso)
+   ============================================================================ */
+[data-density='compact'] {
+  --space-1:  0.2rem;
+  --space-2:  0.4rem;
+  --space-3:  0.6rem;
+  --space-4:  0.8rem;
+  --space-5:  1rem;
+  --space-6:  1.2rem;
+  --space-8:  1.6rem;
+  --space-10: 2rem;
+  --space-12: 2.4rem;
+  --header-height: 3.5rem;
+  --sidebar-width: 15rem;
+  --padding-pagina: 1.75rem;
+}
+[data-density='spacious'] {
+  --space-1:  0.3rem;
+  --space-2:  0.625rem;
+  --space-3:  0.875rem;
+  --space-4:  1.25rem;
+  --space-5:  1.5rem;
+  --space-6:  1.875rem;
+  --space-8:  2.5rem;
+  --space-10: 3.125rem;
+  --space-12: 3.75rem;
+  --header-height: 4.5rem;
+  --sidebar-width: 18rem;
+  --padding-pagina: 3.25rem;
+}
+
+/* ============================================================================
+   Color de marca (accent) — el usuario puede cambiar el primary en caliente
+   ============================================================================ */
+[data-accent='indigo'] {
+  --color-primary-50:  #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5;
+  --color-primary-700: #4338ca;
+  --color-primary-800: #3730a3;
+  --color-primary-900: #312e81;
+}
+[data-accent='emerald'] {
+  --color-primary-50:  #ecfdf5;
+  --color-primary-100: #d1fae5;
+  --color-primary-200: #a7f3d0;
+  --color-primary-300: #6ee7b7;
+  --color-primary-400: #34d399;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-900: #064e3b;
+}
+[data-accent='amber'] {
+  --color-primary-50:  #fffbeb;
+  --color-primary-100: #fef3c7;
+  --color-primary-200: #fde68a;
+  --color-primary-300: #fcd34d;
+  --color-primary-400: #fbbf24;
+  --color-primary-500: #f59e0b;
+  --color-primary-600: #d97706;
+  --color-primary-700: #b45309;
+  --color-primary-800: #92400e;
+  --color-primary-900: #78350f;
+}
+[data-accent='rose'] {
+  --color-primary-50:  #fff1f2;
+  --color-primary-100: #ffe4e6;
+  --color-primary-200: #fecdd3;
+  --color-primary-300: #fda4af;
+  --color-primary-400: #fb7185;
+  --color-primary-500: #f43f5e;
+  --color-primary-600: #e11d48;
+  --color-primary-700: #be123c;
+  --color-primary-800: #9f1239;
+  --color-primary-900: #881337;
+}
+[data-accent='violet'] {
+  --color-primary-50:  #f5f3ff;
+  --color-primary-100: #ede9fe;
+  --color-primary-200: #ddd6fe;
+  --color-primary-300: #c4b5fd;
+  --color-primary-400: #a78bfa;
+  --color-primary-500: #8b5cf6;
+  --color-primary-600: #7c3aed;
+  --color-primary-700: #6d28d9;
+  --color-primary-800: #5b21b6;
+  --color-primary-900: #4c1d95;
+}
+[data-accent='cyan'] {
+  --color-primary-50:  #ecfeff;
+  --color-primary-100: #cffafe;
+  --color-primary-200: #a5f3fc;
+  --color-primary-300: #67e8f9;
+  --color-primary-400: #22d3ee;
+  --color-primary-500: #06b6d4;
+  --color-primary-600: #0891b2;
+  --color-primary-700: #0e7490;
+  --color-primary-800: #155e75;
+  --color-primary-900: #164e63;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-normal: 0ms;
+    --transition-slow: 0ms;
+    --transition-tema: 0ms;
+  }
+}

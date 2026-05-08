@@ -1,0 +1,93 @@
+/* =============================================================================
+   KPI card — estilo limpio y profesional (referencia: Linear / Stripe / Apple).
+   Sin barras gradiente al hover, sin pill de fondo en el delta.
+   Jerarquía: label discreta → valor grande → sparkline → delta sutil.
+   ========================================================================== */
+.kpi-card {
+  position: relative;
+  background-color: var(--card);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  box-shadow:
+    0 1px 2px 0 color-mix(in srgb, var(--foreground) 4%, transparent);
+  /* Cambio de tema sincronizado con body/navbar/cards (--transition-tema) */
+  transition:
+    background-color var(--transition-tema),
+    border-color var(--transition-tema),
+    color var(--transition-tema),
+    box-shadow var(--transition-fast);
+}
+.kpi-card:hover {
+  border-color: color-mix(in srgb, var(--border-strong) 70%, transparent);
+  box-shadow:
+    0 4px 12px -4px color-mix(in srgb, var(--foreground) 8%, transparent),
+    0 1px 2px 0 color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+
+/* ======= Cabecera: label + icono ======= */
+.kpi-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.kpi-card__label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--muted-foreground);
+  letter-spacing: 0.01em;
+  /* Sin uppercase: más limpio y moderno */
+}
+.kpi-card__icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  color: var(--primary);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* ======= Valor principal ======= */
+.kpi-card__value {
+  font-size: 1.75rem;          /* mayor jerarquía sin ser bombástico */
+  font-weight: var(--weight-semibold);
+  line-height: 1.1;
+  color: var(--foreground);
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  margin-block-start: var(--space-1);
+}
+
+/* ======= Sparkline integrado, sin caja ni borde ======= */
+.kpi-card__sparkline {
+  margin-block-start: 2px;
+  color: var(--primary);
+  height: 2.25rem;
+}
+
+/* ======= Delta: sólo texto coloreado, sin pill ======= */
+.kpi-card__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+.kpi-card__delta {
+  font-weight: var(--weight-semibold);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.005em;
+  /* Sin background — el color hace el trabajo */
+}
+.kpi-card__delta--up    { color: var(--color-success); }
+.kpi-card__delta--down  { color: var(--color-danger); }

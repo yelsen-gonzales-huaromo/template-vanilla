@@ -1,0 +1,117 @@
+/* =============================================================================
+   Ancla — enlaces consistentes y accesibles
+   ========================================================================= */
+.ancla {
+  --ancla-color: var(--primary);
+  --ancla-color-hover: color-mix(in srgb, var(--ancla-color) 80%, var(--foreground));
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ancla-color);
+  cursor: pointer;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+}
+.ancla:hover { color: var(--ancla-color-hover); }
+.ancla:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.ancla--deshabilitado {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.ancla__icon, .ancla__icon-d, .ancla__icon-externo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.ancla__icon-externo {
+  transform: rotate(-45deg);
+  opacity: 0.7;
+  transition: transform var(--transition-fast);
+}
+.ancla:hover .ancla__icon-externo { transform: rotate(-45deg) translateX(2px); }
+
+/* ============================================================================
+   VARIANTES
+   ============================================================================ */
+.ancla--primary   { --ancla-color: var(--primary); }
+.ancla--secondary { --ancla-color: var(--foreground); }
+.ancla--success   { --ancla-color: var(--color-success); }
+.ancla--warning   { --ancla-color: var(--color-warning); }
+.ancla--danger    { --ancla-color: var(--color-danger); }
+.ancla--info      { --ancla-color: var(--color-info); }
+.ancla--neutral   { --ancla-color: var(--muted-foreground); --ancla-color-hover: var(--foreground); }
+
+/* ============================================================================
+   ESTILOS DE SUBRAYADO
+   ============================================================================ */
+.ancla--plain         { text-decoration: none; }
+.ancla--subrayado     { text-decoration: underline; text-underline-offset: 3px; }
+.ancla--sin-subrayado { text-decoration: none; }
+.ancla--subrayado-hover {
+  text-decoration: none;
+}
+.ancla--subrayado-hover:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Animado: línea inferior que crece de izquierda a derecha en hover */
+.ancla--animado {
+  text-decoration: none;
+  position: relative;
+}
+.ancla--animado .ancla__texto {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-block-end: 2px;
+  transition: background-size 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ancla--animado:hover .ancla__texto { background-size: 100% 1px; }
+
+/* ============================================================================
+   TAMAÑOS
+   ============================================================================ */
+.ancla--sm { font-size: var(--text-xs); }
+.ancla--md { font-size: var(--text-sm); }
+.ancla--lg { font-size: var(--text-base); }
+
+.ancla--pesado { font-weight: var(--weight-medium); }
+
+/* ============================================================================
+   CTA — flecha que se desliza al hover
+   ============================================================================ */
+.ancla--cta .ancla__icon-d {
+  transition: transform var(--transition-fast);
+}
+.ancla--cta:hover .ancla__icon-d {
+  transform: translateX(3px);
+}
+
+/* ============================================================================
+   Lista de enlaces (footer / sidebar)
+   ============================================================================ */
+.lista-enlaces { display: flex; flex-direction: column; gap: var(--space-2); }
+.lista-enlaces__titulo {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.lista-enlaces__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.lista-enlaces__lista li { display: flex; }

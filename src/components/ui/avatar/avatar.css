@@ -1,0 +1,123 @@
+.avatar {
+  --avatar-size: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-700));
+  color: #fff;
+  font-weight: var(--weight-semibold);
+  font-size: calc(var(--avatar-size) * 0.4);
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Tamaños */
+.avatar--xs  { --avatar-size: 1.5rem; }
+.avatar--sm  { --avatar-size: 1.75rem; }
+.avatar--lg  { --avatar-size: 3.5rem; }
+.avatar--xl  { --avatar-size: 5rem; }
+.avatar--2xl { --avatar-size: 7rem; }
+
+/* Forma cuadrada (con border-radius pequeño) */
+.avatar--cuadrado { border-radius: var(--radius-md); }
+.avatar--cuadrado.avatar--lg,
+.avatar--cuadrado.avatar--xl,
+.avatar--cuadrado.avatar--2xl { border-radius: var(--radius-lg); }
+
+/* Ring — borde de selección (primary) */
+.avatar--ring {
+  box-shadow: 0 0 0 2px var(--surface-elevated, var(--background)),
+              0 0 0 4px var(--primary);
+}
+
+/* ============================================================================
+   Wrapper para avatares con estado o badge — necesita position relative
+   ============================================================================ */
+.avatar-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.avatar__estado {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  width: 28%;
+  height: 28%;
+  min-width: 8px;
+  min-height: 8px;
+  max-width: 14px;
+  max-height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--surface-elevated, var(--background));
+  z-index: 1;
+}
+.avatar__estado--online   { background: var(--color-success); }
+.avatar__estado--ausente  { background: var(--color-warning); }
+.avatar__estado--ocupado  { background: var(--color-danger); }
+.avatar__estado--offline  { background: color-mix(in srgb, var(--foreground) 35%, transparent); }
+
+.avatar__badge {
+  position: absolute;
+  inset-block-start: -4px;
+  inset-inline-end: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--surface-elevated, var(--background));
+  z-index: 2;
+  line-height: 1;
+}
+
+/* ============================================================================
+   Stack — avatares apilados con borde y z-index escalonado
+   ============================================================================ */
+.avatar-stack {
+  display: inline-flex;
+  align-items: center;
+}
+.avatar-stack .avatar,
+.avatar-stack .avatar-wrap {
+  border: 2px solid var(--surface-elevated, var(--background));
+  transition: transform var(--transition-fast);
+}
+.avatar-stack .avatar + .avatar,
+.avatar-stack .avatar-wrap + .avatar-wrap,
+.avatar-stack .avatar + .avatar-wrap,
+.avatar-stack .avatar-wrap + .avatar { margin-inline-start: -0.6rem; }
+
+.avatar-stack .avatar:hover,
+.avatar-stack .avatar-wrap:hover {
+  transform: translateY(-2px);
+  z-index: 10;
+}
+
+/* Skeleton (loading) */
+.avatar--skeleton {
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--foreground) 8%, transparent),
+    color-mix(in srgb, var(--foreground) 14%, transparent),
+    color-mix(in srgb, var(--foreground) 8%, transparent));
+  background-size: 200% 100%;
+  animation: avatar-skeleton 1.4s ease-in-out infinite;
+  color: transparent;
+}
+@keyframes avatar-skeleton {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

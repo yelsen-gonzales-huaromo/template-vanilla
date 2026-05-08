@@ -1,0 +1,218 @@
+.contador {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-semibold);
+}
+
+/* ============================================================================
+   Helpers para los patrones del showcase
+   ============================================================================ */
+.contador-tarjeta {
+  position: relative;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  flex: 1;
+}
+.contador-tarjeta__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.contador-tarjeta__titulo {
+  margin: 0;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.contador-tarjeta__valor {
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-3xl));
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--foreground);
+}
+.contador-tarjeta__valor--xl {
+  font-size: clamp(var(--text-3xl), 5vw, 2.75rem);
+}
+.contador-tarjeta__sub {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+
+/* Icono circular tipo Falcon */
+.contador-icono {
+  display: inline-flex;
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.contador-icono--primary { background: color-mix(in srgb, var(--primary) 12%, transparent);            color: var(--primary); }
+.contador-icono--success { background: color-mix(in srgb, var(--color-success) 14%, transparent);      color: var(--color-success); }
+.contador-icono--info    { background: color-mix(in srgb, var(--color-info) 14%, transparent);         color: var(--color-info); }
+.contador-icono--warning { background: color-mix(in srgb, var(--color-warning) 14%, transparent);      color: var(--color-warning); }
+.contador-icono--danger  { background: color-mix(in srgb, var(--color-danger) 14%, transparent);       color: var(--color-danger); }
+
+/* Delta badge (subida / bajada) */
+.contador-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.contador-delta--up   { color: var(--color-success); background: color-mix(in srgb, var(--color-success) 14%, transparent); }
+.contador-delta--down { color: var(--color-danger);  background: color-mix(in srgb, var(--color-danger)  14%, transparent); }
+.contador-delta--flat { color: var(--muted-foreground); background: color-mix(in srgb, var(--foreground) 8%, transparent); }
+
+/* Strip horizontal con divisores */
+.contador-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.contador-strip__celda {
+  padding: var(--space-4);
+  border-inline-start: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.contador-strip__celda:first-child { border-inline-start: 0; }
+
+/* Live counter — pulso rojo */
+.contador-live {
+  position: relative;
+  padding: var(--space-5);
+  background: linear-gradient(135deg, var(--color-danger), color-mix(in srgb, var(--color-danger) 60%, #000 40%));
+  border-radius: var(--radius-md);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  overflow: hidden;
+}
+.contador-live__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.9;
+}
+.contador-live__dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.7);
+  animation: contador-live-pulse 1.5s infinite;
+}
+@keyframes contador-live-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); }
+  70%  { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+.contador-live__valor {
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hero stats con icono circular grande (estilo landing "4968 New Learners") */
+.contador-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.contador-hero-stats__celda {
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  border-inline-start: 1px solid var(--border);
+}
+.contador-hero-stats__celda:first-child { border-inline-start: 0; }
+.contador-hero-stats__icono {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+}
+.contador-hero-stats__valor {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+}
+.contador-hero-stats__label {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+.contador-hero-stats__sub {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+
+/* Comparativa antes/después */
+.contador-comparativa {
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.contador-comparativa__bloque {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.contador-comparativa__antes-valor { color: var(--muted-foreground); text-decoration: line-through; }
+.contador-comparativa__flecha {
+  color: var(--muted-foreground);
+  font-size: var(--text-xl);
+}
+
+/* Barra de progreso simple inline (sin importar BarraProgreso) */
+.contador-progreso-barra {
+  width: 100%;
+  height: 6px;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.contador-progreso-barra__fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 639.98px) {
+  .contador-strip__celda:nth-child(2)  { border-inline-start: 0; }
+  .contador-hero-stats__celda { border-inline-start: 0; border-block-start: 1px solid var(--border); }
+  .contador-hero-stats__celda:first-child { border-block-start: 0; }
+  .contador-comparativa { flex-direction: column; align-items: stretch; }
+  .contador-comparativa__flecha { transform: rotate(90deg); align-self: center; }
+}

@@ -1,0 +1,261 @@
+/* =============================================================================
+   Tarjeta base — estilo discreto y elegante (referencia: Stripe / Linear / Vercel).
+   Sin bordes pesados, sin separadores duros: jerarquía por espacio y tipografía.
+   ========================================================================== */
+.card {
+  --card-radius: var(--radius-lg);
+  --card-padding: var(--space-5);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--card-radius);
+  box-shadow:
+    0 1px 2px 0 color-mix(in srgb, var(--foreground) 4%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--foreground) 1%, transparent);
+  overflow: hidden;
+  /* Cambio de tema sincronizado con body/sidebar/navbar (--transition-tema).
+     Hover state usa --transition-fast vía override en la regla :hover. */
+  transition:
+    background-color var(--transition-tema),
+    border-color var(--transition-tema),
+    color var(--transition-tema),
+    box-shadow var(--transition-fast);
+}
+.card:hover {
+  border-color: color-mix(in srgb, var(--border-strong) 70%, transparent);
+  box-shadow:
+    0 4px 12px -4px color-mix(in srgb, var(--foreground) 8%, transparent),
+    0 1px 2px 0 color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+
+/* ======= Header: sin línea dura, sólo padding refinado ======= */
+.card__header {
+  padding: var(--space-5) var(--card-padding) var(--space-2);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.card__title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  line-height: 1.3;
+}
+.card__subtitle {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin-block-start: 2px;
+  line-height: 1.4;
+}
+
+.card__body {
+  padding: var(--space-2) var(--card-padding) var(--card-padding);
+}
+/* Si NO hay header, el body necesita padding completo arriba */
+.card > .card__body:first-child {
+  padding-block-start: var(--card-padding);
+}
+
+.card__footer {
+  padding: var(--space-3) var(--card-padding);
+  border-block-start: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  background-color: color-mix(in srgb, var(--surface-muted) 50%, transparent);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  transition:
+    background-color var(--transition-tema),
+    border-color var(--transition-tema),
+    color var(--transition-tema);
+}
+
+/* ======= Variantes ======= */
+.card--flat {
+  box-shadow: none;
+  border-color: color-mix(in srgb, var(--border) 70%, transparent);
+}
+.card--flat:hover {
+  box-shadow: none;
+  border-color: var(--border-strong);
+}
+
+.card--elevated {
+  border-color: transparent;
+  box-shadow:
+    0 1px 3px 0 color-mix(in srgb, var(--foreground) 6%, transparent),
+    0 8px 24px -8px color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.card--elevated:hover {
+  box-shadow:
+    0 2px 6px 0 color-mix(in srgb, var(--foreground) 8%, transparent),
+    0 16px 36px -12px color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+
+.card--brand {
+  border: none;
+  background: var(--brand-gradient);
+  color: var(--primary-foreground);
+  box-shadow: var(--shadow-brand);
+}
+.card--brand .card__title { color: var(--primary-foreground); }
+.card--brand .card__subtitle { color: rgb(255 255 255 / 0.85); }
+.card--brand .card__footer {
+  background: rgb(255 255 255 / 0.08);
+  border-color: rgb(255 255 255 / 0.18);
+  color: rgb(255 255 255 / 0.9);
+}
+
+/* Card interactiva (clickeable) — feedback más visible */
+.card--interactive {
+  cursor: pointer;
+}
+.card--interactive:active {
+  transform: translateY(1px);
+  transition-duration: 50ms;
+}
+
+/* ============================================================================
+   Variante "acento" — fondo con glow radial sutil (estilo Falcon intro card)
+   ============================================================================ */
+.card--acento {
+  position: relative;
+  background-color: var(--card);
+  background-image:
+    radial-gradient(1200px 240px at calc(100% + 80px) -40px,
+      color-mix(in srgb, var(--primary) 16%, transparent),
+      transparent 60%),
+    radial-gradient(800px 180px at calc(100% + 40px) 110%,
+      color-mix(in srgb, var(--color-success) 12%, transparent),
+      transparent 65%);
+  border-color: color-mix(in srgb, var(--border) 50%, transparent);
+}
+.card--acento:hover {
+  border-color: color-mix(in srgb, var(--border-strong) 60%, transparent);
+}
+
+/* ============================================================================
+   Variante "flotante" — sombra fuerte, sin borde, se eleva en hover
+   ============================================================================ */
+.card--flotante {
+  border-color: transparent;
+  box-shadow:
+    0 1px 3px 0 color-mix(in srgb, var(--foreground) 5%, transparent),
+    0 12px 32px -12px color-mix(in srgb, var(--foreground) 14%, transparent);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    background-color var(--transition-tema);
+}
+.card--flotante:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 4px 8px 0 color-mix(in srgb, var(--foreground) 7%, transparent),
+    0 24px 48px -16px color-mix(in srgb, var(--foreground) 22%, transparent);
+}
+
+/* ============================================================================
+   Variante "compacto" — paddings más cerrados, ideal para listas densas
+   ============================================================================ */
+.card--compacto {
+  --card-padding: var(--space-3);
+}
+.card--compacto .card__header { padding-block-start: var(--space-3); padding-block-end: var(--space-1); }
+.card--compacto .card__title  { font-size: var(--text-sm); }
+.card--compacto .card__subtitle { font-size: var(--text-xs); }
+.card--compacto .card__footer { padding: var(--space-2) var(--card-padding); }
+
+/* ============================================================================
+   Variante "sin-borde" — sólo fondo, sin contorno (estilo limpio)
+   ============================================================================ */
+.card--sin-borde {
+  border-color: transparent;
+  box-shadow: none;
+}
+.card--sin-borde:hover {
+  border-color: transparent;
+  box-shadow: none;
+  background-color: color-mix(in srgb, var(--surface-muted) 60%, var(--card));
+}
+
+/* ============================================================================
+   Variante "destacada" — barra de acento en el inicio (left/start)
+   ============================================================================ */
+.card--destacada {
+  border-inline-start: 3px solid var(--primary);
+}
+.card--destacada.card--destacada-success { border-inline-start-color: var(--color-success); }
+.card--destacada.card--destacada-warning { border-inline-start-color: var(--color-warning); }
+.card--destacada.card--destacada-danger  { border-inline-start-color: var(--color-danger); }
+.card--destacada.card--destacada-info    { border-inline-start-color: var(--color-info); }
+
+/* ============================================================================
+   Variante "vidrio" — frosted glass (backdrop-filter)
+   ============================================================================ */
+.card--vidrio {
+  background-color: color-mix(in srgb, var(--card) 60%, transparent);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-color: color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+/* ============================================================================
+   Variante "lineas" — patrón de cuadrícula sutil de fondo
+   ============================================================================ */
+.card--lineas {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border) 35%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border) 35%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+}
+
+/* ============================================================================
+   Decoración de fondo (equivalente a .bg-holder de Falcon).
+   Capa absolute detrás del contenido — el usuario pasa una SVG vía
+   `Tarjeta({ decoracion: ... })` y se renderiza como ornamentación.
+   Se oculta en pantallas pequeñas para no quitar espacio al texto.
+   ============================================================================ */
+.card--con-decoracion { position: relative; }
+.card__decoracion {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.card__decoracion > svg.tarjeta-deco {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* Imágenes (corner-N.png) — replicando el `bg-holder` + `bg-card` de Falcon.
+   La imagen se ancla al TOP-RIGHT con su altura escalada al alto del card
+   (`auto 100%`). El `overflow: hidden` del .card__decoracion (heredado del
+   border-radius del card) se encarga de recortarla a la esquina redondeada. */
+.card__decoracion > .tarjeta-deco-img {
+  position: absolute;
+  inset: 0;
+  background-size: auto 100%;
+  background-position: top right;
+  background-repeat: no-repeat;
+  opacity: 1;
+}
+/* En oscuro las PNGs (diseñadas para fondo blanco) se atenúan + screen blend
+   para integrarse con el fondo dark sin quedar como un parche brillante. */
+[data-theme='dark'] .card__decoracion > .tarjeta-deco-img {
+  opacity: 0.5;
+  mix-blend-mode: screen;
+}
+/* El contenido real del card vive sobre la decoración */
+.card--con-decoracion > .card__header,
+.card--con-decoracion > .card__body,
+.card--con-decoracion > .card__footer { position: relative; z-index: 1; }
+
+/* En móviles ocultar la decoración para que no compita con el texto */
+@media (max-width: 767.98px) {
+  .card__decoracion { display: none; }
+}

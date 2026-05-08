@@ -1,0 +1,91 @@
+/* =============================================================================
+   Páginas showcase (catálogo de componentes) — estilo Falcon
+   ============================================================================= */
+.showcase {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ===== Cuerpo del intro card (la tarjeta y el glow ya los pone .card--acento) ===== */
+.showcase__intro-cuerpo {
+  padding: var(--space-2) var(--space-1);
+}
+.showcase__intro-titulo {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-3xl, 1.875rem);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+  line-height: 1.1;
+}
+.showcase__intro-descripcion {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  max-width: 75ch;
+}
+.showcase__intro-enlace {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.showcase__intro-enlace:hover {
+  color: color-mix(in srgb, var(--primary) 75%, var(--foreground));
+}
+
+/* ===== Cuerpo: pila de ejemplos (cada uno es ya una card vía VistaCodigo) ===== */
+.showcase__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ===== Sección (sub-encabezado opcional para agrupar varios ejemplos) ===== */
+.showcase__seccion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.showcase__seccion-cabecera {
+  padding: 0 var(--space-1);
+}
+.showcase__seccion-titulo {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+.showcase__seccion-descripcion {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.55;
+  max-width: 60ch;
+}
+.showcase__seccion-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Grid auxiliar: dos columnas para mostrar varios ejemplos lado a lado */
+.showcase__grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+@media (max-width: 1023.98px) {
+  .showcase__grid-2 { grid-template-columns: 1fr; }
+}
+
+/* En pages showcase, las migas/título de TituloPagina se ocultan: ya tenemos
+   intro card propio. Si una página antigua llamaba TituloPagina dentro de
+   PaginaShowcase, no la necesitamos — la nueva API ya pinta el intro. */
+.showcase .page-title { display: none; }

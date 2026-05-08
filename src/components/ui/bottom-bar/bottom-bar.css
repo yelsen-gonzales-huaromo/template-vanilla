@@ -1,0 +1,194 @@
+/* =============================================================================
+   Barra inferior — navegación móvil estilo iOS/Android, multi-variante
+   ========================================================================= */
+.barra-inf {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 4px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+/* Posición fija al fondo (fullscreen mobile) */
+.barra-inf--fija {
+  position: fixed;
+  inset-block-end: var(--space-3);
+  inset-inline: var(--space-3);
+  margin-inline: auto;
+  width: max-content;
+  max-width: calc(100vw - var(--space-6));
+  z-index: var(--z-sticky);
+}
+
+/* ============================================================================
+   ITEM REGULAR
+   ============================================================================ */
+.barra-inf__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 64px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--radius-md) - 4px);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+.barra-inf__item:hover {
+  color: var(--foreground);
+  background-color: var(--muted);
+}
+.barra-inf__item:active { transform: scale(0.96); }
+.barra-inf__item--deshabilitado {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.barra-inf__icon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.barra-inf__icon { display: inline-flex; }
+.barra-inf__lbl  { font-weight: var(--weight-medium); line-height: 1; }
+
+/* Item activo — variantes según el `indicador` */
+.barra-inf__item--activo { color: var(--primary); }
+
+/* Indicador FONDO (default) */
+.barra-inf--ind-fondo .barra-inf__item--activo {
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+/* Indicador LÍNEA (debajo) */
+.barra-inf--ind-linea .barra-inf__item--activo::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 4px;
+  inset-inline: 30%;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--primary);
+}
+
+/* Indicador PUNTO (debajo del icono) */
+.barra-inf--ind-punto .barra-inf__item--activo::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 6px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background-color: var(--primary);
+}
+
+/* Indicador NINGUNO — sólo cambia el color */
+.barra-inf--ind-ninguno .barra-inf__item--activo { background: transparent; }
+
+/* ============================================================================
+   BADGES (numérico) y PUNTO (notificación)
+   ============================================================================ */
+.barra-inf__badge {
+  position: absolute;
+  inset-block-start: -4px;
+  inset-inline-end: -8px;
+  min-width: 16px; height: 16px;
+  padding: 0 4px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #fff;
+  background-color: var(--color-danger);
+  border: 2px solid var(--surface);
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.barra-inf__punto {
+  position: absolute;
+  inset-block-start: -2px;
+  inset-inline-end: -4px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-danger);
+  border: 2px solid var(--surface);
+}
+
+/* ============================================================================
+   FAB CENTRAL (botón destacado)
+   ============================================================================ */
+.barra-inf__fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px; height: 48px;
+  margin: -10px 4px;       /* sobresale arriba */
+  background: var(--brand-gradient, linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 70%, var(--color-info))));
+  color: #fff;
+  border: 4px solid var(--surface);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 6px 16px -4px color-mix(in srgb, var(--primary) 60%, transparent);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.barra-inf__fab:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 24px -6px color-mix(in srgb, var(--primary) 70%, transparent);
+}
+.barra-inf__fab:active { transform: scale(0.96); }
+.barra-inf__fab-icono { display: inline-flex; }
+
+/* ============================================================================
+   VARIANTES DE ESTILO
+   ============================================================================ */
+
+/* --- Flotante: sombra grande + sin borde --- */
+.barra-inf--flotante {
+  border-color: transparent;
+  box-shadow:
+    0 4px 12px -4px color-mix(in srgb, var(--foreground) 8%, transparent),
+    0 16px 32px -12px color-mix(in srgb, var(--foreground) 14%, transparent);
+}
+
+/* --- Compacta: sólo iconos, padding reducido --- */
+.barra-inf--compacta .barra-inf__item {
+  min-width: 40px;
+  padding: 8px 10px;
+}
+.barra-inf--compacta .barra-inf__lbl { display: none; }
+
+/* --- Minimal: sin background del item activo, sólo color --- */
+.barra-inf--minimal {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+.barra-inf--minimal .barra-inf__item {
+  padding: 10px 14px;
+}
+.barra-inf--minimal .barra-inf__item--activo { background: transparent; }
+.barra-inf--minimal .barra-inf__lbl { display: none; }
+
+/* --- Cristal: backdrop-blur (frosted glass) --- */
+.barra-inf--cristal {
+  background-color: color-mix(in srgb, var(--surface) 65%, transparent);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border-color: color-mix(in srgb, var(--border) 50%, transparent);
+}

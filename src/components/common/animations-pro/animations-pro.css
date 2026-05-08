@@ -1,0 +1,654 @@
+/* =============================================================================
+   Banco de animaciones SVG profesionales — keyframes
+   ========================================================================= */
+.ap {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 200px;
+  max-height: 200px;
+}
+
+/* ============================================================================
+   LOADING / SPINNERS
+   ============================================================================ */
+
+/* dotsBouncing — 4 dots saltando en secuencia */
+.ap-dots-bouncing circle { animation: ap-dot-bounce 1.4s ease-in-out infinite; }
+.ap-dots-bouncing circle:nth-child(1) { animation-delay: 0s; }
+.ap-dots-bouncing circle:nth-child(2) { animation-delay: 0.15s; }
+.ap-dots-bouncing circle:nth-child(3) { animation-delay: 0.3s; }
+.ap-dots-bouncing circle:nth-child(4) { animation-delay: 0.45s; }
+@keyframes ap-dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%           { transform: translateY(-25px); }
+}
+
+/* dotsPulsing — 5 dots pulsando */
+.ap-dots-pulsing circle { animation: ap-dot-pulse 1.4s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.ap-dots-pulsing circle:nth-child(1) { animation-delay: 0s; }
+.ap-dots-pulsing circle:nth-child(2) { animation-delay: 0.1s; }
+.ap-dots-pulsing circle:nth-child(3) { animation-delay: 0.2s; }
+.ap-dots-pulsing circle:nth-child(4) { animation-delay: 0.3s; }
+.ap-dots-pulsing circle:nth-child(5) { animation-delay: 0.4s; }
+@keyframes ap-dot-pulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+  40%           { transform: scale(1.2); opacity: 1; }
+}
+
+/* spinnerRing */
+.ap-spinner-ring .ap-arc {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ap-rotate 1.2s linear infinite;
+}
+@keyframes ap-rotate { to { transform: rotate(360deg); } }
+
+/* spinnerDual */
+.ap-spinner-dual__a { transform-origin: center; transform-box: fill-box; animation: ap-rotate 1.4s linear infinite; }
+.ap-spinner-dual__b { transform-origin: center; transform-box: fill-box; animation: ap-rotate 1s linear infinite reverse; }
+
+/* spinnerBars — 12 bars radiales con fade secuencial */
+.ap-spinner-bars__b {
+  animation: ap-bar-fade 1.2s linear infinite;
+  animation-delay: calc(var(--i) * 0.1s);
+  opacity: 0.15;
+}
+@keyframes ap-bar-fade {
+  0%, 39%, 100% { opacity: 0.15; }
+  40%           { opacity: 1; }
+}
+
+/* barsSequential — 4 barras danzando */
+.ap-bars-seq rect {
+  animation: ap-bar-dance 1.2s ease-in-out infinite;
+  transform-origin: center bottom;
+  transform-box: fill-box;
+}
+.ap-bars-seq rect:nth-child(1) { animation-delay: 0s; }
+.ap-bars-seq rect:nth-child(2) { animation-delay: 0.15s; }
+.ap-bars-seq rect:nth-child(3) { animation-delay: 0.3s; }
+.ap-bars-seq rect:nth-child(4) { animation-delay: 0.45s; }
+@keyframes ap-bar-dance {
+  0%, 100% { transform: scaleY(0.4); }
+  50%      { transform: scaleY(1.2); }
+}
+
+/* wavePulse — onda */
+.ap-wave__line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 0;
+  animation: ap-wave-flow 1.6s linear infinite;
+}
+@keyframes ap-wave-flow {
+  to { stroke-dashoffset: -200; }
+}
+
+/* paperPlane */
+.ap-paper-plane .ap-plane {
+  transform-origin: center;
+  animation: ap-plane-fly 3s ease-in-out infinite;
+}
+.ap-paper-plane .ap-trail {
+  animation: ap-trail-fade 3s ease-in-out infinite;
+}
+.ap-paper-plane .ap-cloud-1 { animation: ap-cloud 6s linear infinite; }
+.ap-paper-plane .ap-cloud-2 { animation: ap-cloud 8s linear infinite reverse; }
+@keyframes ap-plane-fly {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25%      { transform: translate(8px, -10px) rotate(-3deg); }
+  50%      { transform: translate(0, -5px) rotate(0deg); }
+  75%      { transform: translate(-8px, -10px) rotate(3deg); }
+}
+@keyframes ap-trail-fade {
+  0%, 100% { opacity: 0.2; }
+  50%      { opacity: 0.7; }
+}
+@keyframes ap-cloud {
+  from { transform: translateX(-10px); }
+  to   { transform: translateX(10px); }
+}
+
+/* ============================================================================
+   SUCCESS
+   ============================================================================ */
+
+/* checkmarkDraw */
+.ap-check-draw .ap-check-bg { transform-origin: center; transform-box: fill-box; animation: ap-check-pop 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+.ap-check-draw .ap-check-path {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: ap-check-draw 1.6s ease-in-out infinite;
+}
+@keyframes ap-check-pop {
+  0%, 100% { transform: scale(1); }
+  20%      { transform: scale(1.15); }
+}
+@keyframes ap-check-draw {
+  0%, 30%   { stroke-dashoffset: 80; }
+  70%, 100% { stroke-dashoffset: 0; }
+}
+
+/* confetti */
+.ap-confetti circle {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ap-conf-pop 1.8s ease-out infinite;
+}
+.ap-conf__pieza {
+  transform-origin: 100px 100px;
+  animation: ap-conf-explode 1.8s ease-out infinite;
+  animation-delay: calc(var(--i) * 0.04s);
+}
+@keyframes ap-conf-pop {
+  0%   { transform: scale(0); }
+  20%  { transform: scale(1.3); }
+  100% { transform: scale(0); opacity: 0; }
+}
+@keyframes ap-conf-explode {
+  0%   { transform: translate(0, 0)    rotate(0deg)   scale(0); opacity: 1; }
+  20%  { transform: translate(0, 0)    rotate(0deg)   scale(1); opacity: 1; }
+  100% { transform: translate(0, 80px) rotate(360deg) scale(0.6); opacity: 0; }
+}
+
+/* starsBurst */
+.ap-star {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ap-star-twirl 2s ease-in-out infinite;
+}
+.ap-star-mini {
+  transform-origin: 100px 100px;
+  animation: ap-star-fly 2s ease-out infinite;
+  animation-delay: calc(var(--i) * 0.08s);
+}
+@keyframes ap-star-twirl {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50%      { transform: scale(1.2) rotate(72deg); }
+}
+@keyframes ap-star-fly {
+  0%   { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.5) translateY(-20px) rotate(120deg); }
+}
+
+/* circleExpand */
+.ap-ce__r1, .ap-ce__r2 {
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.ap-ce__r1 { animation: ap-ce-ring 1.8s ease-out infinite; }
+.ap-ce__r2 { animation: ap-ce-ring 1.8s ease-out infinite; animation-delay: 0.6s; }
+@keyframes ap-ce-ring {
+  0%   { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* ============================================================================
+   ERROR
+   ============================================================================ */
+
+/* xMark */
+.ap-xmark .ap-xmark-bg { transform-origin: center; transform-box: fill-box; animation: ap-xmark-shake 1.6s ease-in-out infinite; }
+.ap-xmark-l1 { stroke-dasharray: 60; stroke-dashoffset: 60; animation: ap-xmark-draw 1.6s ease-in-out infinite; }
+.ap-xmark-l2 { stroke-dasharray: 60; stroke-dashoffset: 60; animation: ap-xmark-draw 1.6s ease-in-out infinite; animation-delay: 0.2s; }
+@keyframes ap-xmark-shake {
+  0%, 100%        { transform: translateX(0); }
+  20%, 40%, 60%, 80% { transform: translateX(-2px); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(2px); }
+}
+@keyframes ap-xmark-draw {
+  0%, 30%   { stroke-dashoffset: 60; }
+  70%, 100% { stroke-dashoffset: 0; }
+}
+
+/* errorPulse */
+.ap-ep__ring {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ap-ep-pulse 1.4s ease-out infinite;
+}
+@keyframes ap-ep-pulse {
+  0%   { transform: scale(0.7); opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+/* shakeFinger */
+.ap-shake__finger {
+  transform-origin: 100px 142px;
+  animation: ap-shake-rotate 0.5s ease-in-out infinite;
+}
+@keyframes ap-shake-rotate {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-12deg); }
+  75%      { transform: rotate(12deg); }
+}
+
+/* ============================================================================
+   EMPTY STATES
+   ============================================================================ */
+
+/* emptyBox — la tapa rebota arriba/abajo y la ? flota */
+.ap-eb__tapa {
+  transform-origin: 100px 90px;
+  animation: ap-eb-tapa 2s ease-in-out infinite;
+}
+.ap-eb__q {
+  transform-origin: center;
+  animation: ap-eb-q 2s ease-in-out infinite;
+}
+@keyframes ap-eb-tapa {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-15px) rotate(-8deg); }
+}
+@keyframes ap-eb-q {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%      { transform: translateY(-8px); opacity: 1; }
+}
+
+/* searchEmpty */
+.ap-se__lupa {
+  transform-origin: 90px 90px;
+  animation: ap-se-bob 2.4s ease-in-out infinite;
+}
+.ap-se__x {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: ap-se-x-draw 2.4s ease-in-out infinite;
+}
+@keyframes ap-se-bob {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-10deg); }
+}
+@keyframes ap-se-x-draw {
+  0%, 30%   { stroke-dashoffset: 40; }
+  70%, 100% { stroke-dashoffset: 0; }
+}
+
+/* cloudOffline */
+.ap-co__nube { animation: ap-co-flotar 2.4s ease-in-out infinite; }
+.ap-co__linea {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: ap-co-tachar 2.4s ease-in-out infinite;
+}
+@keyframes ap-co-flotar {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+@keyframes ap-co-tachar {
+  0%, 30%   { stroke-dashoffset: 200; }
+  70%, 100% { stroke-dashoffset: 0; }
+}
+
+/* ============================================================================
+   ACTIVITY
+   ============================================================================ */
+
+/* bellRing */
+.ap-bell__cuerpo {
+  transform-origin: 100px 60px;
+  animation: ap-bell-ring 1.4s ease-in-out infinite;
+}
+.ap-bell__o1, .ap-bell__o2 {
+  animation: ap-bell-ondas 1.4s ease-in-out infinite;
+}
+@keyframes ap-bell-ring {
+  0%, 100%      { transform: rotate(0deg); }
+  20%, 40%, 60% { transform: rotate(-12deg); }
+  10%, 30%, 50% { transform: rotate(12deg); }
+}
+@keyframes ap-bell-ondas {
+  0%, 100% { opacity: 0; }
+  50%      { opacity: 1; }
+}
+
+/* heartFly */
+.ap-hf__corazon {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ap-hf-rise 2.4s ease-out infinite;
+  animation-delay: calc(var(--i) * 0.6s);
+  opacity: 0;
+}
+@keyframes ap-hf-rise {
+  0%   { transform: translateY(0)    scale(0); opacity: 0; }
+  20%  { transform: translateY(-20px) scale(1); opacity: 1; }
+  80%  { transform: translateY(-60px) scale(0.8); opacity: 0.4; }
+  100% { transform: translateY(-80px) scale(0.6); opacity: 0; }
+}
+
+/* likeBurst */
+.ap-like__pulgar {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ap-like-thumb 1.8s ease-in-out infinite;
+}
+.ap-like__spark {
+  transform-origin: 100px 110px;
+  animation: ap-like-spark 1.8s ease-out infinite;
+  animation-delay: calc(var(--i) * 0.08s);
+  opacity: 0;
+}
+@keyframes ap-like-thumb {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  20%      { transform: scale(1.2) rotate(-5deg); }
+}
+@keyframes ap-like-spark {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(calc(20px * var(--i)), -25px) scale(0); }
+}
+
+/* chatBubbles */
+.ap-chat__b1 {
+  transform-origin: 50px 80px;
+  transform-box: fill-box;
+  animation: ap-chat-pop 2.4s ease-out infinite;
+}
+.ap-chat__b2 {
+  transform-origin: 90px 120px;
+  transform-box: fill-box;
+  animation: ap-chat-pop 2.4s ease-out infinite;
+  animation-delay: 1.2s;
+}
+@keyframes ap-chat-pop {
+  0%   { transform: scale(0); opacity: 0; }
+  20%  { transform: scale(1.05); opacity: 1; }
+  35%  { transform: scale(1); opacity: 1; }
+  85%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0; }
+}
+
+/* ============================================================================
+   WELCOME / ONBOARDING
+   ============================================================================ */
+
+/* rocketLaunch */
+.ap-rocket__cuerpo { animation: ap-rocket-shake 0.2s ease-in-out infinite; }
+.ap-rocket__llamas {
+  transform-origin: 100px 130px;
+  animation: ap-rocket-flames 0.2s ease-in-out infinite;
+}
+.ap-rocket__star {
+  animation: ap-rocket-star 1.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.3s);
+}
+@keyframes ap-rocket-shake {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(0, -2px); }
+}
+@keyframes ap-rocket-flames {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(0.8) scaleX(1.1); }
+}
+@keyframes ap-rocket-star {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1.4); }
+}
+
+/* wavingHand */
+.ap-hand__mano {
+  transform-origin: 100px 140px;
+  animation: ap-hand-wave 1.4s ease-in-out infinite;
+}
+@keyframes ap-hand-wave {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-15deg); }
+  75%      { transform: rotate(15deg); }
+}
+
+/* sparklesAround */
+.ap-sparkles__chispa {
+  transform-origin: 100px 100px;
+  animation: ap-sparkle-orbit 3s linear infinite;
+  animation-delay: calc(var(--i) * 0.5s);
+}
+@keyframes ap-sparkle-orbit {
+  0%   { transform: rotate(0deg) translateY(-40px) scale(0); opacity: 0; }
+  20%  { transform: rotate(72deg) translateY(-40px) scale(1); opacity: 1; }
+  80%  { transform: rotate(288deg) translateY(-40px) scale(1); opacity: 1; }
+  100% { transform: rotate(360deg) translateY(-40px) scale(0); opacity: 0; }
+}
+
+/* ============================================================================
+   NETWORK
+   ============================================================================ */
+
+/* wifiPulse */
+.ap-wifi__a1 { animation: ap-wifi-arc 1.6s ease-in-out infinite; }
+.ap-wifi__a2 { animation: ap-wifi-arc 1.6s ease-in-out infinite; animation-delay: 0.2s; }
+.ap-wifi__a3 { animation: ap-wifi-arc 1.6s ease-in-out infinite; animation-delay: 0.4s; }
+@keyframes ap-wifi-arc {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 1; }
+}
+
+/* cloudUpload */
+.ap-cu__flecha { animation: ap-cu-arrow 1.6s ease-in-out infinite; }
+@keyframes ap-cu-arrow {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%      { transform: translateY(-8px); opacity: 0.7; }
+}
+
+/* syncRotating */
+.ap-sync__rot {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ap-rotate 2s linear infinite;
+}
+
+/* ============================================================================
+   Estilos del catálogo (página de iconos animados)
+   ============================================================================ */
+.ap-toolbar { margin-block-end: var(--space-3); }
+.ap-buscador {
+  width: 100%;
+  max-width: 22rem;
+  flex-shrink: 0;
+  height: 2.25rem;
+  padding: 0 var(--space-3);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.ap-buscador:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: var(--shadow-focus);
+}
+
+/* ===== Toolbar combinado: search + chips de categoría en una fila ===== */
+.ap-fuente { display: flex; flex-direction: column; gap: var(--space-3); }
+.ap-fuente__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.ap-chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 3px;
+  background-color: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  flex: 1;
+  min-width: 0;
+}
+.ap-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: var(--weight-medium);
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  border-radius: calc(var(--radius) - 3px);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  white-space: nowrap;
+}
+.ap-chip:hover { color: var(--foreground); }
+.ap-chip[data-activo='true'] {
+  background-color: var(--surface);
+  color: var(--foreground);
+  box-shadow: var(--shadow-sm);
+}
+.ap-chip__count {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 5px;
+  height: 16px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--muted-foreground) 20%, transparent);
+  color: var(--muted-foreground);
+}
+.ap-chip[data-activo='true'] .ap-chip__count {
+  background-color: color-mix(in srgb, var(--primary) 16%, transparent);
+  color: var(--primary);
+}
+
+.ap-cat-desc {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+.ap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+.ap-grid__vacio {
+  grid-column: 1 / -1;
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  background-color: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+}
+
+.ap-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: start;
+  font: inherit;
+  color: var(--foreground);
+  overflow: hidden;
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+.ap-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+.ap-card--copiado {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-success) 35%, transparent);
+}
+.ap-card__lienzo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140px;
+  padding: var(--space-3);
+  background-color: var(--surface-muted);
+  border-block-end: 1px solid var(--border);
+  position: relative;
+}
+/* Algunas Lotties traen un rectángulo blanco "horneado" en su JSON (no son
+   transparentes). Esos archivos específicos se marcan con `fondoBlanco: true`
+   en el catálogo, y SÓLO esas cards reciben un lienzo claro neutro. Las demás
+   respetan el tema activo (claro / oscuro / obsidiana / etc.) — el lienzo es
+   transparente y la animación se mezcla con el fondo del card. */
+.ap-card[data-fondo-blanco="true"] .ap-card__lienzo {
+  background-color: #f5f6f8;
+  background-image:
+    linear-gradient(135deg, rgba(0,0,0,0.02) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(0,0,0,0.02) 25%, transparent 25%);
+  background-size: 16px 16px;
+}
+[data-theme='dark'] .ap-card[data-fondo-blanco="true"] .ap-card__lienzo {
+  background-color: #eef0f3;
+}
+.ap-card__cuerpo {
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ap-card__nombre {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--foreground);
+}
+.ap-card__id {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Indicador de fuente: badge en la esquina del lienzo */
+.ap-card[data-fuente]::before {
+  content: '';
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  z-index: 2;
+}
+.ap-card { position: relative; }
+.ap-card[data-fuente='local']::before  { background-color: var(--color-success); box-shadow: 0 0 6px color-mix(in srgb, var(--color-success) 60%, transparent); }
+.ap-card[data-fuente='remoto']::before { background-color: var(--muted-foreground); }
+
+.ap-howto {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.ap-codigo {
+  margin: 0;
+  padding: var(--space-4);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  background-color: #0f172a;
+  overflow-x: auto;
+}
+
+/* ============================================================================
+   prefers-reduced-motion
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .ap *, .ap {
+    animation: none !important;
+    transform: none !important;
+  }
+}

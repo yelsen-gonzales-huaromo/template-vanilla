@@ -1,0 +1,756 @@
+.sidebar {
+  position: sticky;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  /* align-self: start evita que el grid lo estire — sin esto, el sticky
+     se confunde porque el cell crece con el contenido y el sidebar
+     "baila" al scrollear. */
+  align-self: start;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--surface);
+  border-inline-end: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  /* Width: 300ms con cubic-bezier ease-out elegante (visible y fluido).
+     Tema sincronizado con body/navbar/cards (--transition-tema). */
+  transition:
+    width 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color var(--transition-tema),
+    border-color var(--transition-tema),
+    color var(--transition-tema);
+  z-index: var(--z-sticky);
+}
+.sidebar[data-collapsed='true'] { width: var(--sidebar-width-collapsed); }
+
+/* ======= Brand (botón con dropdown estilo Workspaces) ======= */
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3);
+  margin: var(--space-2);
+  height: calc(var(--header-height) - var(--space-4));
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--foreground);
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
+  width: calc(100% - var(--space-2) * 2);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    padding var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sidebar__brand:hover {
+  background-color: color-mix(in srgb, var(--surface-muted) 70%, transparent);
+  border-color: color-mix(in srgb, var(--border) 50%, transparent);
+}
+.sidebar__brand-caret {
+  margin-inline-start: auto;
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+/* (sidebar__brand-caret se anima vía opacity+max-width en la regla unificada
+   más abajo — no usamos display:none para que la transición sea fluida) */
+.sidebar__brand-mark {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  background: var(--brand-gradient);
+  box-shadow: var(--shadow-brand);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.sidebar__brand-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 50%, rgb(255 255 255 / 0.18) 50%);
+}
+.sidebar__brand-text {
+  font-weight: 700;
+  font-size: var(--text-lg);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* El estado colapsado de .sidebar__brand se maneja en la regla unificada
+   más abajo (junto con section-toggle y user) — gap:0 + padding:0 + center. */
+
+/* La búsqueda vive en el header (.navbar__search) y abre el command palette
+   con ⌘K / Ctrl+K. Aquí no se renderiza nada en el sidebar. */
+
+/* ======= Nav ======= */
+.sidebar__nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-3) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  /* Scrollbar viene de la utility .scroll-discreto añadida en sidebar.js */
+}
+
+/* ======= Grupos colapsables ======= */
+.sidebar__group {
+  margin-block-start: var(--space-3);
+  padding-inline: var(--space-3);
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: var(--weight-semibold);
+  color: var(--muted-foreground);
+}
+.sidebar__group:first-child { margin-block-start: 0; }
+/* Group labels: animados con opacity + max-height + margin para colapso fluido */
+.sidebar__group {
+  overflow: hidden;
+  transition:
+    opacity var(--transition-fast) ease,
+    max-height var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1),
+    margin var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1),
+    padding var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 3rem;
+}
+.sidebar[data-collapsed='true'] .sidebar__group {
+  opacity: 0;
+  max-height: 0;
+  margin-block: 0;
+  padding-block: 0;
+  pointer-events: none;
+}
+
+.sidebar__section {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar__section-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--foreground);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: start;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    padding var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sidebar__section-toggle:hover { background-color: var(--muted); }
+/* "Estar expandido" YA NO colorea de primary — solo gira el chevron.
+   Color primary se reserva para el path activo (data-tiene-activo). */
+
+/* Sección que contiene la ruta activa, EN CUALQUIER nivel de profundidad,
+   abierta o colapsada → primary + semibold (visualmente "estás aquí adentro"). */
+.sidebar__section[data-tiene-activo='true'] > .sidebar__section-toggle {
+  color: var(--primary);
+  font-weight: var(--weight-semibold);
+}
+
+/* Variante: link directo (sin submenu, sin chevron) — top-level con ruta propia */
+.sidebar__section-toggle--link {
+  text-decoration: none;
+  display: flex;          /* asegura el mismo layout que el button */
+}
+.sidebar__section--directa[data-tiene-activo='true'] > .sidebar__section-toggle--link {
+  color: var(--primary);
+  font-weight: var(--weight-semibold);
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.sidebar__section-icon {
+  width: 1.25rem; height: 1.25rem;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  font-size: 1rem;
+  color: var(--muted-foreground);
+  transition: color var(--transition-fast);
+}
+.sidebar__section-toggle:hover .sidebar__section-icon,
+.sidebar__section[data-tiene-activo='true'] > .sidebar__section-toggle .sidebar__section-icon {
+  color: var(--primary);
+}
+
+.sidebar__section-label { flex: 1; }
+.sidebar__section-caret {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted-foreground);
+  transition: transform var(--transition-fast);
+}
+.sidebar__section-toggle[aria-expanded='true'] .sidebar__section-caret {
+  transform: rotate(90deg);
+}
+
+.sidebar__items {
+  list-style: none;
+  padding: var(--space-1) 0 var(--space-2);
+  margin-inline-start: 1.5rem;
+  border-inline-start: 1px solid var(--border);
+  display: none;
+}
+/* Solo el <ul> hijo DIRECTO de la sección abierta se muestra. Los <ul> anidados
+   (.sidebar__items--nested) se controlan por su propio data-open en .sidebar__sub */
+.sidebar__section[data-open='true'] > .sidebar__items { display: block; }
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  border-radius: var(--radius);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.sidebar__link:hover {
+  color: var(--foreground);
+  background-color: var(--muted);
+}
+.sidebar__link[aria-current='page'] {
+  background-color: var(--primary-soft);
+  color: var(--primary);
+  font-weight: var(--weight-medium);
+}
+
+.sidebar__link-bullet {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+.sidebar__link[aria-current='page'] .sidebar__link-bullet { opacity: 1; }
+
+/* ============================================================================
+   Sub-ramas anidadas (nivel 2+) — botón con caret colapsable
+   ========================================================================= */
+.sidebar__sub { list-style: none; }
+.sidebar__sub-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: start;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.sidebar__sub-toggle:hover {
+  color: var(--foreground);
+  background-color: var(--muted);
+}
+/* Sub-rama que contiene la ruta activa, AUNQUE esté colapsada → primary */
+.sidebar__sub[data-tiene-activo='true'] > .sidebar__sub-toggle {
+  color: var(--primary);
+  font-weight: var(--weight-semibold);
+}
+.sidebar__sub[data-tiene-activo='true'] > .sidebar__sub-toggle .sidebar__link-bullet {
+  background-color: var(--primary);
+}
+.sidebar__sub-caret {
+  margin-inline-start: auto;
+  display: inline-flex;
+  transition: transform var(--transition-base);
+}
+.sidebar__sub[data-open='true'] > .sidebar__sub-toggle .sidebar__sub-caret {
+  transform: rotate(90deg);
+}
+
+.sidebar__items--nested {
+  list-style: none;
+  padding: var(--space-1) 0 var(--space-1);
+  margin-inline-start: 1.25rem;
+  border-inline-start: 1px solid var(--border);
+  display: none;
+}
+.sidebar__sub[data-open='true'] > .sidebar__items--nested { display: block; }
+/* Niveles más profundos: bullets más pequeños para reforzar la jerarquía */
+.sidebar__items--nested .sidebar__link-bullet,
+.sidebar__items--nested .sidebar__sub-toggle .sidebar__link-bullet {
+  width: 3px; height: 3px;
+}
+
+.sidebar__badge {
+  margin-inline-start: auto;
+  padding: 0 var(--space-2);
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--brand-gradient);
+  border-radius: var(--radius-full);
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ============================================================================
+   Modo colapsado: oculta texto + muestra submenú flotante en hover (estilo dock)
+   También se aplica con .is-scrolled (auto-colapso al scrollear el page).
+   ============================================================================ */
+/* Animación sincronizada del colapso: labels, carets y badges se desvanecen
+   con opacity + max-width: 0 + margin: 0 al mismo tiempo que el sidebar
+   reduce su width. Todo usa la misma curva cubic-bezier para sentir
+   coordinado (referencia: Linear / Vercel). */
+/* Para animar el colapso necesitamos VALORES EXPLÍCITOS de max-width en el
+   estado expandido (no `auto` o `none`) — los browsers sólo interpolan entre
+   valores numéricos. Se usa max-width grande como "sin límite práctico". */
+.sidebar__section-label,
+.sidebar__link-text,
+.sidebar__brand-text,
+.sidebar__user-text,
+.sidebar__plan {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 12rem;
+  opacity: 1;
+  transition:
+    opacity var(--transition-fast) ease,
+    max-width 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    margin 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sidebar__section-caret,
+.sidebar__brand-caret,
+.sidebar__user-caret {
+  overflow: hidden;
+  max-width: 1.5rem;
+  opacity: 1;
+  transition:
+    opacity var(--transition-fast) ease,
+    max-width 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    margin 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sidebar__badge {
+  overflow: hidden;
+  max-width: 4rem;
+  opacity: 1;
+  transition:
+    opacity var(--transition-fast) ease,
+    max-width 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    margin 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar[data-collapsed='true'] .sidebar__section-label,
+.sidebar[data-collapsed='true'] .sidebar__section-caret,
+.sidebar[data-collapsed='true'] .sidebar__badge,
+.sidebar[data-collapsed='true'] .sidebar__brand-text,
+.sidebar[data-collapsed='true'] .sidebar__brand-caret,
+.sidebar[data-collapsed='true'] .sidebar__user-text,
+.sidebar[data-collapsed='true'] .sidebar__user-caret,
+.sidebar[data-collapsed='true'] .sidebar__plan {
+  opacity: 0;
+  max-width: 0;
+  margin-inline: 0;
+  pointer-events: none;
+}
+/* Centrado correcto del icono cuando los labels colapsan: gap a 0 evita que
+   los gaps entre flex items (aunque los items midan 0) empujen al icono a
+   la izquierda. */
+.sidebar[data-collapsed='true'] .sidebar__section-toggle,
+.sidebar[data-collapsed='true'] .sidebar__brand,
+.sidebar[data-collapsed='true'] .sidebar__user {
+  justify-content: center;
+  padding-inline: 0;
+  gap: 0;
+  transition:
+    padding var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1),
+    gap var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* En modo colapsado los items inline se ocultan. Aparecen flotantes SÓLO al
+   click (data-open='true') o focus por teclado — el hover muestra el tooltip
+   pequeño, no el panel. Click → panel persistente con header + lista. */
+/* En modo colapsado los items inline se ocultan. El popover de sub-items
+   se construye en JS y se portalea a <body> (ver abrirPopoverSeccion en
+   sidebar.js) — escapa del overflow:hidden del nav y del stacking context. */
+.sidebar[data-collapsed='true'] .sidebar__items {
+  display: none;
+}
+@keyframes flotar-entrada {
+  from { opacity: 0; transform: translateX(-8px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* ======= Header del popover (nombre de la sección) ======= */
+.sidebar__items-header {
+  display: none;
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-size: 0.6875rem;
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  margin-block-end: var(--space-1);
+}
+.sidebar[data-collapsed='true'] .sidebar__items-header {
+  display: block;
+}
+
+/* Los tooltips al hover de los iconos colapsados se manejan vía portal en
+   <body> (ver components/ui/tooltip/tooltip-portal.js) — escapan del
+   overflow:hidden del sidebar__nav y de cualquier stacking context. */
+
+/* ======= Footer: avatar usuario con dropdown (estilo Vercel/Linear) ======= */
+.sidebar__footer {
+  margin: var(--space-2);
+  padding: 0;
+  /* Contenedor mínimo — el botón de usuario lleva todo el styling */
+}
+.sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--foreground);
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    padding var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sidebar__user:hover {
+  background-color: color-mix(in srgb, var(--surface-muted) 70%, transparent);
+  border-color: color-mix(in srgb, var(--border) 50%, transparent);
+}
+.sidebar__user-text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  line-height: 1.3;
+  overflow: hidden;
+}
+.sidebar__user-text strong {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar__user-text span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar__user-caret {
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+/* El estado colapsado de .sidebar__user se maneja en la regla unificada
+   con section-toggle y brand. user-text/caret se animan vía opacity+max-width. */
+
+/* ======= Mobile drawer ======= */
+@media (max-width: 1023.98px) {
+  .sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+    /* Drawer móvil debe estar SOBRE el navbar para no verse "mezclado" con
+       los iconos del header. Subimos por encima de z-sticky. */
+    z-index: var(--z-modal);
+    /* Ancho generoso pero no full-screen — se siente como app moderna */
+    width: min(85vw, 20rem);
+    /* Backdrop blur sutil para reforzar la sensación de overlay */
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Reset de estados colapsados para el drawer móvil: siempre queremos
+     el layout expandido (iconos a la izquierda, labels visibles). */
+  .sidebar[data-collapsed='true'] .sidebar__brand,
+  .sidebar[data-collapsed='true'] .sidebar__user,
+  .sidebar[data-collapsed='true'] .sidebar__section-toggle {
+    justify-content: flex-start;
+    padding-inline: var(--space-4);
+    gap: var(--space-3);
+  }
+  .sidebar[data-collapsed='true'] .sidebar__brand {
+    padding-inline: var(--space-4);
+    width: calc(100% - var(--space-2) * 2);
+  }
+  .sidebar[data-collapsed='true'] .sidebar__user {
+    padding-inline: var(--space-4);
+    width: 100%;
+  }
+
+  /* Ajuste de márgenes y anchos generales en móvil para evitar el hueco a la derecha */
+  .sidebar__brand,
+  .sidebar__user,
+  .sidebar__section-toggle,
+  .sidebar__link,
+  .sidebar__sub-toggle {
+    padding-inline: var(--space-4);
+    width: 100%;
+    max-width: none;
+  }
+
+  .sidebar__brand {
+    width: calc(100% - var(--space-2) * 2);
+  }
+
+  .sidebar__nav {
+    padding-inline: 0; /* El padding lo llevan los items individualmente */
+  }
+  [dir='rtl'] .sidebar { transform: translateX(100%); }
+  .sidebar[data-open='true'] {
+    transform: translateX(0);
+  }
+  /* En móvil ignoramos el estado colapsado — siempre se ve expandido cuando
+     el drawer está abierto (no tiene sentido colapsar un drawer overlay). */
+  .sidebar[data-collapsed='true'] .sidebar__brand-text,
+  .sidebar[data-collapsed='true'] .sidebar__section-label,
+  .sidebar[data-collapsed='true'] .sidebar__section-caret,
+  .sidebar[data-collapsed='true'] .sidebar__user-text,
+  .sidebar[data-collapsed='true'] .sidebar__user-caret,
+  .sidebar[data-collapsed='true'] .sidebar__brand-caret,
+  .sidebar[data-collapsed='true'] .sidebar__plan,
+  .sidebar[data-collapsed='true'] .sidebar__badge,
+  .sidebar__section-label,
+  .sidebar__link-text,
+  .sidebar__brand-text,
+  .sidebar__user-text,
+  .sidebar__plan {
+    opacity: 1;
+    max-width: none; /* Elimina el truncado a 12rem que causaba el margen fantasma */
+    margin-inline: revert;
+    pointer-events: auto;
+  }
+  .sidebar[data-collapsed='true'] .sidebar__group { display: block; }
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.5);
+    backdrop-filter: blur(2px);
+    z-index: calc(var(--z-modal) - 1);
+    animation: fade-in var(--transition-fast);
+  }
+}
+
+/* ============================================================================
+   ESTILOS DE NAVEGACIÓN — looks completos (no solo sidebar).
+   Cada variante coordina sidebar + navbar + content + background.
+   Controlados por [data-sidebar-style] en <html>.
+   ============================================================================ */
+
+/* === TRANSPARENT ============================================================
+   Sidebar y navbar sin fondo (sólo bordes), fondo de la página tintado.
+   El contenido principal va dentro de una "tarjeta" para destacar.
+   ========================================================================== */
+[data-sidebar-style='transparent'] .dashboard-layout {
+  background-color: var(--surface-muted);
+  background-image: none;
+}
+[data-sidebar-style='transparent'] .sidebar {
+  background-color: transparent;
+  border-inline-end: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+[data-sidebar-style='transparent'] .dashboard-layout__content {
+  margin-block: var(--space-4) var(--space-6);
+  padding: var(--space-6);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  /* Respeta --container-max global; el centrado lo da margin-inline: auto
+     heredado de la regla base .dashboard-layout__content. */
+}
+
+/* === CARD ===================================================================
+   TODO flota como tarjetas: sidebar, navbar y contenido tienen su propia card.
+   Background tintado para que las cards destaquen.
+   ========================================================================== */
+[data-sidebar-style='card'] .dashboard-layout {
+  /* El header lee --navbar-bg para teñirse igual que la página */
+  --navbar-bg: var(--surface-muted);
+  background-color: var(--surface-muted);
+  background-image: none;
+  padding: var(--space-3);
+  gap: var(--space-3);
+}
+[data-sidebar-style='card'] .sidebar {
+  margin: 0;
+  height: calc(100vh - var(--space-3) * 2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+[data-sidebar-style='card'] .dashboard-layout__main {
+  gap: var(--space-3);
+  display: flex;
+  flex-direction: column;
+}
+[data-sidebar-style='card'] .dashboard-layout__content {
+  margin-block: 0;
+  padding: var(--space-6);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  flex: 1;
+  /* Respeta --container-max global */
+}
+/* En modo card el footer también se queda transparente — coherente con
+   el header. No se aplica el frame de card al footer. */
+
+/* === INVERTED ===============================================================
+   Sidebar siempre dark, contenido respeta el tema global.
+   Header transparente para no romper la armonía.
+   ========================================================================== */
+[data-sidebar-style='inverted'] .sidebar {
+  background-color: #0f172a;
+  color: #cbd5e1;
+  border-inline-end-color: #1e293b;
+}
+[data-sidebar-style='inverted'] .sidebar__brand,
+[data-sidebar-style='inverted'] .sidebar__footer {
+  border-color: #1e293b;
+  color: #f1f5f9;
+}
+[data-sidebar-style='inverted'] .sidebar__brand-text { color: #f1f5f9; }
+[data-sidebar-style='inverted'] .sidebar__group { color: #64748b; }
+[data-sidebar-style='inverted'] .sidebar__section-toggle { color: #cbd5e1; }
+[data-sidebar-style='inverted'] .sidebar__section-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+[data-sidebar-style='inverted'] .sidebar__section-toggle[aria-expanded='true'],
+[data-sidebar-style='inverted'] .sidebar__section-toggle[aria-expanded='true'] .sidebar__section-icon {
+  color: var(--color-primary-300);
+}
+[data-sidebar-style='inverted'] .sidebar__items { border-color: #1e293b; }
+[data-sidebar-style='inverted'] .sidebar__link { color: #94a3b8; }
+[data-sidebar-style='inverted'] .sidebar__link:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+[data-sidebar-style='inverted'] .sidebar__link[aria-current='page'] {
+  background-color: rgba(59, 130, 246, 0.18);
+  color: var(--color-primary-300);
+}
+
+/* === VIBRANT ================================================================
+   Sidebar con gradiente brand, contenido en superficie clara para contraste.
+   Look "premium" tipo SaaS moderno.
+   ========================================================================== */
+[data-sidebar-style='vibrant'] .sidebar {
+  background: linear-gradient(180deg, var(--color-primary-600) 0%, var(--color-primary-900) 100%);
+  border-inline-end: none;
+  color: #f1f5f9;
+  box-shadow: 4px 0 24px -8px color-mix(in srgb, var(--color-primary-700) 40%, transparent);
+}
+[data-sidebar-style='vibrant'] .sidebar__brand,
+[data-sidebar-style='vibrant'] .sidebar__footer {
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+[data-sidebar-style='vibrant'] .sidebar__brand-text { color: #fff; }
+[data-sidebar-style='vibrant'] .sidebar__brand-mark {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px -4px rgb(0 0 0 / 0.4);
+}
+[data-sidebar-style='vibrant'] .sidebar__group { color: rgba(255, 255, 255, 0.5); }
+[data-sidebar-style='vibrant'] .sidebar__section-toggle { color: rgba(255, 255, 255, 0.88); }
+[data-sidebar-style='vibrant'] .sidebar__section-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+[data-sidebar-style='vibrant'] .sidebar__section-toggle[aria-expanded='true'],
+[data-sidebar-style='vibrant'] .sidebar__section-toggle[aria-expanded='true'] .sidebar__section-icon {
+  color: #fff;
+}
+[data-sidebar-style='vibrant'] .sidebar__items { border-color: rgba(255, 255, 255, 0.1); }
+[data-sidebar-style='vibrant'] .sidebar__link { color: rgba(255, 255, 255, 0.72); }
+[data-sidebar-style='vibrant'] .sidebar__link:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+[data-sidebar-style='vibrant'] .sidebar__link[aria-current='page'] {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 2px 0 0 #fff;
+}
+[data-sidebar-style='vibrant'] .sidebar__plan strong { color: #fff; }
+[data-sidebar-style='vibrant'] .sidebar__plan span { color: rgba(255, 255, 255, 0.7); }
+[data-sidebar-style='vibrant'] .sidebar__section-icon { color: rgba(255, 255, 255, 0.85); }
+[data-sidebar-style='vibrant'] .sidebar__brand-mark::after { display: none; }
+
+/* Las animaciones del colapso (opacity + max-width + margin) están unificadas
+   en la sección "Modo colapsado" más arriba — ya no necesitamos reglas
+   sueltas de opacity aquí. */
+
+/* ============================================================================
+   Popover de sub-items (sidebar colapsado) — soporta sub-ramas anidadas
+   ========================================================================= */
+.sidebar-popover { min-width: 14rem; max-width: 18rem; }
+
+.sidebar-popover .dropdown__item--has-sub {
+  justify-content: space-between;
+  color: var(--muted-foreground);
+}
+.sidebar-popover .dropdown__item--has-sub > svg {
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+}
+.sidebar-popover .dropdown__item--has-sub[aria-expanded='true'] > svg {
+  transform: rotate(180deg);
+}
+
+.sidebar-popover__group .sidebar-popover__sub {
+  display: none;
+  padding-inline-start: var(--space-3);
+  border-inline-start: 1px solid var(--border);
+  margin-inline-start: var(--space-3);
+  margin-block-end: var(--space-1);
+}
+.sidebar-popover__group:has(> .dropdown__item--has-sub[aria-expanded='true']) > .sidebar-popover__sub {
+  display: block;
+}
+
+.sidebar__badge--inline {
+  margin-inline-start: var(--space-2);
+  height: 0.875rem;
+  font-size: 0.6rem;
+  padding: 0 var(--space-1);
+}

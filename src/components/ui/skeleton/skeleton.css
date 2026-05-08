@@ -1,0 +1,92 @@
+/* =============================================================================
+   Esqueleto — placeholders shimmer durante carga
+   ============================================================================= */
+.skeleton {
+  display: block;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--foreground) 8%, transparent) 25%,
+    color-mix(in srgb, var(--foreground) 16%, transparent) 37%,
+    color-mix(in srgb, var(--foreground) 8%, transparent) 63%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius);
+  height: 1rem;
+}
+
+/* Variantes de tamaño/forma */
+.skeleton--text {
+  height: 0.75rem;
+  margin-block: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+.skeleton--title    { height: 1.5rem; width: 50%; }
+.skeleton--subtitle { height: 1rem;   width: 35%; }
+.skeleton--circle   { border-radius: 50%; aspect-ratio: 1; }
+.skeleton--square   { aspect-ratio: 1; border-radius: var(--radius); }
+.skeleton--card     { height: 8rem; border-radius: var(--radius-md); }
+.skeleton--button   { height: 2.25rem; width: 6rem; border-radius: var(--radius); }
+.skeleton--thumbnail {
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-md);
+  height: auto;
+}
+.skeleton--chip     { height: 1.25rem; width: 4rem; border-radius: 999px; }
+
+/* Grupo de líneas (shortcut `lineas: 3`) */
+.skeleton-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ===== Animaciones ===== */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* Pulse — opacidad oscilante (más sutil, menos llamativo) */
+.skeleton--pulse {
+  background: color-mix(in srgb, var(--foreground) 12%, transparent) !important;
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+
+/* Wave — onda travelling (más explícito, ideal para listas largas) */
+.skeleton--wave {
+  background: color-mix(in srgb, var(--foreground) 10%, transparent) !important;
+  position: relative;
+  overflow: hidden;
+}
+.skeleton--wave::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg,
+    transparent,
+    color-mix(in srgb, var(--foreground) 18%, transparent),
+    transparent);
+  animation: skeleton-wave 1.6s ease-in-out infinite;
+}
+@keyframes skeleton-wave {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* None — desactiva la animación (para reduced-motion o estados estáticos) */
+.skeleton--none {
+  animation: none !important;
+  background: color-mix(in srgb, var(--foreground) 12%, transparent) !important;
+}
+
+/* Respeto a `prefers-reduced-motion` */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none !important;
+    background: color-mix(in srgb, var(--foreground) 12%, transparent) !important;
+  }
+}

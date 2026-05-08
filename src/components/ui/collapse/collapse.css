@@ -1,0 +1,265 @@
+/* ============================================================================
+   Colapso — primitivo animado con grid-template-rows
+   ============================================================================ */
+.colapso { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 240ms cubic-bezier(0.16, 1, 0.3, 1); }
+.colapso[data-abierto='true'] { grid-template-rows: 1fr; }
+.colapso__cuerpo { overflow: hidden; }
+.colapso__contenido {
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+/* Variante "limpia" — sin fondo/borde, para componer dentro de helpers */
+.colapso__contenido--limpio {
+  padding: 0; background: transparent; border: 0; border-radius: 0;
+  font-size: inherit; color: inherit; line-height: inherit;
+}
+
+/* ============================================================================
+   ColapsoFAQ — pregunta + respuesta
+   ============================================================================ */
+.colapso-faq {
+  border-block-end: 1px solid var(--border);
+}
+.colapso-faq:last-child { border-block-end: 0; }
+.colapso-faq__cabezal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-2);
+  background: transparent;
+  border: 0;
+  text-align: start;
+  cursor: pointer;
+  color: var(--foreground);
+  font-size: var(--text-base);
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+.colapso-faq__cabezal:hover { color: var(--primary); }
+.colapso-faq__pregunta { flex: 1; min-width: 0; }
+.colapso-faq__chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1), color var(--transition-fast);
+}
+.colapso-faq[data-abierto='true'] .colapso-faq__chevron {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+.colapso-faq__respuesta {
+  padding: 0 var(--space-2) var(--space-4);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
+/* ============================================================================
+   ColapsoLeerMas — texto largo con "Ver más / Ver menos"
+   ============================================================================ */
+.colapso-leer-mas {
+  color: var(--foreground);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+.colapso-leer-mas__corto,
+.colapso-leer-mas__completo { margin: 0; }
+.colapso-leer-mas__enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-block-start: var(--space-2);
+  padding: 2px 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  font-family: inherit;
+}
+.colapso-leer-mas__enlace:hover { text-decoration: underline; }
+.colapso-leer-mas__icono {
+  display: inline-flex;
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.colapso-leer-mas__enlace[data-abierto='true'] .colapso-leer-mas__icono {
+  transform: rotate(180deg);
+}
+
+/* ============================================================================
+   ColapsoFiltro — sección sidebar tipo Amazon / Mercado Libre
+   ============================================================================ */
+.colapso-filtro {
+  border-block-end: 1px solid var(--border);
+  padding-block: var(--space-1);
+}
+.colapso-filtro:last-child { border-block-end: 0; }
+.colapso-filtro__cabezal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-1);
+  background: transparent;
+  border: 0;
+  text-align: start;
+  cursor: pointer;
+  color: var(--foreground);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.colapso-filtro__cabezal:hover { color: var(--primary); }
+.colapso-filtro__icono {
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+.colapso-filtro__titulo { flex: 1; min-width: 0; }
+.colapso-filtro__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.colapso-filtro__chevron {
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.colapso-filtro[data-abierto='true'] .colapso-filtro__chevron {
+  transform: rotate(180deg);
+}
+.colapso-filtro__cuerpo {
+  padding: var(--space-1) var(--space-1) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* ============================================================================
+   ColapsoSeccion — header con título + sub + chevron (configuración avanzada)
+   ============================================================================ */
+.colapso-seccion {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+.colapso-seccion[data-abierto='true'] { border-color: color-mix(in srgb, var(--primary) 35%, var(--border)); }
+.colapso-seccion__cabezal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: 0;
+  text-align: start;
+  cursor: pointer;
+  color: var(--foreground);
+  font-family: inherit;
+}
+.colapso-seccion__cabezal:hover { background: color-mix(in srgb, var(--foreground) 4%, transparent); }
+.colapso-seccion__icono {
+  display: inline-flex;
+  width: 36px; height: 36px;
+  align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+.colapso-seccion__textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.colapso-seccion__titulo {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--foreground);
+}
+.colapso-seccion__subtitulo {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+.colapso-seccion__badge { flex-shrink: 0; }
+.colapso-seccion__chevron {
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.colapso-seccion[data-abierto='true'] .colapso-seccion__chevron {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+.colapso-seccion__cuerpo {
+  padding: var(--space-4);
+  border-block-start: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ============================================================================
+   Helpers compositivos para los demos del showcase
+   ============================================================================ */
+.colapso-demo-filtros {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  max-width: 320px;
+}
+.colapso-demo-check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 0;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  cursor: pointer;
+  user-select: none;
+}
+.colapso-demo-check input { accent-color: var(--primary); cursor: pointer; }
+.colapso-demo-check__count {
+  margin-inline-start: auto;
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+}
+.colapso-demo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@media (max-width: 639.98px) {
+  .colapso-demo-filtros { max-width: 100%; }
+  .colapso-faq__cabezal { font-size: var(--text-sm); padding: var(--space-3) var(--space-1); }
+  .colapso-seccion__cabezal { padding: var(--space-3); gap: var(--space-2); }
+  .colapso-seccion__icono { width: 32px; height: 32px; }
+}

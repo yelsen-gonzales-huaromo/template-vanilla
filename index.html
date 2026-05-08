@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr" data-theme="light" class="scroll-discreto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#3b82f6" />
+  <meta name="description" content="Launchpad — plantilla empresarial nativa, reactiva y escalable." />
+
+  <title>Launchpad · Plantilla empresarial nativa</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="./public/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./public/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./public/favicons/favicon-16x16.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="./public/favicons/favicon.ico" />
+  <meta name="msapplication-TileImage" content="./public/favicons/mstile-150x150.png" />
+  <link rel="manifest" href="./public/manifest.json" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./src/styles/main.css" />
+
+  <!--
+    Configuración global. Equivale a `import.meta.env` de Vite pero leíble por código vanilla.
+    Edita estos valores o sobreescríbelos antes de cargar main.js (p. ej. desde Razor/Blade/Spring).
+  -->
+  <script>
+    window.LAUNCHPAD_CONFIG = Object.freeze({
+      nombre:   'Launchpad',
+      version:  '1.0.0',
+      ambiente: 'development',
+      api: {
+        urlBase: '/api',
+        tiempoEspera: 15000,
+      },
+      auth: {
+        cabeceraToken: 'Authorization',
+        prefijoToken:  'Bearer',
+        margenRenovacionSeg: 60,
+      },
+      ui: {
+        temaPorDefecto:    'system',
+        idiomaPorDefecto:  'es',
+        idiomasSoportados: ['es', 'en'],
+        direccion: 'ltr',
+      },
+      caracteristicas: {
+        pwa: false,
+        analitica: false,
+      },
+      modoDemo: true,
+    });
+  </script>
+
+  <!-- Hidratamos tema y dirección antes del primer paint para evitar FOUC. -->
+  <script>
+    (function () {
+      try {
+        var tema = JSON.parse(localStorage.getItem('launchpad.ui.theme'));
+        var dir  = JSON.parse(localStorage.getItem('launchpad.ui.dir'));
+        var resuelto = (!tema || tema === 'system')
+          ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : tema;
+        document.documentElement.setAttribute('data-theme', resuelto);
+        if (dir) document.documentElement.setAttribute('dir', dir);
+      } catch (_) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <div id="app">
+    <div class="boot">
+      <div class="boot__mark"></div>
+      <p>Iniciando Launchpad…</p>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

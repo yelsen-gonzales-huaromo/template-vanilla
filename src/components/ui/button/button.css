@@ -1,0 +1,278 @@
+/* =============================================================================
+   Botón profesional — Linear / Vercel / Stripe inspiration
+   ========================================================================= */
+.btn {
+  --btn-bg: var(--primary);
+  --btn-fg: var(--primary-foreground);
+  --btn-bg-hover: var(--primary-hover);
+  --btn-border: transparent;
+  --btn-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.08);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  border-radius: var(--radius);
+  border: 1px solid var(--btn-border);
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  box-shadow: var(--btn-shadow);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform 80ms;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: var(--btn-bg-hover);
+  box-shadow: 0 2px 4px 0 rgb(15 23 42 / 0.10);
+}
+.btn:active:not(:disabled) {
+  transform: translateY(0.5px);
+  box-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.06);
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+.btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+/* ============================================================================
+   VARIANTES — colores
+   ============================================================================ */
+.btn--secondary {
+  --btn-bg: var(--secondary);
+  --btn-fg: var(--secondary-foreground);
+  --btn-bg-hover: var(--secondary-hover);
+  --btn-border: color-mix(in srgb, var(--border) 70%, transparent);
+  --btn-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+}
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--foreground);
+  --btn-bg-hover: var(--muted);
+  --btn-border: transparent;
+  --btn-shadow: none;
+}
+.btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--foreground);
+  --btn-bg-hover: var(--muted);
+  --btn-border: var(--border);
+  --btn-shadow: none;
+}
+.btn--danger  { --btn-bg: var(--color-danger);  --btn-fg: #fff; --btn-bg-hover: color-mix(in srgb, var(--color-danger)  85%, #000); }
+.btn--success { --btn-bg: var(--color-success); --btn-fg: #fff; --btn-bg-hover: color-mix(in srgb, var(--color-success) 85%, #000); }
+.btn--warning { --btn-bg: var(--color-warning); --btn-fg: #fff; --btn-bg-hover: color-mix(in srgb, var(--color-warning) 85%, #000); }
+.btn--info    { --btn-bg: var(--color-info);    --btn-fg: #fff; --btn-bg-hover: color-mix(in srgb, var(--color-info)    85%, #000); }
+.btn--link {
+  --btn-bg: transparent;
+  --btn-fg: var(--primary);
+  --btn-bg-hover: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+  padding-inline: 4px;
+  text-decoration: none;
+}
+.btn--link:hover:not(:disabled) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  box-shadow: none;
+}
+.btn--brand {
+  background: var(--brand-gradient);
+  color: var(--primary-foreground);
+  border-color: transparent;
+}
+.btn--brand:hover:not(:disabled) {
+  background: var(--brand-gradient);
+  filter: brightness(1.06);
+}
+
+/* ============================================================================
+   ESTILOS DE FILL (modificadores aplicables sobre cualquier variante)
+   ============================================================================ */
+/* `soft`: fondo suave del color, texto en color */
+.btn--est-soft {
+  --btn-bg: color-mix(in srgb, var(--btn-bg) 14%, var(--surface));
+  --btn-fg: var(--btn-bg);
+  --btn-bg-hover: color-mix(in srgb, var(--btn-bg) 22%, var(--surface));
+  --btn-border: transparent;
+  --btn-shadow: none;
+}
+/* Caso especial — para variantes con bg ya neutro, soft usa el color semántico */
+.btn--danger.btn--est-soft  { --btn-bg: var(--color-danger);  }
+.btn--success.btn--est-soft { --btn-bg: var(--color-success); }
+.btn--warning.btn--est-soft { --btn-bg: var(--color-warning); }
+.btn--info.btn--est-soft    { --btn-bg: var(--color-info);    }
+.btn--primary.btn--est-soft,
+.btn:not([class*="btn--"]).btn--est-soft { --btn-bg: var(--primary); }
+
+/* `outline` modifier: borde en color, transparente */
+.btn--est-outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--btn-bg);
+  --btn-bg-hover: color-mix(in srgb, var(--btn-bg) 8%, transparent);
+  --btn-border: var(--btn-bg);
+  --btn-shadow: none;
+}
+.btn--danger.btn--est-outline   { --btn-fg: var(--color-danger);   --btn-border: var(--color-danger);  --btn-bg-hover: color-mix(in srgb, var(--color-danger) 8%, transparent); }
+.btn--success.btn--est-outline  { --btn-fg: var(--color-success);  --btn-border: var(--color-success); --btn-bg-hover: color-mix(in srgb, var(--color-success) 8%, transparent); }
+.btn--warning.btn--est-outline  { --btn-fg: var(--color-warning);  --btn-border: var(--color-warning); --btn-bg-hover: color-mix(in srgb, var(--color-warning) 8%, transparent); }
+.btn--info.btn--est-outline     { --btn-fg: var(--color-info);     --btn-border: var(--color-info);    --btn-bg-hover: color-mix(in srgb, var(--color-info) 8%, transparent); }
+
+/* `ghost` modifier: sin bg, sin borde, hover suave */
+.btn--est-ghost {
+  --btn-bg: transparent;
+  --btn-bg-hover: color-mix(in srgb, var(--btn-bg) 10%, transparent);
+  --btn-border: transparent;
+  --btn-shadow: none;
+}
+
+/* ============================================================================
+   TAMAÑOS
+   ============================================================================ */
+.btn--xs { padding-block: 4px;  padding-inline: var(--space-2); font-size: 0.7rem; gap: 4px; }
+.btn--sm { padding-block: var(--space-1); padding-inline: var(--space-3); font-size: var(--text-xs); }
+.btn--lg { padding-block: var(--space-3); padding-inline: var(--space-6); font-size: var(--text-base); }
+.btn--xl { padding-block: 14px; padding-inline: var(--space-7, 1.75rem); font-size: var(--text-lg); }
+
+/* ============================================================================
+   FORMAS
+   ============================================================================ */
+.btn--pill     { border-radius: var(--radius-full); }
+.btn--cuadrado { border-radius: var(--radius-sm); }
+
+/* ============================================================================
+   ESPECIALES
+   ============================================================================ */
+.btn--icon  { padding: var(--space-2); aspect-ratio: 1; }
+.btn--xs.btn--icon { padding: 5px; }
+.btn--sm.btn--icon { padding: var(--space-1) var(--space-1); }
+.btn--lg.btn--icon { padding: var(--space-3); }
+.btn--block { width: 100%; }
+
+/* Estado activo (toggle) */
+.btn--activo {
+  background-color: color-mix(in srgb, var(--primary) 15%, var(--btn-bg));
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--btn-border));
+}
+.btn--ghost.btn--activo,
+.btn--outline.btn--activo {
+  background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+/* Elevado (sombra extra) */
+.btn--elevado {
+  box-shadow:
+    0 4px 12px -2px color-mix(in srgb, var(--btn-bg) 35%, transparent),
+    0 2px 4px -1px rgb(15 23 42 / 0.1);
+}
+.btn--elevado:hover:not(:disabled) {
+  box-shadow:
+    0 8px 20px -4px color-mix(in srgb, var(--btn-bg) 45%, transparent),
+    0 4px 8px -2px rgb(15 23 42 / 0.12);
+  transform: translateY(-1px);
+}
+
+/* Cargando (spinner overlay) */
+.btn[aria-busy='true'] { color: transparent; pointer-events: none; position: relative; }
+.btn[aria-busy='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1rem; height: 1rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  color: var(--btn-fg);
+}
+
+/* ============================================================================
+   GRUPO DE BOTONES — botones unidos
+   ============================================================================ */
+.btn-grupo {
+  display: inline-flex;
+  isolation: isolate;
+}
+.btn-grupo > .btn {
+  border-radius: 0;
+  margin-inline-start: -1px;
+}
+.btn-grupo > .btn:first-child { border-start-start-radius: var(--radius); border-end-start-radius: var(--radius); margin-inline-start: 0; }
+.btn-grupo > .btn:last-child  { border-start-end-radius:   var(--radius); border-end-end-radius:   var(--radius); }
+.btn-grupo > .btn:hover, .btn-grupo > .btn:focus-visible { z-index: 1; }
+.btn-grupo > .btn--activo { z-index: 2; }
+
+/* Vertical */
+.btn-grupo--vertical { flex-direction: column; }
+.btn-grupo--vertical > .btn { margin-inline-start: 0; margin-block-start: -1px; }
+.btn-grupo--vertical > .btn:first-child { border-radius: var(--radius) var(--radius) 0 0; margin-block-start: 0; }
+.btn-grupo--vertical > .btn:last-child  { border-radius: 0 0 var(--radius) var(--radius); }
+
+/* ============================================================================
+   BOTÓN SPLIT — principal + caret dropdown
+   ============================================================================ */
+.btn-split {
+  display: inline-flex;
+  isolation: isolate;
+}
+.btn-split__principal {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.btn-split__caret {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  border-inline-start-color: color-mix(in srgb, #000 15%, transparent);
+  margin-inline-start: -1px;
+  padding-inline: 8px;
+}
+.btn-split__caret:hover { z-index: 1; }
+
+/* ============================================================================
+   FAB (Floating Action Button)
+   ============================================================================ */
+.btn-fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem; height: 3rem;
+  background: var(--brand-gradient, linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 70%, var(--color-info))));
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 6px 16px -4px color-mix(in srgb, var(--primary) 60%, transparent);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.btn-fab:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 24px -6px color-mix(in srgb, var(--primary) 70%, transparent);
+}
+.btn-fab:active { transform: scale(0.96); }
+.btn-fab:focus-visible { outline: none; box-shadow: var(--shadow-focus), 0 6px 16px -4px color-mix(in srgb, var(--primary) 60%, transparent); }
+.btn-fab__icono { display: inline-flex; }
+
+.btn-fab--sm { width: 2.5rem; height: 2.5rem; }
+.btn-fab--lg { width: 3.5rem; height: 3.5rem; }
+
+.btn-fab--danger  { background: linear-gradient(135deg, var(--color-danger), color-mix(in srgb, var(--color-danger) 70%, #000)); }
+.btn-fab--success { background: linear-gradient(135deg, var(--color-success), color-mix(in srgb, var(--color-success) 70%, #000)); }
+
+.btn-fab--fijo {
+  position: fixed;
+  inset-block-end: var(--space-5);
+  inset-inline-end: var(--space-5);
+  z-index: var(--z-sticky);
+}

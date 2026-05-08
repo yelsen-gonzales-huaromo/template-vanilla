@@ -1,0 +1,129 @@
+/* =============================================================================
+   RangoSlider — track + handles + tooltips + pips, vanilla
+   ============================================================================= */
+
+.slider {
+  position: relative;
+  width: 100%;
+  padding-block: 18px 8px;          /* espacio para el tooltip arriba */
+  --thumb: 18px;
+  user-select: none;
+  touch-action: none;
+}
+.slider__track {
+  position: relative;
+  height: 6px;
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.slider__fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.slider__handle {
+  position: absolute;
+  top: 50%;
+  width: var(--thumb);
+  height: var(--thumb);
+  margin-inline-start: calc(var(--thumb) / -2);
+  background: #fff;
+  border-radius: 50%;
+  cursor: grab;
+  transform: translateY(-50%);
+  box-shadow:
+    0 0 0 1.5px var(--primary),
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  z-index: 1;
+}
+.slider__handle:hover {
+  transform: translateY(-50%) scale(1.12);
+  box-shadow:
+    0 0 0 1.5px var(--primary),
+    0 0 0 6px color-mix(in srgb, var(--primary) 16%, transparent),
+    0 2px 6px rgba(0, 0, 0, 0.14);
+}
+.slider__handle:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1.5px var(--primary),
+    0 0 0 4px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+.slider__handle--activo,
+.slider__handle:active {
+  cursor: grabbing;
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* Tooltip arriba del handle */
+.slider__tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  background: var(--foreground);
+  color: var(--background);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.slider__tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--foreground);
+}
+.slider__tip--hover {
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+.slider__handle:hover > .slider__tip--hover,
+.slider__handle--activo > .slider__tip--hover {
+  opacity: 1;
+}
+
+/* Pips (marcas) */
+.slider__pips {
+  position: relative;
+  height: 24px;
+  margin-block-start: 6px;
+}
+.slider__pip {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+.slider__pip-mark {
+  width: 1px;
+  height: 6px;
+  background: color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+.slider__pip-label {
+  font-size: 10.5px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Variante deshabilitada */
+.slider--desh { opacity: 0.5; pointer-events: none; }

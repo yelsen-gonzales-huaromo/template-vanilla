@@ -1,0 +1,159 @@
+/* =============================================================================
+   Command Palette — modal centrado tipo Linear/GitHub/Vercel.
+   ========================================================================== */
+.cmd-palette__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12vh var(--space-4) var(--space-4);
+  background-color: rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: cmd-fade-in var(--transition-fast) ease-out;
+  overflow-y: auto;
+}
+
+.cmd-palette {
+  width: 100%;
+  max-width: 36rem;
+  background-color: var(--surface-elevated);
+  color: var(--surface-foreground);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 24px 60px -16px rgb(0 0 0 / 0.35),
+    0 8px 24px -8px rgb(0 0 0 / 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: cmd-slide-in var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== Cabecera con icono + input + close ===== */
+.cmd-palette__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+}
+.cmd-palette__head-icon {
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+.cmd-palette__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--foreground);
+  font-size: var(--text-base);
+  font-family: inherit;
+  outline: none;
+  padding: var(--space-2) 0;
+}
+.cmd-palette__input::placeholder { color: var(--muted-foreground); }
+.cmd-palette__close {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: inline-grid;
+  place-items: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.cmd-palette__close:hover {
+  background-color: var(--muted);
+  color: var(--foreground);
+}
+
+/* ===== Lista de resultados ===== */
+.cmd-palette__results {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cmd-palette__group {
+  font-size: 0.6875rem;
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  padding: var(--space-3) var(--space-3) var(--space-2);
+}
+
+.cmd-palette__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--foreground);
+  font-size: var(--text-sm);
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+.cmd-palette__item:hover,
+.cmd-palette__item[aria-selected='true'] {
+  background-color: color-mix(in srgb, var(--muted) 80%, transparent);
+}
+.cmd-palette__item-icon {
+  display: inline-flex;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+.cmd-palette__item[aria-selected='true'] .cmd-palette__item-icon {
+  color: var(--primary);
+}
+.cmd-palette__item-text {
+  flex: 1;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cmd-palette__item-section {
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+}
+
+.cmd-palette__empty {
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+
+/* ===== Animaciones ===== */
+@keyframes cmd-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes cmd-slide-in {
+  from { opacity: 0; transform: translateY(-12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ===== Móvil ===== */
+@media (max-width: 639.98px) {
+  .cmd-palette__backdrop { padding: var(--space-3); align-items: flex-start; }
+  .cmd-palette { max-width: 100%; }
+}

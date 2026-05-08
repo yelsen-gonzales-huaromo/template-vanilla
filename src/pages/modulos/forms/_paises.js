@@ -1,0 +1,76 @@
+/**
+ * Catálogo curado de países para el PhoneInput.
+ * Cada entrada: { iso (2 letras minúsculas), nombre, dial (sin '+') }.
+ * Orden inicial: LatAm primero (mercado principal), luego España + US,
+ * luego el resto alfabético.
+ */
+export const PAISES = [
+  // LATAM
+  { iso: 'pe', nombre: 'Perú', dial: '51' },
+  { iso: 'ar', nombre: 'Argentina', dial: '54' },
+  { iso: 'bo', nombre: 'Bolivia', dial: '591' },
+  { iso: 'br', nombre: 'Brasil', dial: '55' },
+  { iso: 'cl', nombre: 'Chile', dial: '56' },
+  { iso: 'co', nombre: 'Colombia', dial: '57' },
+  { iso: 'cr', nombre: 'Costa Rica', dial: '506' },
+  { iso: 'cu', nombre: 'Cuba', dial: '53' },
+  { iso: 'do', nombre: 'República Dominicana', dial: '1' },
+  { iso: 'ec', nombre: 'Ecuador', dial: '593' },
+  { iso: 'sv', nombre: 'El Salvador', dial: '503' },
+  { iso: 'gt', nombre: 'Guatemala', dial: '502' },
+  { iso: 'hn', nombre: 'Honduras', dial: '504' },
+  { iso: 'mx', nombre: 'México', dial: '52' },
+  { iso: 'ni', nombre: 'Nicaragua', dial: '505' },
+  { iso: 'pa', nombre: 'Panamá', dial: '507' },
+  { iso: 'py', nombre: 'Paraguay', dial: '595' },
+  { iso: 'pr', nombre: 'Puerto Rico', dial: '1' },
+  { iso: 'uy', nombre: 'Uruguay', dial: '598' },
+  { iso: 've', nombre: 'Venezuela', dial: '58' },
+  // Españoles + US
+  { iso: 'es', nombre: 'España', dial: '34' },
+  { iso: 'us', nombre: 'Estados Unidos', dial: '1' },
+  { iso: 'ca', nombre: 'Canadá', dial: '1' },
+  // Europa
+  { iso: 'de', nombre: 'Alemania', dial: '49' },
+  { iso: 'at', nombre: 'Austria', dial: '43' },
+  { iso: 'be', nombre: 'Bélgica', dial: '32' },
+  { iso: 'dk', nombre: 'Dinamarca', dial: '45' },
+  { iso: 'fr', nombre: 'Francia', dial: '33' },
+  { iso: 'gr', nombre: 'Grecia', dial: '30' },
+  { iso: 'ie', nombre: 'Irlanda', dial: '353' },
+  { iso: 'it', nombre: 'Italia', dial: '39' },
+  { iso: 'no', nombre: 'Noruega', dial: '47' },
+  { iso: 'nl', nombre: 'Países Bajos', dial: '31' },
+  { iso: 'pl', nombre: 'Polonia', dial: '48' },
+  { iso: 'pt', nombre: 'Portugal', dial: '351' },
+  { iso: 'gb', nombre: 'Reino Unido', dial: '44' },
+  { iso: 'cz', nombre: 'República Checa', dial: '420' },
+  { iso: 'ro', nombre: 'Rumanía', dial: '40' },
+  { iso: 'ru', nombre: 'Rusia', dial: '7' },
+  { iso: 'se', nombre: 'Suecia', dial: '46' },
+  { iso: 'ch', nombre: 'Suiza', dial: '41' },
+  { iso: 'tr', nombre: 'Turquía', dial: '90' },
+  { iso: 'ua', nombre: 'Ucrania', dial: '380' },
+  // Asia / Oceanía
+  { iso: 'au', nombre: 'Australia', dial: '61' },
+  { iso: 'cn', nombre: 'China', dial: '86' },
+  { iso: 'kr', nombre: 'Corea del Sur', dial: '82' },
+  { iso: 'in', nombre: 'India', dial: '91' },
+  { iso: 'id', nombre: 'Indonesia', dial: '62' },
+  { iso: 'il', nombre: 'Israel', dial: '972' },
+  { iso: 'jp', nombre: 'Japón', dial: '81' },
+  { iso: 'nz', nombre: 'Nueva Zelanda', dial: '64' },
+  { iso: 'ph', nombre: 'Filipinas', dial: '63' },
+  { iso: 'sg', nombre: 'Singapur', dial: '65' },
+  { iso: 'th', nombre: 'Tailandia', dial: '66' },
+  { iso: 'vn', nombre: 'Vietnam', dial: '84' },
+  // África / Medio Oriente
+  { iso: 'eg', nombre: 'Egipto', dial: '20' },
+  { iso: 'ma', nombre: 'Marruecos', dial: '212' },
+  { iso: 'ng', nombre: 'Nigeria', dial: '234' },
+  { iso: 'sa', nombre: 'Arabia Saudita', dial: '966' },
+  { iso: 'za', nombre: 'Sudáfrica', dial: '27' },
+  { iso: 'ae', nombre: 'Emiratos Árabes Unidos', dial: '971' },
+];
+
+export const buscarPais = (iso) => PAISES.find((p) => p.iso === iso) || PAISES[0];
