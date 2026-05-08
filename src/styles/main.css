@@ -47,6 +47,7 @@
 @import url('../components/ui/avatar/avatar.css');
 @import url('../components/ui/spinner/spinner.css');
 @import url('../components/ui/skeleton/skeleton.css');
+@import url('../components/ui/skeleton-page/skeleton-page.css');
 @import url('../components/ui/modal/modal.css');
 @import url('../components/ui/dropdown/dropdown.css');
 @import url('../components/ui/table/table.css');
@@ -99,7 +100,8 @@
   flex-direction: column;
 }
 
-/* Pantalla de carga inicial */
+/* Overlay "Iniciando…" — sólo se usa como transición tras login/registro
+   (montado dinámicamente por utils/helpers/intro.js). NO aparece en F5. */
 .boot {
   position: fixed;
   inset: 0;
@@ -111,7 +113,10 @@
   background-color: var(--background);
   color: var(--muted-foreground);
   z-index: 9999;
+  opacity: 1;
+  transition: opacity 240ms ease;
 }
+.boot--saliendo { opacity: 0; pointer-events: none; }
 .boot__mark {
   width: 3rem;
   height: 3rem;

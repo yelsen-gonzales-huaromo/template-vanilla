@@ -13,6 +13,11 @@ import { busEventos, EVENTOS_APP } from '../utils/helpers/event-bus.js';
 import { senal } from '../utils/helpers/reactive.js';
 import { montarDiseno } from '../layouts/index.js';
 import { CONFIG_APP } from '../config/app.config.js';
+import { EsqueletoPagina } from '../components/ui/skeleton-page/skeleton-page.js';
+
+// Umbral anti-parpadeo: si la página llega antes de este tiempo no mostramos
+// esqueleto (evita flash en cargas cacheadas o módulos ya descargados).
+const UMBRAL_ESQUELETO_MS = 120;
 
 const rutaActual = senal(null);
 
@@ -77,8 +82,25 @@ const manejarCambioRuta = async () => {
     const app = document.getElementById('app');
     if (!app) return;
 
+    // Esqueleto pre-mount: si la importación tarda > UMBRAL_ESQUELETO_MS
+    // pintamos un placeholder con la silueta de la página dentro del layout
+    // correcto. El timer se cancela apenas el módulo termine de cargarse.
+    const layoutDestino = definicion.layout || 'blank';
+    const overrideEsq = definicion.meta?.esqueleto || definicion.esqueleto;
+    const tEsqueleto = setTimeout(() => {
+      try {
+        const sk = EsqueletoPagina(ctx.path, overrideEsq);
+        montarDiseno(layoutDestino, sk, app);
+      } catch (errSk) {
+        // Si fallara la generación del esqueleto, lo silenciamos: la página
+        // real va a llegar en breve y reemplazar este nodo.
+        console.warn('[enrutador] esqueleto no se pudo montar', errSk);
+      }
+    }, UMBRAL_ESQUELETO_MS);
+
     try {
       const modulo = await definicion.component();
+      clearTimeout(tEsqueleto);
       const renderPagina = modulo.default || modulo.render || modulo[Object.keys(modulo)[0]];
       const nodo = await renderPagina(ctx);
       // Wrapper que captura errores síncronos de montaje — antes los tragaba la View Transition.
@@ -111,6 +133,7 @@ const manejarCambioRuta = async () => {
         aplicar();
       }
     } catch (err) {
+      clearTimeout(tEsqueleto);
       console.error('[enrutador] fallo al cargar la ruta', err);
       renderError(app, `No se pudo cargar la página: ${err.message || err}`);
       busEventos.emitir(EVENTOS_APP.ERROR_CAPTURADO, err);

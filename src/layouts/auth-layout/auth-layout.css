@@ -1,32 +1,1022 @@
+/* =============================================================================
+   Auth layouts — 3 variantes (simple / card / split) y modal.
+   Comparten un kit común: marca, formulario, divisor, botones sociales,
+   panel promocional. Las clases viven en este archivo para mantener todo el
+   universo auth en un solo sitio (fácil de mantener, fácil de eliminar).
+   ============================================================================= */
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  1. KIT COMÚN (componentes compartidos)                              ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+/* ----- Marca compacta (logo + nombre) ----- */
+.auth-marca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--foreground);
+  font-weight: var(--weight-bold);
+}
+.auth-marca__cuadro {
+  display: inline-block;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%);
+  box-shadow: 0 6px 20px -6px rgb(59 130 246 / 0.55);
+}
+.auth-marca__nombre { font-size: var(--text-lg); letter-spacing: -0.01em; }
+.auth-marca--lg .auth-marca__nombre { font-size: var(--text-xl); }
+
+/* ----- Cabecera del formulario (título + pista a la derecha) ----- */
+.auth-cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-end: var(--space-2);
+  flex-wrap: wrap;
+}
+.auth-cabecera__titulo {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.2vw, 1.875rem);
+  font-weight: var(--weight-extrabold, 800);
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+  line-height: 1.15;
+}
+.auth-cabecera__pista {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  align-self: end;
+}
+.auth-cabecera__pista .auth-enlace {
+  font-weight: var(--weight-semibold);
+}
+
+/* ----- Formulario base ----- */
+.auth-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+}
+.auth-contenido--centrada { text-align: center; align-items: center; }
+.auth-contenido--centrada .auth-form { width: 100%; text-align: start; }
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.auth-form--bloqueo { gap: var(--space-3); margin-block-start: var(--space-4); }
+
+/* === Inputs grandes y suaves dentro de auth ===
+   Sobreescribimos el .input base para que se sientan "premium": altura cómoda,
+   relleno suave (no sólo border), foco con halo del color de marca. */
+.auth-form .input,
+.auth-form .input-grupo,
+.auth-form .sel-trigger,
+.auth-form .picker-trigger > .input {
+  height: 52px;
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  font-size: var(--text-base);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  border: 1.5px solid transparent;
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.auth-form .input::placeholder { color: color-mix(in srgb, var(--muted-foreground) 80%, transparent); }
+.auth-form .input:hover:not(:focus):not(:disabled),
+.auth-form .input-grupo:hover:not(:focus-within) {
+  background: color-mix(in srgb, var(--surface-muted) 70%, var(--surface));
+  border-color: var(--border);
+}
+.auth-form .input:focus,
+.auth-form .input-grupo:focus-within {
+  background: var(--surface);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
+  outline: none;
+}
+.auth-form .input[aria-invalid='true'] {
+  border-color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger) 5%, var(--surface-muted));
+}
+.auth-form .input[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-danger) 22%, transparent);
+}
+
+/* Etiquetas más sutiles, separación más generosa entre campos */
+.auth-form .form-field { margin-block-end: 0; }
+.auth-form label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+  letter-spacing: -0.005em;
+}
+
+/* === Botón primario grande === */
+.auth-form button[type='submit'].btn,
+.auth-acciones .btn {
+  height: 52px;
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold, 700);
+  letter-spacing: -0.005em;
+  border-radius: var(--radius);
+}
+.auth-form button[type='submit'].btn--primary,
+.auth-form button[type='submit']:not([class*='btn--']) {
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.15) inset,
+    0 8px 24px -10px color-mix(in srgb, var(--primary) 70%, transparent);
+}
+.auth-form button[type='submit'].btn--primary:hover {
+  filter: brightness(1.05);
+}
+.auth-form button[type='submit'].btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.auth-lead {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+
+.auth-fila-entre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.auth-pie {
+  margin-block-start: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+.auth-pie--centrado { text-align: center; }
+.auth-acciones { display: flex; flex-direction: column; gap: var(--space-2); width: 100%; }
+
+/* ----- Enlaces inline ----- */
+.auth-enlace {
+  color: var(--primary);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+.auth-enlace:hover { color: var(--primary-hover); text-decoration: underline; }
+.auth-enlace--menor { font-size: var(--text-sm); }
+
+/* ----- Checkbox custom (sin pisar el input nativo demasiado) ----- */
+.auth-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  cursor: pointer;
+  user-select: none;
+}
+.auth-checkbox input[type='checkbox'] {
+  appearance: none;
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  position: relative;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.auth-checkbox input[type='checkbox']:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.auth-checkbox input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 1px; inset-inline-start: 4px;
+  width: 4px; height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.auth-checkbox--terms { align-items: flex-start; line-height: 1.45; }
+.auth-checkbox--terms input { margin-block-start: 2px; flex-shrink: 0; }
+
+/* ----- Divisor "o continúa con" ----- */
+.auth-divisor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--muted-foreground);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: var(--weight-semibold);
+  margin-block: var(--space-1);
+}
+.auth-divisor::before,
+.auth-divisor::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.auth-divisor::after { background: linear-gradient(90deg, var(--border), transparent); }
+.auth-divisor::before { background: linear-gradient(90deg, transparent, var(--border)); }
+
+/* ----- Botones sociales (con identidad de marca) ----- */
+.auth-social-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+.auth-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 48px;
+  padding: 0 var(--space-3);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 180ms ease, transform 140ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+.auth-social::before {
+  /* Glow del color de la marca al hover, dentro del botón */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--c, transparent);
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+.auth-social:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px -10px var(--c, rgba(0,0,0,0.2));
+}
+.auth-social:hover::before { opacity: 0.08; }
+.auth-social:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--c, var(--primary)) 35%, transparent);
+  outline-offset: 2px;
+}
+
+/* Variantes con color de marca */
+.auth-social--google    { --c: #ea4335; }
+.auth-social--apple     { --c: var(--foreground); }
+.auth-social--microsoft { --c: #2f7cf6; }
+
+.auth-social:hover { border-color: color-mix(in srgb, var(--c) 55%, var(--border)); }
+
+.auth-social svg { flex-shrink: 0; position: relative; z-index: 1; }
+.auth-social span {
+  position: relative; z-index: 1;
+  display: none;
+}
+@media (min-width: 480px) {
+  .auth-social span { display: inline; }
+}
+
+/* ----- Fuerza de contraseña ----- */
+.auth-fuerza {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-block-start: calc(var(--space-2) * -1);
+}
+.auth-fuerza__pista { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.auth-fuerza__bloque {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 200ms ease;
+}
+.auth-fuerza__etiqueta {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  min-height: 1.1em;
+}
+.auth-fuerza[data-fuerza='1'] .auth-fuerza__bloque:nth-child(-n+1),
+.auth-fuerza[data-fuerza='2'] .auth-fuerza__bloque:nth-child(-n+2),
+.auth-fuerza[data-fuerza='3'] .auth-fuerza__bloque:nth-child(-n+3),
+.auth-fuerza[data-fuerza='4'] .auth-fuerza__bloque:nth-child(-n+4) {
+  background: var(--c, var(--primary));
+}
+.auth-fuerza[data-fuerza='1'] { --c: #ef4444; }
+.auth-fuerza[data-fuerza='2'] { --c: #f59e0b; }
+.auth-fuerza[data-fuerza='3'] { --c: #10b981; }
+.auth-fuerza[data-fuerza='4'] { --c: #059669; }
+
+/* ----- Ilustraciones / iconos grandes ----- */
+.auth-ilustracion {
+  display: flex;
+  justify-content: center;
+  margin-block-end: var(--space-2);
+}
+.auth-bloqueo__avatar { display: flex; justify-content: center; margin-block-end: var(--space-3); }
+.auth-correo-resalt {
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  2. PANEL PROMOCIONAL (usado por split y card) — modo enterprise     ║
+   ║                                                                       ║
+   ║  Estilo "Linear / Notion / Stripe": fondo oscuro navy con glow azul,  ║
+   ║  patrón de puntos, burbujas flotantes y stats en el pie.              ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+.auth-promo {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(80% 60% at 20% 0%,  rgba(99, 102, 241, 0.35) 0%, transparent 60%),
+    radial-gradient(60% 50% at 100% 100%, rgba(56, 189, 248, 0.18) 0%, transparent 55%),
+    radial-gradient(70% 80% at 100% 0%,  rgba(168, 85, 247, 0.18) 0%, transparent 60%),
+    linear-gradient(160deg, #0b1220 0%, #0e1729 45%, #131c33 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Patrón de puntos finos en toda la superficie */
+.auth-promo__patron {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.08) 1px, transparent 0);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 90% 75% at 50% 50%, black 35%, transparent 100%);
+}
+
+/* ── Burbujas flotantes ───────────────────────────────────────────────── */
+.auth-promo__burbujas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.auth-promo__burbuja {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(0.5px);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: auth-burbuja 18s ease-in-out infinite;
+}
+/* 6 burbujas de tamaño/color/posición/timing distintos */
+.auth-promo__burbuja--1 {
+  width: 220px; height: 220px;
+  inset-inline-start: -40px; inset-block-start: 12%;
+  background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.55), rgba(99,102,241,0) 70%);
+  animation-delay: -2s; animation-duration: 22s;
+}
+.auth-promo__burbuja--2 {
+  width: 140px; height: 140px;
+  inset-inline-end: 8%; inset-block-start: 6%;
+  background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.55), rgba(56,189,248,0) 70%);
+  animation-delay: -7s; animation-duration: 16s;
+}
+.auth-promo__burbuja--3 {
+  width: 90px; height: 90px;
+  inset-inline-end: 22%; inset-block-end: 28%;
+  background: radial-gradient(circle at 30% 30%, rgba(168,85,247,0.55), rgba(168,85,247,0) 70%);
+  animation-delay: -3s; animation-duration: 14s;
+}
+.auth-promo__burbuja--4 {
+  width: 60px; height: 60px;
+  inset-inline-start: 18%; inset-block-end: 18%;
+  background: radial-gradient(circle at 30% 30%, rgba(34,211,238,0.6), rgba(34,211,238,0) 70%);
+  animation-delay: -10s; animation-duration: 12s;
+}
+.auth-promo__burbuja--5 {
+  width: 180px; height: 180px;
+  inset-inline-start: 35%; inset-block-end: -40px;
+  background: radial-gradient(circle at 30% 30%, rgba(59,130,246,0.45), rgba(59,130,246,0) 70%);
+  animation-delay: -5s; animation-duration: 20s;
+}
+.auth-promo__burbuja--6 {
+  width: 40px; height: 40px;
+  inset-inline-start: 60%; inset-block-start: 30%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
+  animation-delay: -1s; animation-duration: 10s;
+}
+
+@keyframes auth-burbuja {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.55;
+  }
+  25% {
+    transform: translate3d(20px, -30px, 0) scale(1.05);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate3d(-15px, -50px, 0) scale(0.95);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translate3d(15px, -25px, 0) scale(1.02);
+    opacity: 0.65;
+  }
+}
+
+/* Respeta usuarios con reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .auth-promo__burbuja { animation: none; opacity: 0.4; }
+}
+
+/* ── Contenido (texto encima de patrones y burbujas) ─────────────────── */
+.auth-promo__contenido {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: clamp(var(--space-6), 5vw, var(--space-10));
+  gap: var(--space-8);
+}
+.auth-promo__marca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-lg);
+}
+.auth-promo__marca-cuadro {
+  width: 32px; height: 32px;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.05) 100%);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.auth-promo__cuerpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  justify-content: center;
+  max-width: 36rem;
+}
+.auth-promo__titulo {
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
+  line-height: 1.05;
+  font-weight: var(--weight-extrabold, 800);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+.auth-promo__lead {
+  font-size: clamp(var(--text-base), 1.2vw, var(--text-lg));
+  opacity: 0.78;
+  margin: 0;
+  line-height: 1.55;
+  max-width: 32rem;
+}
+
+/* Stats (3-4 columnas separadas por línea vertical) */
+.auth-promo__stats {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(var(--space-4), 3vw, var(--space-8));
+  padding-block-start: var(--space-3);
+}
+.auth-promo__stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  position: relative;
+  padding-inline-end: clamp(var(--space-4), 3vw, var(--space-8));
+}
+.auth-promo__stat:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  inset-block: 0.25rem;
+  inset-inline-end: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.20), transparent);
+}
+.auth-promo__stat-numero {
+  font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+  font-weight: var(--weight-extrabold, 800);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: white;
+}
+.auth-promo__stat-etiqueta {
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  font-weight: var(--weight-semibold);
+}
+
+/* Pie (sólo modo compacto: gana espacio para el form) */
+.auth-promo__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  opacity: 0.65;
+  flex-wrap: wrap;
+}
+.auth-promo__seguridad {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Variante compacta (para card layout): menos padding, sin stats grandes */
+.auth-promo--compacto .auth-promo__contenido {
+  padding: clamp(var(--space-5), 3vw, var(--space-6));
+  gap: var(--space-4);
+}
+.auth-promo--compacto .auth-promo__titulo { font-size: clamp(1.4rem, 2vw, 1.75rem); }
+.auth-promo--compacto .auth-promo__stats  { display: none; }
+.auth-promo--compacto .auth-promo__burbuja { animation-duration: 14s; }
+
+/* ─── Modo IMAGEN: background-image full bleed con overlay y texto encima ─ */
+.auth-promo--imagen {
+  background-color: #0f172a;     /* color base si la imagen tarda en cargar */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.auth-promo--imagen .auth-promo__patron { display: none; }
+.auth-promo__velo {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(135deg, color-mix(in srgb, var(--color-primary-700) 35%, transparent) 0%, transparent 60%);
+}
+.auth-promo--imagen .auth-promo__contenido {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* ─── Modo CARRUSEL: el carrusel ocupa todo el panel ─────────────────── */
+.auth-promo--carrusel {
+  padding: 0;
+  background: #0f172a;
+}
+.auth-promo--carrusel .auth-promo__patron,
+.auth-promo--carrusel .auth-promo__contenido { display: none; }
+.auth-promo--carrusel .carrusel,
+.auth-promo--carrusel .carrusel__viewport { height: 100%; min-height: 100%; }
+
+.auth-promo-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+}
+.auth-promo-slide__velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.65) 100%);
+}
+.auth-promo-slide__textos {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-8);
+  color: white;
+  max-width: 36rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+.auth-promo-slide__titulo {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.auth-promo-slide__sub {
+  margin: 0;
+  font-size: var(--text-base);
+  opacity: 0.92;
+  line-height: 1.5;
+}
+
+/* Indicadores del carrusel — más visibles encima de la imagen */
+.auth-promo--carrusel .carrusel__dots {
+  position: absolute;
+  inset-block-end: var(--space-4);
+  inset-inline: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  z-index: 2;
+}
+.auth-promo--carrusel .carrusel__dot {
+  width: 32px; height: 4px;
+  border-radius: 2px;
+  border: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: background 200ms ease, width 200ms ease;
+}
+.auth-promo--carrusel .carrusel__dot--activo {
+  background: white;
+  width: 48px;
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  3. LAYOUT BASE                                                       ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
 .auth-layout {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr;
-  background-color: var(--background);
+  background: var(--background);
+  color: var(--foreground);
 }
-.auth-layout__hero {
-  display: none;
-  background: linear-gradient(135deg, var(--color-primary-700), var(--color-primary-500));
-  color: var(--primary-foreground);
-  padding: var(--space-12);
-  flex-direction: column;
-  justify-content: space-between;
-}
-.auth-layout__brand { font-size: var(--text-2xl); font-weight: var(--weight-bold); }
-.auth-layout__pitch { max-width: 32rem; }
-.auth-layout__pitch h1 { font-size: var(--text-4xl); margin-bottom: var(--space-4); }
-.auth-layout__main {
+
+/* ─── 3.1 SIMPLE: card centrada con banner ──────────────────────────── */
+.auth-layout--simple {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-8);
+  padding: var(--space-6) var(--space-4);
+  background:
+    radial-gradient(80% 60% at 50% 0%, color-mix(in srgb, var(--primary) 8%, transparent) 0, transparent 70%),
+    var(--background);
 }
-.auth-layout__card {
+.auth-layout--simple .auth-layout__envoltura {
   width: 100%;
-  max-width: 26rem;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-5);
+}
+.auth-layout--simple .auth-layout__card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 rgb(0 0 0 / 0.02),
+    0 18px 50px -24px rgb(15 23 42 / 0.25);
+}
+.auth-layout__pie {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  text-align: center;
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* ─── 3.2 CARD: card-de-dos-mitades centrado ────────────────────────── */
+.auth-layout--card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+  background:
+    radial-gradient(60% 40% at 90% 10%, color-mix(in srgb, var(--primary) 14%, transparent) 0, transparent 70%),
+    radial-gradient(60% 40% at 10% 90%, color-mix(in srgb, #4338ca 10%, transparent) 0, transparent 70%),
+    var(--background);
+}
+.auth-layout--card .auth-layout__envoltura {
+  width: 100%;
+  max-width: 60rem;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 30px 80px -28px rgb(15 23 42 / 0.35);
+}
+.auth-layout--card .auth-layout__card {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+}
+.auth-layout--card .auth-layout__card-cuerpo {
+  width: 100%;
+  padding: clamp(var(--space-5), 4vw, var(--space-8));
+}
+
+@media (max-width: 767.98px) {
+  .auth-layout--card .auth-layout__envoltura { grid-template-columns: 1fr; }
+  .auth-layout--card .auth-promo { display: none; }
+}
+
+/* ─── 3.3 SPLIT: panel hero a la izquierda, card a la derecha ──────── */
+.auth-layout--split {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+}
+.auth-layout--split .auth-promo  { display: none; }
+.auth-layout--split .auth-layout__main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+}
+.auth-layout--split .auth-layout__envoltura {
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.auth-layout--split .auth-layout__card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 rgb(0 0 0 / 0.02),
+    0 18px 50px -24px rgb(15 23 42 / 0.30);
 }
 
 @media (min-width: 1024px) {
-  .auth-layout { grid-template-columns: 1fr 1fr; }
-  .auth-layout__hero { display: flex; }
+  .auth-layout--split { grid-template-columns: 1fr 1fr; }
+  .auth-layout--split .auth-promo { display: flex; min-height: 100vh; }
+}
+
+/* Variante card → padding consistente para auth-promo--compacto */
+.auth-layout--card .auth-promo { display: flex; }
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  3b. BANNER DEL CARD (gradiente + shape) — simple y split            ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+.auth-layout__banner {
+  position: relative;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(120% 200% at 100% 0%, rgba(255,255,255,0.18) 0%, transparent 45%),
+    linear-gradient(135deg, var(--color-primary-700) 0%, var(--color-primary-500) 55%, #4338ca 100%);
+  overflow: hidden;
+}
+/* Halo grande que entra desde la derecha (estilo Falcon "circle-shape") */
+.auth-layout__banner-shape {
+  position: absolute;
+  inset-block-start: -60%;
+  inset-inline-end: -25%;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+/* Glow más intenso que entra desde la izquierda */
+.auth-layout__banner-glow {
+  position: absolute;
+  inset-block-end: -50%;
+  inset-inline-start: -20%;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,102,241,0.45) 0%, transparent 60%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+.auth-layout__banner-marca {
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-size: clamp(1.35rem, 1.8vw, 1.65rem);
+  font-weight: var(--weight-extrabold, 800);
+  letter-spacing: -0.025em;
+  text-decoration: none;
+  text-shadow: 0 1px 12px rgba(15, 23, 42, 0.25);
+}
+
+/* Cuerpo del card (donde va la página) */
+.auth-layout__card-cuerpo {
+  padding: clamp(var(--space-5), 4vw, var(--space-7)) clamp(var(--space-5), 4vw, var(--space-7));
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  4. MODAL: cuando el form va dentro de un Modal                       ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+.auth-modal-pagina {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 4rem);
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  gap: var(--space-5);
+  background:
+    radial-gradient(80% 60% at 50% 0%, color-mix(in srgb, var(--primary) 6%, transparent) 0, transparent 70%),
+    var(--background);
+}
+.auth-modal-pagina__h1 { margin: 0; font-size: var(--text-3xl); letter-spacing: -0.02em; }
+.auth-modal-pagina__lead { max-width: 38rem; margin: 0; color: var(--muted-foreground); line-height: 1.6; }
+.auth-modal-pagina__acciones { display: inline-flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; }
+
+.auth-modal-cuerpo { padding: var(--space-2) var(--space-1); }
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  5. WIZARD: stepper moderno + grid responsivo + resumen              ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+/* El wizard ocupa más ancho que un login. Cuando un layout auth contiene un
+   wizard, ensanchamos su card. Usa CSS :has() (Edge/Chrome 105+, Safari 15.4+,
+   Firefox 121+) — para navegadores sin soporte cae al ancho normal. */
+.auth-layout--simple .auth-layout__envoltura:has(.auth-wizard),
+.auth-layout--split  .auth-layout__envoltura:has(.auth-wizard) {
+  max-width: 38rem;
+}
+.auth-layout--card  .auth-layout__envoltura:has(.auth-wizard) {
+  max-width: 60rem;
+}
+
+.auth-wizard { width: 100%; }
+
+/* ── Stepper ── */
+.wizard-pasos {
+  list-style: none;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  position: relative;
+}
+.wizard-paso {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  position: relative;
+  padding-block-start: var(--space-1);
+  text-align: center;
+  min-width: 0;
+}
+.wizard-paso::after {
+  /* Línea conectora entre pasos */
+  content: '';
+  position: absolute;
+  inset-block-start: calc(var(--space-1) + 14px);
+  inset-inline-start: calc(50% + 18px);
+  inset-inline-end: calc(-50% + 18px);
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+  transition: background-color 240ms ease;
+}
+.wizard-paso:last-child::after { display: none; }
+
+.wizard-paso__numero {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--muted-foreground);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  position: relative;
+  z-index: 1;
+  transition: all 220ms ease;
+  flex-shrink: 0;
+}
+.wizard-paso__textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.wizard-paso__titulo {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--muted-foreground);
+  letter-spacing: -0.005em;
+  transition: color 200ms ease;
+}
+.wizard-paso__desc {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  opacity: 0.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Estados */
+.wizard-paso--activo .wizard-paso__numero {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+.wizard-paso--activo .wizard-paso__titulo {
+  color: var(--foreground);
+  font-weight: var(--weight-semibold);
+}
+.wizard-paso--activo .wizard-paso__desc { opacity: 1; color: var(--primary); }
+
+.wizard-paso--completado .wizard-paso__numero {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+.wizard-paso--completado .wizard-paso__titulo { color: var(--foreground); }
+.wizard-paso--completado::after { background: var(--color-success); }
+
+/* Tick SVG cuando el paso está completado */
+.wizard-paso__numero--check::before {
+  content: '';
+  width: 12px; height: 7px;
+  border: solid white;
+  border-width: 0 0 2.5px 2.5px;
+  transform: rotate(-45deg);
+  margin-block-end: 2px;
+}
+
+/* En móvil: stepper compacto (sólo círculos visibles, descripciones ocultas) */
+@media (max-width: 559.98px) {
+  .wizard-paso__desc { display: none; }
+  .wizard-paso__titulo { font-size: var(--text-xs); }
+}
+
+/* ── Cuerpo del paso ── */
+.wizard-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 12rem;
+}
+.wizard-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+@media (max-width: 559.98px) {
+  .wizard-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ── Resumen final ── */
+.wizard-resumen {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-4);
+}
+.wizard-resumen__fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.wizard-resumen__fila:last-child { border-block-end: 0; }
+.wizard-resumen__clave {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+.wizard-resumen__valor {
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  font-weight: var(--weight-medium);
+  text-align: end;
+  word-break: break-word;
+}
+.wizard-resumen__vacio {
+  padding-block: var(--space-3);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+
+/* ── Acciones del wizard (separador superior + flex space-between) ── */
+.wizard-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-start: var(--space-5);
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--border);
 }

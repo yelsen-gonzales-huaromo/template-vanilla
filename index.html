@@ -38,6 +38,33 @@
         cabeceraToken: 'Authorization',
         prefijoToken:  'Bearer',
         margenRenovacionSeg: 60,
+
+        /* Panel decorativo de los layouts split / card.
+           Modo default: 'gradiente' (panel oscuro enterprise con burbujas
+           animadas, patrón de puntos y stats). Profesional, sin assets externos.
+
+           Otros modos:
+           - panelModo: 'imagen'     → con panelImagen: 'public/auth/hero.jpg'
+           - panelModo: 'carrusel'   → con panelSlides: [{ urlImg, titulo, sub }, ...]
+           - panelModo: 'auto'       → decide solo según los demás campos. */
+        panelModo: 'gradiente',
+
+        // Headline + lead del panel (opcional — defaults si no se definen).
+        panelTitulo: 'Plantilla empresarial nativa, reactiva y escalable',
+        panelLead:   'Equipos en 30+ países confían en Launchpad para sus paneles internos.',
+
+        // Stats del pie (3-4 items recomendados).
+        panelStats: [
+          { numero: '119+', etiqueta: 'PÁGINAS' },
+          { numero: '41',   etiqueta: 'COMPONENTES' },
+          { numero: '0',    etiqueta: 'BUILD STEP' },
+        ],
+
+        // Para modo carrusel descomenta esto y cambia panelModo a 'auto' o 'carrusel':
+        // panelSlides: [
+        //   { urlImg: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=70',
+        //     titulo: 'Construye más rápido', sub: 'Sin build step.' },
+        // ],
       },
       ui: {
         temaPorDefecto:    'system',
@@ -70,12 +97,12 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
-  <div id="app">
-    <div class="boot">
-      <div class="boot__mark"></div>
-      <p>Iniciando Launchpad…</p>
-    </div>
-  </div>
+  <!--
+    #app arranca vacío: en cold load / F5 el router monta directamente la
+    ruta (con esqueleto si la importación tarda). El overlay "Iniciando…"
+    sólo se usa explícitamente como transición tras el login (intro.js).
+  -->
+  <div id="app"></div>
 
   <script type="module" src="./src/main.js"></script>
 </body>

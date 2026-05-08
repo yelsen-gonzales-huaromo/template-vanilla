@@ -90,9 +90,48 @@ export const rutas = [
     meta: { title: 'Bloqueado' },
   }),
   r(NOMBRES_RUTAS.ASISTENTE_REGISTRO, {
-    layout: 'auth', guards: [guardiaInvitado],
+    layout: 'auth',
     component: () => import('../pages/auth/wizard/wizard.page.js'),
     meta: { title: 'Asistente de registro' },
+  }),
+
+  // ============== Auth · Variantes (Simple / Card / Split) ==============
+  // Las 3 variantes comparten el mismo módulo de página y se diferencian
+  // únicamente por el `layout` (que aporta el chrome visual).
+  // SIN guardiaInvitado porque son rutas SHOWCASE (deben verse incluso cuando
+  // el usuario está autenticado). El flujo auth real usa /ingresar, /registrar.
+  // Simple
+  r(NOMBRES_RUTAS.AUTH_SIMPLE_INGRESAR,    { layout: 'auth-simple', component: () => import('../pages/auth/shared/ingresar.page.js'),    meta: { title: 'Ingresar' } }),
+  r(NOMBRES_RUTAS.AUTH_SIMPLE_REGISTRAR,   { layout: 'auth-simple', component: () => import('../pages/auth/shared/registrar.page.js'),   meta: { title: 'Crear cuenta' } }),
+  r(NOMBRES_RUTAS.AUTH_SIMPLE_RECUPERAR,   { layout: 'auth-simple', component: () => import('../pages/auth/shared/recuperar.page.js'),   meta: { title: 'Recuperar contraseña' } }),
+  r(NOMBRES_RUTAS.AUTH_SIMPLE_RESTABLECER, { layout: 'auth-simple', component: () => import('../pages/auth/shared/restablecer.page.js'), meta: { title: 'Restablecer' } }),
+  r(NOMBRES_RUTAS.AUTH_SIMPLE_CONFIRMAR,   { layout: 'auth-simple', component: () => import('../pages/auth/shared/confirmar.page.js'),   meta: { title: 'Confirmar correo' } }),
+  r(NOMBRES_RUTAS.AUTH_SIMPLE_SALIR,       { layout: 'auth-simple', component: () => import('../pages/auth/shared/salir.page.js'),       meta: { title: 'Sesión cerrada' } }),
+  r(NOMBRES_RUTAS.AUTH_SIMPLE_BLOQUEO,     { layout: 'auth-simple', component: () => import('../pages/auth/shared/bloqueo.page.js'),     meta: { title: 'Bloqueado' } }),
+
+  // Card
+  r(NOMBRES_RUTAS.AUTH_CARD_INGRESAR,      { layout: 'auth-card',   component: () => import('../pages/auth/shared/ingresar.page.js'),    meta: { title: 'Ingresar' } }),
+  r(NOMBRES_RUTAS.AUTH_CARD_REGISTRAR,     { layout: 'auth-card',   component: () => import('../pages/auth/shared/registrar.page.js'),   meta: { title: 'Crear cuenta' } }),
+  r(NOMBRES_RUTAS.AUTH_CARD_RECUPERAR,     { layout: 'auth-card',   component: () => import('../pages/auth/shared/recuperar.page.js'),   meta: { title: 'Recuperar contraseña' } }),
+  r(NOMBRES_RUTAS.AUTH_CARD_RESTABLECER,   { layout: 'auth-card',   component: () => import('../pages/auth/shared/restablecer.page.js'), meta: { title: 'Restablecer' } }),
+  r(NOMBRES_RUTAS.AUTH_CARD_CONFIRMAR,     { layout: 'auth-card',   component: () => import('../pages/auth/shared/confirmar.page.js'),   meta: { title: 'Confirmar correo' } }),
+  r(NOMBRES_RUTAS.AUTH_CARD_SALIR,         { layout: 'auth-card',   component: () => import('../pages/auth/shared/salir.page.js'),       meta: { title: 'Sesión cerrada' } }),
+  r(NOMBRES_RUTAS.AUTH_CARD_BLOQUEO,       { layout: 'auth-card',   component: () => import('../pages/auth/shared/bloqueo.page.js'),     meta: { title: 'Bloqueado' } }),
+
+  // Split
+  r(NOMBRES_RUTAS.AUTH_SPLIT_INGRESAR,     { layout: 'auth-split',  component: () => import('../pages/auth/shared/ingresar.page.js'),    meta: { title: 'Ingresar' } }),
+  r(NOMBRES_RUTAS.AUTH_SPLIT_REGISTRAR,    { layout: 'auth-split',  component: () => import('../pages/auth/shared/registrar.page.js'),   meta: { title: 'Crear cuenta' } }),
+  r(NOMBRES_RUTAS.AUTH_SPLIT_RECUPERAR,    { layout: 'auth-split',  component: () => import('../pages/auth/shared/recuperar.page.js'),   meta: { title: 'Recuperar contraseña' } }),
+  r(NOMBRES_RUTAS.AUTH_SPLIT_RESTABLECER,  { layout: 'auth-split',  component: () => import('../pages/auth/shared/restablecer.page.js'), meta: { title: 'Restablecer' } }),
+  r(NOMBRES_RUTAS.AUTH_SPLIT_CONFIRMAR,    { layout: 'auth-split',  component: () => import('../pages/auth/shared/confirmar.page.js'),   meta: { title: 'Confirmar correo' } }),
+  r(NOMBRES_RUTAS.AUTH_SPLIT_SALIR,        { layout: 'auth-split',  component: () => import('../pages/auth/shared/salir.page.js'),       meta: { title: 'Sesión cerrada' } }),
+  r(NOMBRES_RUTAS.AUTH_SPLIT_BLOQUEO,      { layout: 'auth-split',  component: () => import('../pages/auth/shared/bloqueo.page.js'),     meta: { title: 'Bloqueado' } }),
+
+  // Modal — página demo independiente (layout blank)
+  r(NOMBRES_RUTAS.AUTH_MODAL, {
+    layout: 'blank',
+    component: () => import('../pages/auth/modal.page.js'),
+    meta: { title: 'Auth en modal' },
   }),
 
   // Apps

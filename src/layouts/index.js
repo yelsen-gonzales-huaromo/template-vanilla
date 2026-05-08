@@ -4,12 +4,15 @@
  * para que las transiciones de ruta sean ágiles.
  */
 import { DisenoTablero } from './dashboard-layout/dashboard-layout.js';
-import { DisenoAuth } from './auth-layout/auth-layout.js';
+import { DisenoAuth, DisenoAuthSimple, DisenoAuthCard, DisenoAuthSplit } from './auth-layout/auth-layout.js';
 import { DisenoVacio } from './blank-layout/blank-layout.js';
 
 const DISENOS = {
   dashboard: DisenoTablero,
   auth: DisenoAuth,
+  'auth-simple': DisenoAuthSimple,
+  'auth-card':   DisenoAuthCard,
+  'auth-split':  DisenoAuthSplit,
   blank: DisenoVacio,
 };
 

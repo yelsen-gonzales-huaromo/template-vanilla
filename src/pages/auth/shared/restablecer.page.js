@@ -1,5 +1,6 @@
 /**
- * /restablecer-contrasena (legacy) — delega en el formulario compartido.
+ * Página compartida — restablecer contraseña con token (?token=...).
+ * Las 3 variantes (simple/card/split) la usan con su layout propio.
  */
 import { FormularioRestablecer } from '../../../components/auth/auth-forms.js';
 

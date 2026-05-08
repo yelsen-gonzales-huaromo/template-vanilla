@@ -1,5 +1,6 @@
 /**
- * /confirmar-correo (legacy) — delega en la pantalla compartida.
+ * Página compartida — pantalla "Revisa tu correo" tras registrarse o pedir
+ * un cambio de email. Permite mostrar el correo destino vía ?email=.
  */
 import { PantallaConfirmar } from '../../../components/auth/auth-screens.js';
 

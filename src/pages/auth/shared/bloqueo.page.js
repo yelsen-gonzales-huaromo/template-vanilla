@@ -1,5 +1,6 @@
 /**
- * /bloqueo (legacy) — delega en el formulario compartido.
+ * Página compartida — pantalla de bloqueo (sesión activa, requiere contraseña
+ * para continuar).
  */
 import { FormularioBloqueo } from '../../../components/auth/auth-screens.js';
 

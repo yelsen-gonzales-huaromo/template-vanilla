@@ -1,0 +1,313 @@
+/* =============================================================================
+   EsqueletoPagina — layouts de las plantillas a nivel de página.
+   El shimmer/animación viene de skeleton.css; aquí sólo estructuramos.
+   ============================================================================= */
+
+.sk-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  width: 100%;
+  /* Crossfade suave si tenemos View Transitions: la API ya hace el fade,
+     pero le damos un nombre para que el navegador morf entre skeleton ↔ page. */
+  view-transition-name: page-content;
+}
+
+/* Card neutra usada por muchas plantillas. Replica `.dash-panel`/`.card`
+   sin acoplarse: los esqueletos no dependen de esos componentes. */
+.sk-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+/* ============================ Header común ============================ */
+.sk-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.sk-header__textos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1 1 16rem;
+}
+.sk-header__acciones {
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+/* ============================ Card head/foot ========================== */
+.sk-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.sk-card__pie {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-start: auto;
+}
+
+/* ============================ Grids ================================== */
+.sk-grid              { display: grid; gap: var(--space-4); }
+.sk-grid--kpis        { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.sk-grid--2-1         { grid-template-columns: 2fr 1fr; gap: var(--space-6); }
+.sk-grid--cards       { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+@media (max-width: 1023.98px) {
+  .sk-grid--2-1 { grid-template-columns: 1fr; }
+}
+
+/* ============================ KPI ===================================== */
+.sk-kpi { gap: var(--space-2); padding: var(--space-4); }
+.sk-kpi__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-end: var(--space-2);
+}
+
+/* ============================ Tabla =================================== */
+.sk-tabla__filtros {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-block-end: var(--space-2);
+}
+.sk-tabla {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border-block-start: 1px solid var(--border);
+  padding-block-start: var(--space-3);
+}
+.sk-tabla__cabecera,
+.sk-tabla__fila {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 6), 1fr);
+  gap: var(--space-3);
+  align-items: center;
+  padding-block: var(--space-3);
+}
+.sk-tabla__cabecera {
+  border-block-end: 1px solid var(--border);
+  margin-block-end: var(--space-1);
+}
+.sk-tabla__fila + .sk-tabla__fila {
+  border-block-start: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+}
+.sk-tabla__paginador {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid var(--border);
+}
+.sk-tabla__paginador-btns { display: inline-flex; gap: var(--space-2); }
+
+/* ============================ Form ==================================== */
+.sk-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4) var(--space-5);
+}
+@media (max-width: 767.98px) {
+  .sk-form__grid { grid-template-columns: 1fr; }
+}
+.sk-form__campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.sk-form__campo--full { grid-column: 1 / -1; }
+.sk-form__acciones {
+  display: inline-flex;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+
+/* ============================ Chart =================================== */
+.sk-chart__leyenda {
+  display: inline-flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ============================ Auth ==================================== */
+.sk-page--auth {
+  min-height: calc(100vh - var(--space-10));
+  align-items: center;
+  justify-content: center;
+}
+.sk-auth__card {
+  width: min(420px, 100%);
+  align-items: stretch;
+  padding: var(--space-8);
+  gap: var(--space-4);
+}
+.sk-auth__marca {
+  display: flex;
+  justify-content: center;
+  margin-block-end: var(--space-3);
+}
+.sk-auth__campos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.sk-auth__pie {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--space-2);
+}
+
+/* ============================ Chat ==================================== */
+.sk-page--chat {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--space-4);
+  height: calc(100vh - 8rem);
+  padding: var(--space-4);
+}
+@media (max-width: 767.98px) {
+  .sk-page--chat { grid-template-columns: 1fr; }
+  .sk-chat__lista { display: none; }
+}
+.sk-chat__lista {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  overflow: hidden;
+}
+.sk-chat__buscador { margin-block-end: var(--space-3); }
+.sk-chat__contacto {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+}
+.sk-chat__contacto-textos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.sk-chat__hilo {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.sk-chat__cabecera {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-block-end: 1px solid var(--border);
+}
+.sk-chat__mensajes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  overflow: hidden;
+}
+.sk-burbuja        { max-width: 60%; }
+.sk-burbuja--in    { align-self: flex-start; }
+.sk-burbuja--out   { align-self: flex-end; }
+.sk-chat__redactor { padding: var(--space-3); border-block-start: 1px solid var(--border); }
+
+/* ============================ Kanban ================================== */
+.sk-kanban__columnas {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), minmax(260px, 1fr));
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-block-end: var(--space-2);
+}
+.sk-kanban__columna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--surface-muted, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  min-height: 24rem;
+}
+.sk-kanban__columna-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-1);
+}
+.sk-kanban__tarjeta {
+  padding: var(--space-3);
+  gap: var(--space-2);
+}
+.sk-kanban__tarjeta-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-start: var(--space-2);
+}
+
+/* ============================ Iconos =================================== */
+.sk-iconos__buscador { margin-block-end: var(--space-4); }
+.sk-iconos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--space-3);
+}
+.sk-iconos__celda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* ============================ Error =================================== */
+.sk-page--error {
+  min-height: calc(100vh - var(--space-10));
+  align-items: center;
+  justify-content: center;
+}
+.sk-error__caja {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  max-width: 420px;
+}
+
+/* ============================ Texto =================================== */
+.sk-page--texto .sk-card { gap: var(--space-4); }
+
+/* ============================ A11y ==================================== */
+[data-esqueleto] {
+  cursor: progress;
+}
