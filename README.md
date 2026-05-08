@@ -1,83 +1,163 @@
-# Launchpad — Plantilla nativa vanilla
+# Launchpad
 
-> JavaScript/HTML/CSS 100% nativo, sin Vite, sin npm, sin build step.
-> Listo para servir desde Spring Boot, ASP.NET Razor, Laravel Blade, Django,
-> nginx o cualquier servidor estático.
+> **Plantilla de panel administrativo empresarial — JavaScript / HTML / CSS 100% nativo.**
+> Sin Vite, sin webpack, sin npm, sin paso de build. El navegador carga los archivos tal cual.
 
-## Cómo correrlo
+Launchpad es una plantilla SPA pensada para servirse desde cualquier backend
+(Spring Boot, ASP.NET Razor, Laravel, Django, nginx) o como sitio estático puro.
+Todo el código fuente está escrito en **español** —nombres de variables,
+funciones, archivos, rutas, mensajes y documentación— y está organizado por
+capas para escalar de un panel pequeño a un dashboard empresarial sin
+reescribir la base.
 
-Necesitas servir los archivos por HTTP (los `import` de módulos ES no funcionan
-con `file://`). Cualquier servidor estático sirve. Tres opciones:
+---
+
+## Qué es realmente Launchpad
+
+Launchpad **no** es un framework, **no** es una librería npm, **no** es un
+boilerplate de Vite. Es una **aplicación SPA completa, sin compilación**, que
+se ejecuta directamente en el navegador usando módulos ES nativos (`<script
+type="module">`). El backend (si lo hay) sólo sirve los archivos estáticos y
+las llamadas a `/api`.
+
+En la práctica encontrarás:
+
+- **119 vistas** ya construidas (dashboards, auth, apps, módulos showcase,
+  ajustes, errores, reportes), cargadas lazy por el router.
+- **7 dashboards de negocio**: analítica, CRM, comercio, LMS, proyectos, SaaS, soporte.
+- **~41 componentes UI** propios (Botón, Tarjeta, Modal, Tabla, Toast, Tooltip,
+  KPICard, GraficoLineas, ConfigPanel, CommandPalette…) + **10 componentes
+  comunes** (RutaProtegida, LimiteError, TituloPagina, etc.).
+- **8 hooks/composables** (`usarAutenticacion`, `usarPeticion`, `usarTema`,
+  `usarPaginacion`, `usarPermisos`, `usarDebounce`…).
+- **Reactividad propia** (`senal`, `calculado`, `efecto`, `reactivo`) en ~80
+  líneas — sin React, sin Vue, sin Solid.
+- **Cliente HTTP** sobre `fetch` con interceptores de petición/respuesta/error.
+- **Router SPA** con History API, guardias declarativas y lazy import.
+- **i18n** (es/en) por carga diferida de JSON.
+- **Tema** claro / oscuro / alto contraste vía custom properties CSS.
+- **Modo demo** con datos sintéticos para desarrollar sin backend.
+- **30+ integraciones opcionales** con librerías de terceros (Chart.js, D3,
+  ECharts, Leaflet, FullCalendar, Swiper, TinyMCE, Flatpickr, Choices,
+  GLightbox, Prism, Sortable, Lottie, etc.) cargadas **lazy desde CDN** sólo
+  cuando un componente las necesita.
+
+---
+
+## Arrancarlo en 30 segundos
+
+Como los `import` de módulos ES no funcionan en `file://`, hay que servir por
+HTTP. Cualquier servidor estático sirve:
 
 ```bash
 # Python (cualquier sistema con Python 3)
 python -m http.server 3000
 
-# Node (sin instalar dependencias del proyecto)
+# Node sin instalar nada en el proyecto
 npx --yes serve -l 3000
 
 # PHP
 php -S 127.0.0.1:3000
 ```
 
-Abre <http://localhost:3000>.
+Abre <http://localhost:3000>. Verás la pantalla de login (modo demo: cualquier
+email y contraseña inician sesión).
 
-## Estructura
+---
+
+## Estructura del proyecto
 
 ```
 launchpad/
-├─ index.html              ← Punto de entrada. Configura window.LAUNCHPAD_CONFIG.
+├─ index.html            ← Punto de entrada. Define window.LAUNCHPAD_CONFIG.
 ├─ public/
+│   ├─ favicons/
 │   └─ manifest.json
-├─ docs/                   ← arquitectura, glosario, despliegue
+├─ docs/
+│   ├─ architecture.md
+│   ├─ components.md
+│   ├─ deployment.md
+│   └─ glosario-traduccion.md
 └─ src/
-   ├─ main.js              ← Bootstrap (orden: estado → http → i18n → toasts → router)
+   ├─ main.js            ← Bootstrap (estado → http → i18n → toasts → router).
+   ├─ config/            ← CONFIG_APP, NOMBRES_RUTAS, RUTAS.
    ├─ styles/
-   │   ├─ main.css         ← Único CSS cargado por <link>. Importa todos los demás.
+   │   ├─ main.css       ← Único CSS cargado por <link>; importa todo lo demás.
    │   ├─ themes/tokens.css
    │   ├─ base/, utilities/
    ├─ components/
-   │   ├─ ui/              ← Boton, Tarjeta, Campo, Modal, Tabla, GraficoLineas…
-   │   ├─ forms/
-   │   └─ common/
-   ├─ layouts/             ← DisenoTablero, DisenoAuth, DisenoVacio + sidebar/navbar/footer
-   ├─ pages/               ← 71 páginas lazy-loaded por el router
-   ├─ router/              ← Router SPA con guardias declarativas
-   ├─ services/            ← clienteHttp + servicios de dominio (auth/user/reports/upload)
-   ├─ store/               ← estadoAuth, estadoUi, estadoNotificaciones (señales reactivas)
-   ├─ hooks/               ← usarAutenticacion, usarTema, usarPaginacion…
-   ├─ i18n/                ← es/, en/ (JSON cargados con fetch)
-   ├─ config/              ← CONFIG_APP, NOMBRES_RUTAS, RUTAS
+   │   ├─ ui/            ← 41 componentes atómicos reutilizables.
+   │   ├─ forms/         ← CampoFormulario, ErrorFormulario, SelectorIdioma…
+   │   └─ common/        ← RutaProtegida, LimiteError, TituloPagina…
+   ├─ layouts/           ← dashboard-layout, auth-layout, blank-layout
+   │                       + sidebar / navbar / footer / config-panel.
+   ├─ pages/             ← 119 vistas lazy-loaded.
+   │   ├─ dashboard/
+   │   ├─ panel/         ← analitica, crm, comercio, lms, proyectos, saas, soporte
+   │   ├─ auth/          ← login, register, forgot/reset password, confirm-mail,
+   │   │                   lock-screen, wizard
+   │   ├─ app/           ← chat, kanban
+   │   ├─ modulos/       ← showcase: charts, componentes, forms, iconos,
+   │   │                   mapas, tablas, utilidades
+   │   ├─ errors/        ← 401, 403, 404, 500, 503, mantenimiento, offline
+   │   ├─ settings/      ← perfil, seguridad, preferencias, ajustes
+   │   └─ reports/
+   ├─ router/            ← Router SPA con guardias declarativas.
+   ├─ services/          ← clienteHttp + auth.service / user.service /
+   │                       reports.service / upload.service.
+   ├─ store/             ← estadoAuth, estadoUi, estadoNotificaciones (señales).
+   ├─ hooks/             ← usarAutenticacion, usarTema, usarPaginacion…
+   ├─ i18n/              ← es/, en/ (JSON cargados con fetch).
+   ├─ integrations/      ← Adaptadores lazy a 30+ libs de terceros (CDN).
+   ├─ data/              ← Datos geo (mapas).
    └─ utils/
-       ├─ helpers/         ← senal/calculado/efecto, busEventos, crearEl, demo-data…
+       ├─ helpers/       ← senal/calculado/efecto, busEventos, crearEl,
+       │                   demo-data, reactive…
        ├─ formatters/, validators/, constants/
 ```
 
+---
+
 ## Configuración
 
-Edita `window.LAUNCHPAD_CONFIG` en `index.html`:
+Edita `window.LAUNCHPAD_CONFIG` en `index.html`. El backend puede sobreescribir
+estos valores antes de cargar `main.js` (por ejemplo desde Razor / Blade /
+Spring):
 
 ```html
 <script>
   window.LAUNCHPAD_CONFIG = Object.freeze({
     nombre:   'Launchpad',
     version:  '1.0.0',
-    ambiente: 'production',           // o 'development'
+    ambiente: 'production',          // o 'development'
     api: { urlBase: '/api', tiempoEspera: 15000 },
-    auth: { cabeceraToken: 'Authorization', prefijoToken: 'Bearer' },
-    ui:   { temaPorDefecto: 'system', idiomaPorDefecto: 'es' },
-    modoDemo: false,                   // pon true mientras no haya backend
+    auth: {
+      cabeceraToken: 'Authorization',
+      prefijoToken:  'Bearer',
+      margenRenovacionSeg: 60,
+    },
+    ui: {
+      temaPorDefecto:    'system',   // 'light' | 'dark' | 'high-contrast' | 'system'
+      idiomaPorDefecto:  'es',
+      idiomasSoportados: ['es', 'en'],
+      direccion: 'ltr',
+    },
+    caracteristicas: { pwa: false, analitica: false },
+    modoDemo: false,                 // pon true mientras no haya backend
   });
 </script>
 ```
 
-`modoDemo: true` permite iniciar sesión con cualquier email/contraseña sin backend
-(ideal para desarrollo de UI). En producción déjalo en `false`.
+Con `modoDemo: true` puedes iniciar sesión con cualquier email/contraseña y
+todas las páginas funcionan con datos sintéticos. Ideal para iterar UI sin
+backend.
+
+---
 
 ## Despliegue con backend
 
-Copia toda la carpeta `launchpad/` (excepto `docs/`) al directorio estático de tu
-backend:
+Copia toda la carpeta `launchpad/` (sin `docs/` ni `README.md`) al directorio
+estático de tu backend:
 
 | Backend                    | Carpeta destino                      |
 |----------------------------|--------------------------------------|
@@ -125,25 +205,86 @@ location / {
 }
 ```
 
-## Inventario migrado de Falcon
+---
 
-71 páginas: 8 dashboards, 7 flujos auth, 18 apps (calendario, chat, kanban con
-drag&drop, correo, social, mesa de ayuda, eventos), 11 de comercio, 6 de
-aprendizaje, 7 misceláneas, 7 módulos showcase, 4 errores y 4 settings.
+## Inventario de páginas
 
-Lee [`docs/architecture.md`](docs/architecture.md) y [`docs/glosario-traduccion.md`](docs/glosario-traduccion.md)
-para el detalle de la arquitectura y el mapa de nombres en español.
+**Total: 119 vistas** organizadas así:
 
-## Highlights
+| Sección       | Vistas | Detalle                                                     |
+|---------------|-------:|-------------------------------------------------------------|
+| Dashboard     |     1  | Resumen general                                             |
+| Paneles       |     7  | analítica, CRM, comercio, LMS, proyectos, SaaS, soporte     |
+| Autenticación |     7  | login, registro, recuperar, restablecer, confirmar correo, bloqueo, asistente |
+| Apps          |     2  | chat, kanban                                                |
+| Errores       |     7  | 401, 403, 404, 500, 503, mantenimiento, offline             |
+| Ajustes       |     4  | perfil, seguridad, preferencias, ajustes                    |
+| Reportes      |     1  | constructor de reportes                                     |
+| **Módulos showcase** |  ~90 | gráficos (12), componentes (45+), formularios (17), iconos (4), mapas (2), tablas (3), utilidades |
 
-- Reactividad sin framework: `senal()`, `calculado()`, `efecto()` (~80 líneas).
-- Cliente HTTP nativo con interceptores (auth/error/logging).
-- Router SPA con guardias declarativas y lazy import de páginas.
-- i18n vía `fetch()` de JSON (es/en).
-- Tema claro/oscuro/alto contraste con tokens CSS.
-- Gráficos SVG nativos (líneas, barras, donut, sparkline, progreso).
-- Cero dependencias en runtime.
-- Cero build step.
+Los **módulos showcase** son la galería de componentes y demos —ECharts,
+Chart.js, D3, Bootstrap Icons, Feather, Font Awesome, Material Icons, Leaflet,
+Google Maps, DataTables, FullCalendar, TinyMCE, Flatpickr, etc.— que sirven
+como referencia de uso.
+
+Lee [`docs/architecture.md`](docs/architecture.md) y
+[`docs/glosario-traduccion.md`](docs/glosario-traduccion.md) para el detalle
+arquitectónico y el mapa de nombres en español.
+
+---
+
+## Integraciones de terceros (lazy)
+
+Launchpad **no incluye** estas librerías en su bundle. Cuando un componente o
+una página las necesita, `src/integrations/_loader.js` las descarga desde un
+CDN público y cachea la promesa. Hay adaptadores para:
+
+```
+anchorjs  · chartjs    · choices    · countup    · d3
+datatables · dayjs     · dropzone   · echarts    · emoji-mart
+flag-icons · flatpickr · fontawesome · fullcalendar · glightbox
+inputmask · leaflet    · leaflet-plugins · list-js · lottie
+nouislider · plyr      · prism      · rater      · simplebar
+sortable  · swiper     · tinymce    · typed      · validator
+```
+
+Para uso **offline** o aislado, sustituye las URLs CDN dentro de cada
+adaptador (`src/integrations/<lib>/`) por rutas locales tipo
+`./vendor/<lib>/...`. No hay otro paso.
+
+---
+
+## Highlights técnicos
+
+- **Reactividad sin framework**: `senal()`, `calculado()`, `efecto()`,
+  `reactivo()` en ~80 líneas (`src/utils/helpers/reactive.js`).
+- **Cliente HTTP nativo** sobre `fetch` con interceptores de auth, error y
+  logging encadenables.
+- **Router SPA** con guardias declarativas, lazy import por ruta y captura
+  global de `<a>` para mantener navegación SPA.
+- **i18n vía `fetch()`** de JSON por idioma — sin librería externa.
+- **Tema** claro / oscuro / alto contraste con tokens CSS, hidratado antes del
+  primer paint para evitar FOUC.
+- **Stores reactivos** compuestos: `estadoAuth`, `estadoUi`,
+  `estadoNotificaciones`.
+- **Bus de eventos** transversal con catálogo inmutable de eventos
+  (`EVENTOS_APP`).
+- **Cero build step**, **cero dependencias instaladas localmente**,
+  **cero `node_modules/`**.
+
+---
+
+## Documentación
+
+- [`docs/architecture.md`](docs/architecture.md) — arquitectura por capas,
+  reactividad, stores, HTTP, routing.
+- [`docs/components.md`](docs/components.md) — catálogo de componentes UI.
+- [`docs/deployment.md`](docs/deployment.md) — guía de despliegue por
+  plataforma.
+- [`docs/glosario-traduccion.md`](docs/glosario-traduccion.md) — mapa
+  inglés → español de los nombres de archivos, funciones y rutas.
+
+---
 
 ## Licencia
 
