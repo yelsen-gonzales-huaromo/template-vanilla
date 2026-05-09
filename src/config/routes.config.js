@@ -19,6 +19,10 @@ export const NOMBRES_RUTAS = Object.freeze({
   // ============================ App: básicos ==========================
   CHAT:               'chat',
   KANBAN:             'kanban',
+  CALENDARIO:         'calendario',
+  EMAIL:              'email',
+  EMAIL_LEER:         'email-leer',
+  EMAIL_COMPOSE:      'email-compose',
 
   // ============================== Páginas =============================
   // Páginas > Auth (Simple)
@@ -88,6 +92,7 @@ export const NOMBRES_RUTAS = Object.freeze({
   FORM_INPUT_MASK:    'form-input-mask',
   FORM_RANGE_SLIDER:  'form-range-slider',
   FORM_RATING:        'form-rating',
+  FORM_CROPPER:       'form-cropper',
   // Módulos > Forms (otros)
   FORM_FLOATING:      'form-floating',
   FORM_WIZARD:        'form-wizard',
@@ -125,6 +130,7 @@ export const NOMBRES_RUTAS = Object.freeze({
   // Módulos > Components
   COMP_ACORDEON:      'comp-acordeon',
   COMP_ALERTAS:       'comp-alertas',
+  COMP_AVISOS:        'comp-avisos',
   COMP_ANCLA:         'comp-ancla',
   COMP_ICONOS_ANIM:   'comp-iconos-anim',
   COMP_FONDO:         'comp-fondo',
@@ -216,6 +222,10 @@ export const RUTAS = Object.freeze({
   // App: básicos
   [N.CHAT]:                 '/app/chat',
   [N.KANBAN]:               '/app/kanban',
+  [N.CALENDARIO]:           '/app/calendario',
+  [N.EMAIL]:                '/app/email',
+  [N.EMAIL_LEER]:           '/app/email/leer',
+  [N.EMAIL_COMPOSE]:        '/app/email/compose',
 
   // Auth (Simple)
   [N.AUTH_SIMPLE_INGRESAR]:    '/auth/simple/ingresar',
@@ -280,6 +290,7 @@ export const RUTAS = Object.freeze({
   [N.FORM_INPUT_MASK]:      '/modulos/forms/advance/input-mask',
   [N.FORM_RANGE_SLIDER]:    '/modulos/forms/advance/range-slider',
   [N.FORM_RATING]:          '/modulos/forms/advance/rating',
+  [N.FORM_CROPPER]:         '/modulos/forms/advance/cropper',
   [N.FORM_FLOATING]:        '/modulos/forms/floating',
   [N.FORM_WIZARD]:          '/modulos/forms/wizard',
   [N.FORM_VALIDACION]:      '/modulos/forms/validacion',
@@ -316,6 +327,7 @@ export const RUTAS = Object.freeze({
   // Components
   [N.COMP_ACORDEON]:        '/modulos/componentes/acordeon',
   [N.COMP_ALERTAS]:         '/modulos/componentes/alertas',
+  [N.COMP_AVISOS]:          '/modulos/componentes/avisos',
   [N.COMP_ANCLA]:           '/modulos/componentes/ancla',
   [N.COMP_ICONOS_ANIM]:     '/modulos/componentes/iconos-animados',
   [N.COMP_FONDO]:           '/modulos/componentes/fondo',

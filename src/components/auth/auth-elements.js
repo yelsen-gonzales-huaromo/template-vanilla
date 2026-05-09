@@ -1,18 +1,23 @@
 /**
- * Auth elements — bloques de UI compartidos por las 3 variantes (simple/card/split)
- * y la versión modal. Modernización del kit de Falcon: SVG inline, gradientes
- * sutiles, foco accesible, dark-mode out-of-the-box vía tokens.
+ * Auth elements — bloques de UI compartidos por las variantes (simple/card/split)
+ * y la versión modal/asistente. Modernización del kit de Falcon: SVG inline,
+ * gradientes sutiles, foco accesible, dark-mode out-of-the-box vía tokens.
  *
- *   MarcaAuth({ tamano })          — logo + nombre de la app
- *   BotonesSociales()              — Google / Apple / Microsoft (hookup pendiente)
- *   DivisorO({ texto })            — línea horizontal con texto al medio
- *   PanelPromo({ titulo, items })  — panel de promesa de valor para split/card
- *   FuerzaContrasena(seqInput)     — barra de strength reactiva
+ *   MarcaAuth({ tamano })                  — logo + nombre de la app
+ *   BotonesSociales()                      — Google / Apple / Microsoft (hookup pendiente)
+ *   DivisorO({ texto })                    — línea horizontal con texto al medio
+ *   PanelPromo({ titulo, items })          — panel de promesa de valor (split/card)
+ *   FuerzaContrasena(seqInput)             — barra de strength reactiva
+ *   HeroDecoracion({ tipo, src, alto })    — bloque visual (lottie/imagen/icono) para
+ *                                            cabecera de formularios
+ *   establecerPresetPanel(preset)          — inyecta override del panel por página
+ *   consumirPresetPanel()                  — los layouts lo leen y limpian
  */
 import { crearEl } from '../../utils/helpers/dom.js';
 import { CONFIG_APP } from '../../config/app.config.js';
 import { t } from '../../i18n/index.js';
 import { Carrusel } from '../ui/carousel/carousel.js';
+import { Lottie } from '../ui/lottie/lottie.js';
 
 /** Marca: cuadrado con gradiente + nombre. Mismo lenguaje visual del .boot. */
 export const MarcaAuth = ({ tamano = 'md', soloIcono = false } = {}) => {
@@ -65,6 +70,25 @@ export const BotonesSociales = () => crearEl('div', { class: 'auth-social-grid' 
   botonSocial('google',    SVG_GOOGLE,    t('auth.social_google')),
   botonSocial('apple',     SVG_APPLE,     t('auth.social_apple')),
   botonSocial('microsoft', SVG_MICROSOFT, t('auth.social_microsoft')),
+]);
+
+/** Botones sociales circulares (icon-only) — estilo Metoxi/limpio. */
+const botonSocialCirculo = (nombre, svg, etiqueta) => {
+  const btn = crearEl('button', {
+    type: 'button',
+    class: ['auth-social-circulo', `auth-social--${nombre}`],
+    'data-proveedor': nombre,
+    'aria-label': etiqueta,
+    title: etiqueta,
+  });
+  btn.innerHTML = svg;
+  return btn;
+};
+
+export const BotonesSocialesCirculares = () => crearEl('div', { class: 'auth-social-circulos' }, [
+  botonSocialCirculo('google',    SVG_GOOGLE,    t('auth.social_google')),
+  botonSocialCirculo('apple',     SVG_APPLE,     t('auth.social_apple')),
+  botonSocialCirculo('microsoft', SVG_MICROSOFT, t('auth.social_microsoft')),
 ]);
 
 /** Divisor "o continúa con". */
@@ -203,10 +227,64 @@ const PanelPromoGradiente = ({ compacto = false }) => {
   ]);
 };
 
-/** Panel promocional — selector según config. */
+/* ─────────────────────────────────────────────────────────────────────────
+   Preset por render — la página activa puede inyectar un override (imagen
+   del panel, fondo del layout simple) que el layout consume al envolver.
+   Estado de módulo síncrono: la página lo establece justo antes de devolver
+   su nodo, y el layout lo consume (y lo limpia) al envolverlo.
+   ───────────────────────────────────────────────────────────────────────── */
+let _presetPanel = null;
+let _fondoSimple = null;
+
+export const establecerPresetPanel = (preset) => {
+  _presetPanel = preset || null;
+};
+
+export const consumirPresetPanel = () => {
+  const v = _presetPanel;
+  _presetPanel = null;
+  return v;
+};
+
+/** Fondo de imagen para el layout simple (algunas páginas la usan, otras
+ *  caen al gradiente plano). Se establece desde la página y el layout lo
+ *  consume al construir la envoltura.
+ */
+export const establecerFondoSimple = (urlImg) => {
+  _fondoSimple = urlImg || null;
+};
+
+export const consumirFondoSimple = () => {
+  const v = _fondoSimple;
+  _fondoSimple = null;
+  return v;
+};
+
+/** Panel promocional — selector según config (con override por página). */
 export const PanelPromo = ({ compacto = false } = {}) => {
-  const modo = resolverModoPanel();
+  const override = consumirPresetPanel();
   const a = cfgAuth();
+
+  // El override de la página tiene prioridad: si trae imagen, va modo imagen;
+  // si trae slides, modo carrusel; si trae nada, cae al gradiente.
+  if (override) {
+    if (Array.isArray(override.slides) && override.slides.length > 1) {
+      return PanelPromoCarrusel({ slides: override.slides, compacto });
+    }
+    const urlImg = override.urlImg || (Array.isArray(override.slides) && override.slides[0]?.urlImg);
+    if (urlImg) {
+      return PanelPromoImagen({
+        urlImg,
+        titulo: override.titulo,
+        sub: override.sub,
+        mostrarTexto: override.mostrarTexto !== false,
+        compacto,
+      });
+    }
+    // override sin imagen → gradiente con texto custom (vía CONFIG temporal)
+  }
+
+  const modo = resolverModoPanel();
 
   if (modo === 'imagen') {
     const slide = (Array.isArray(a.panelSlides) && a.panelSlides[0]) || {};
@@ -227,6 +305,47 @@ export const PanelPromo = ({ compacto = false } = {}) => {
   }
 
   return PanelPromoGradiente({ compacto });
+};
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HeroDecoracion — bloque visual prepended al formulario (lottie/imagen/svg).
+   Se usa en las cabeceras de las páginas de auth para personalizar cada
+   variante. Adaptable a tema (claro/oscuro) vía tokens y `data-theme`.
+   ───────────────────────────────────────────────────────────────────────── */
+export const HeroDecoracion = ({
+  tipo = 'lottie',     // 'lottie' | 'imagen' | 'svg'
+  src,                 // ruta json/img o html svg
+  alto = 140,
+  ancho = '100%',
+  tono = 'marca',      // 'marca' | 'exito' | 'info' | 'aviso' | 'neutro' | 'plano'
+  forma = 'circulo',   // 'circulo' | 'cuadrado' | 'sin-fondo'
+  alt = '',
+} = {}) => {
+  const altPx = typeof alto === 'number' ? `${alto}px` : alto;
+  const sinFondo = forma === 'sin-fondo';
+  const clases = [
+    'auth-hero',
+    `auth-hero--${forma}`,
+    `auth-hero--tono-${tono}`,
+    sinFondo && 'auth-hero--plano',
+  ];
+
+  let inner;
+  if (tipo === 'lottie' && src) {
+    inner = Lottie({ src, alto: altPx, ancho, autoplay: true, loop: true });
+  } else if (tipo === 'imagen' && src) {
+    inner = crearEl('img', {
+      src, alt, class: 'auth-hero__img',
+      loading: 'lazy', decoding: 'async',
+      style: { height: altPx, width: 'auto', maxWidth: '100%' },
+    });
+  } else if (tipo === 'svg' && src) {
+    inner = crearEl('div', { class: 'auth-hero__svg', html: src, style: { height: altPx } });
+  } else {
+    inner = crearEl('div', { class: 'auth-hero__placeholder', style: { height: altPx } });
+  }
+
+  return crearEl('div', { class: clases, style: { '--auth-hero-alto': altPx } }, [inner]);
 };
 
 /** Barra reactiva de fuerza de contraseña.

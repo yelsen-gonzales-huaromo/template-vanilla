@@ -120,6 +120,108 @@ export const Carrusel = ({
 };
 
 /* ===========================================================================
+   CarruselMulti — muestra varios items por slide (Owl-carousel style).
+   Avanza grupos completos. Útil para catálogos de productos, equipo, logos.
+   =========================================================================== */
+export const CarruselMulti = ({
+  items = [],
+  itemsPorVista = 4,                  // cuántos items se ven a la vez (desktop)
+  itemsTablet = 2,                    // <1024px
+  itemsMovil = 1,                     // <600px
+  espaciado = 16,                     // px entre items
+  autoPlay = false,
+  intervalo = 4000,
+  indicadores = true,
+  controles = true,
+} = {}) => {
+  const indice = senal(0);
+
+  // Construye los nodos hijos (cada item ocupa una franja proporcional).
+  const pista = crearEl('div', { class: 'carrusel-multi__pista' },
+    items.map((it) => crearEl('div', { class: 'carrusel-multi__item' }, [it])),
+  );
+
+  // Calcula totales y aplica estilos al container según breakpoint actual.
+  const calcularPorVista = () => {
+    const w = window.innerWidth;
+    if (w < 600)  return Math.max(1, itemsMovil);
+    if (w < 1024) return Math.max(1, itemsTablet);
+    return Math.max(1, itemsPorVista);
+  };
+  const porVistaSenal = senal(calcularPorVista());
+  const totalSlides = () => Math.max(1, Math.ceil(items.length / porVistaSenal.value));
+
+  // Aplica el ancho de cada item y la posición de la pista
+  efecto(() => {
+    const pv = porVistaSenal.value;
+    pista.querySelectorAll(':scope > .carrusel-multi__item').forEach(el => {
+      el.style.flex = `0 0 calc((100% - ${(pv - 1) * espaciado}px) / ${pv})`;
+    });
+    pista.style.gap = `${espaciado}px`;
+    // Ajusta el índice si quedó fuera de rango tras un resize
+    if (indice.value > totalSlides() - 1) indice.value = totalSlides() - 1;
+    pista.style.transform = `translateX(calc(-${indice.value * 100}% - ${indice.value * espaciado}px))`;
+  });
+
+  // Reactivo al resize
+  const onResize = () => { porVistaSenal.value = calcularPorVista(); };
+  window.addEventListener('resize', onResize);
+
+  const ir = (n) => {
+    const tot = totalSlides();
+    indice.value = ((n % tot) + tot) % tot;
+  };
+
+  // Controles (chevrons)
+  const btnPrev = controles && crearEl('button', {
+    type: 'button', class: 'carrusel-multi__btn carrusel-multi__btn--prev',
+    'aria-label': 'Anterior', onClick: () => ir(indice.value - 1),
+  }, [Icono('chevron_l', { tamano: 18 })]);
+  const btnNext = controles && crearEl('button', {
+    type: 'button', class: 'carrusel-multi__btn carrusel-multi__btn--next',
+    'aria-label': 'Siguiente', onClick: () => ir(indice.value + 1),
+  }, [Icono('chevron_r', { tamano: 18 })]);
+
+  // Indicadores (dinámicos, recalculan con el porVista)
+  const dotsHost = indicadores && crearEl('div', { class: 'carrusel-multi__dots' });
+  if (indicadores) {
+    efecto(() => {
+      const tot = totalSlides();
+      const puntos = [];
+      for (let i = 0; i < tot; i++) {
+        puntos.push(crearEl('button', {
+          type: 'button',
+          class: ['carrusel-multi__dot', i === indice.value && 'carrusel-multi__dot--activo'],
+          'aria-label': `Ir al grupo ${i + 1}`,
+          onClick: () => ir(i),
+        }));
+      }
+      dotsHost.replaceChildren(...puntos);
+    });
+  }
+
+  const host = crearEl('div', { class: 'carrusel-multi' }, [
+    crearEl('div', { class: 'carrusel-multi__viewport' }, [pista]),
+    btnPrev, btnNext, dotsHost,
+  ]);
+
+  // Auto-play con cleanup
+  if (autoPlay && items.length > 1) {
+    let timer = setInterval(() => ir(indice.value + 1), intervalo);
+    const mo = new MutationObserver(() => {
+      if (!host.isConnected) {
+        clearInterval(timer);
+        window.removeEventListener('resize', onResize);
+        mo.disconnect();
+      }
+    });
+    requestAnimationFrame(() => host.parentNode && mo.observe(host.parentNode, { childList: true }));
+  }
+
+  return host;
+};
+
+/* ===========================================================================
    CarruselGaleria — hero grande + tira de thumbnails clickeables debajo
    Estilo galería de producto (Amazon, Shopify, portfolios).
    =========================================================================== */

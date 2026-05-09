@@ -117,3 +117,85 @@
   }
   .carrusel-galeria__thumb { aspect-ratio: 4/3; border-width: 1.5px; }
 }
+
+/* =============================================================================
+   CarruselMulti — varios items por slide (multi-item / Owl-style).
+   Sin background ni border: el visual lo aportan los items (cards / imágenes).
+   ============================================================================= */
+.carrusel-multi {
+  position: relative;
+  padding-block-end: var(--space-6);  /* hueco para los dots */
+}
+.carrusel-multi__viewport {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+.carrusel-multi__pista {
+  display: flex;
+  align-items: stretch;
+  transition: transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* gap se aplica por JS según `espaciado` */
+}
+.carrusel-multi__item {
+  /* flex-basis se aplica por JS según itemsPorVista del breakpoint actual */
+  display: flex;
+  min-width: 0;
+}
+.carrusel-multi__item > * {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Controles laterales — neutrales, sobre el contenedor (no sobre la imagen) */
+.carrusel-multi__btn {
+  position: absolute;
+  inset-block-start: calc(50% - var(--space-3));
+  transform: translateY(-50%);
+  width: 36px; height: 36px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+  box-shadow: 0 6px 18px -10px rgb(0 0 0 / 0.25);
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+.carrusel-multi__btn:hover {
+  transform: translateY(-50%) scale(1.08);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.carrusel-multi__btn--prev { inset-inline-start: -18px; }
+.carrusel-multi__btn--next { inset-inline-end:   -18px; }
+
+/* Dots centrados debajo del viewport */
+.carrusel-multi__dots {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.carrusel-multi__dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--foreground) 22%, transparent);
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  transition: width 180ms ease, background 180ms ease;
+}
+.carrusel-multi__dot--activo {
+  background: var(--primary);
+  width: 22px;
+  border-radius: 999px;
+}
+
+@media (max-width: 600px) {
+  .carrusel-multi__btn--prev { inset-inline-start: 4px; }
+  .carrusel-multi__btn--next { inset-inline-end:   4px; }
+}

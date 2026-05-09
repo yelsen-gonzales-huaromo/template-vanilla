@@ -1,629 +1,286 @@
 /**
- * Chat — sistema de mensajería profesional con 3 variantes visuales:
- *   - WhatsApp:  bubbles verde/gris, palomitas, pegadas a su lado
- *   - Messenger: bubbles azul circular, reacciones, look más juvenil
- *   - Workspace: estilo Slack/Linear, sin bubbles, plano profesional
+ * Chat — UI profesional inspirada en plantillas modernas (perfil + rol,
+ * tabs con icono, avatares en cada burbuja, header con video/llamada/añadir,
+ * input con emoji + adjuntar + voz + send circular, badges multicolor).
  *
- * Multi-channel (WhatsApp, Messenger, Telegram, Email, Interno) + bots
- * con quick replies + status indicators + attachments + reactions +
- * typing indicator + drawer de detalle + responsive mobile-first.
+ * Layout 2 columnas (sidebar + panel). Reactivo, persistente en localStorage.
+ * Theme-aware vía tokens.
  */
 import { crearEl } from '../../../utils/helpers/dom.js';
 import { senal, efecto } from '../../../utils/helpers/reactive.js';
-import { Icono } from '../../../components/ui/icon/icons.js';
-import { EmojiPicker } from '../../modulos/forms/_emoji.js';
 
-// ===========================================================================
-//  Catálogo de canales (multi-canal: WhatsApp, Messenger, Email, etc.)
-// ===========================================================================
-const CANALES = [
-  { id: 'todos',     label: 'Todos',     icono: 'rejilla9',  color: '#3b82f6' },
-  { id: 'whatsapp',  label: 'WhatsApp',  icono: 'chat',      color: '#25d366', emoji: 'WA' },
-  { id: 'messenger', label: 'Messenger', icono: 'chat',      color: '#0084ff', emoji: 'MS' },
-  { id: 'telegram',  label: 'Telegram',  icono: 'enlace',    color: '#0088cc', emoji: 'TG' },
-  { id: 'email',     label: 'Email',     icono: 'correo',    color: '#ea4335', emoji: 'EM' },
-  { id: 'interno',   label: 'Equipo',    icono: 'crm',       color: '#8b5cf6', emoji: 'IN' },
+/* ─── Constantes ───────────────────────────────────────────────────────── */
+const STORAGE_KEY = 'launchpad:chat:v2';
+const YO = { id: 'yo', nombre: 'Amiah Burton', rol: 'Software Developer', color: '#a78bfa' };
+const HOY = () => new Date().toISOString().slice(0, 10);
+
+/* ─── Datos demo ───────────────────────────────────────────────────────── */
+const CONTACTOS = [
+  { id: 'mariana', nombre: 'Mariana Zenha',  rol: 'Front-end Developer', online: true,  color: '#ec4899', badgeColor: '#3b82f6' },
+  { id: 'john1',   nombre: 'John Doe',       rol: 'Product Manager',     online: true,  color: '#f97316', badgeColor: '#3b82f6' },
+  { id: 'carl',    nombre: 'Carl Henson',    rol: 'Designer',            online: false, color: '#8b5cf6', badgeColor: '#ec4899' },
+  { id: 'john2',   nombre: 'John Doe',       rol: 'Backend Engineer',    online: false, color: '#0ea5e9', badgeColor: null },
+  { id: 'jensen',  nombre: 'Jensen Combs',   rol: 'iOS Developer',       online: true,  color: '#22c55e', badgeColor: null },
+  { id: 'yaretzi', nombre: 'Yaretzi Mayo',   rol: 'Marketing Lead',      online: false, color: '#ef4444', badgeColor: null },
+  { id: 'lucia',   nombre: 'Lucía Pérez',    rol: 'QA Engineer',         online: true,  color: '#06b6d4', badgeColor: null },
 ];
 
-const colorCanal = (id) => CANALES.find((c) => c.id === id)?.color || '#64748b';
-const labelCanal = (id) => CANALES.find((c) => c.id === id)?.label || id;
-
-// ===========================================================================
-//  Datos demo — conversaciones (con variedad de canales)
-// ===========================================================================
-const CONVERSACIONES_DEMO = [
-  {
-    id: 'c1', canal: 'whatsapp',
-    contacto: { nombre: 'Ana García', avatar: 'AG', color: '#ec4899', telefono: '+51 999 888 777', online: true, escribiendo: false },
-    estado: 'abierta', etiquetas: ['cliente-vip'], asignado: 'Tú',
-    sinLeer: 2, fijada: true,
-    ultimoMensaje: '¿Tienes 5 min ahora?',
-    fecha: '10:32',
-    mensajes: [
-      { id: 'm1', autor: 'ellos', texto: 'Hola! Vi su catálogo y me interesa el plan Pro 🙌', hora: '10:14', estado: 'leido' },
-      { id: 'm2', autor: 'yo', texto: '¡Hola Ana! Te puedo ayudar con eso. ¿Para cuántos usuarios?', hora: '10:15', estado: 'leido' },
-      { id: 'm3', autor: 'ellos', texto: 'Para unos 8 personas en mi equipo', hora: '10:18', estado: 'leido' },
-      { id: 'm4', autor: 'yo', texto: 'Perfecto, el plan Pro cubre eso. ¿Te paso una demo?', hora: '10:20', estado: 'leido', reacciones: ['👍'] },
-      { id: 'm5', autor: 'ellos', tipo: 'imagen', url: 'https://picsum.photos/seed/cat/400/300', hora: '10:25', estado: 'leido' },
-      { id: 'm6', autor: 'ellos', texto: 'Te paso una captura del flujo que necesitamos automatizar', hora: '10:25', estado: 'leido' },
-      { id: 'm7', autor: 'yo', texto: '¡Perfecto! Eso lo cubrimos sin problema 💪', hora: '10:28', estado: 'leido' },
-      { id: 'm8', autor: 'ellos', texto: '¿Tienes 5 min ahora? Quería revisar las métricas en vivo.', hora: '10:32', estado: 'enviado' },
-    ],
-  },
-  {
-    id: 'c2', canal: 'messenger',
-    contacto: { nombre: 'Carlos Mendoza', avatar: 'CM', color: '#8b5cf6', online: false, ultVisto: 'Hace 1h' },
-    estado: 'pendiente', etiquetas: ['soporte'], asignado: 'María',
-    sinLeer: 0,
-    ultimoMensaje: 'Perfecto, gracias!',
-    fecha: '09:48',
-    mensajes: [
-      { id: 'm1', autor: 'ellos', texto: 'Hola, no me llega el email de verificación', hora: '09:30', estado: 'leido' },
-      { id: 'm2', autor: 'bot', texto: '¡Hola Carlos! Soy el asistente automático. ¿Podrías confirmar tu email?', hora: '09:30', estado: 'leido', botName: 'Asistente IA' },
-      { id: 'm3', autor: 'ellos', texto: 'carlos@empresa.com', hora: '09:31', estado: 'leido' },
-      { id: 'm4', autor: 'bot', texto: 'Encontré tu cuenta. Te reenvié el email — revisa la bandeja de spam también.', hora: '09:31', estado: 'leido', botName: 'Asistente IA' },
-      { id: 'm5', autor: 'ellos', texto: 'Perfecto, gracias!', hora: '09:48', estado: 'leido', reacciones: ['❤️'] },
-    ],
-  },
-  {
-    id: 'c3', canal: 'telegram',
-    contacto: { nombre: 'María Rodríguez', avatar: 'MR', color: '#06b6d4', online: true },
-    estado: 'abierta', etiquetas: ['proveedor'], asignado: 'Tú',
-    sinLeer: 0,
-    ultimoMensaje: 'Te paso el documento.',
-    fecha: 'Ayer',
-    mensajes: [
-      { id: 'm1', autor: 'ellos', texto: 'Hola, te envío la propuesta actualizada', hora: 'Ayer 16:22', estado: 'leido' },
-      { id: 'm2', autor: 'ellos', tipo: 'archivo', nombre: 'Propuesta_Q3_v2.pdf', tamano: '2.4 MB', hora: 'Ayer 16:22', estado: 'leido' },
-      { id: 'm3', autor: 'yo', texto: 'Genial, lo revisaré ahora', hora: 'Ayer 16:30', estado: 'leido' },
-      { id: 'm4', autor: 'ellos', texto: 'Te paso el documento.', hora: 'Ayer 17:00', estado: 'leido' },
-    ],
-  },
-  {
-    id: 'c4', canal: 'email',
-    contacto: { nombre: 'Equipo de Producto', avatar: 'EP', color: '#22c55e', online: false, esGrupo: true },
-    estado: 'abierta', etiquetas: ['interno'], asignado: 'Equipo',
-    sinLeer: 5,
-    ultimoMensaje: 'Reunión a las 4pm',
-    fecha: 'Ayer',
-    mensajes: [
-      { id: 'm1', autor: 'ellos', texto: 'Reunión a las 4pm en la sala grande', hora: 'Ayer 11:00', estado: 'leido' },
-    ],
-  },
-  {
-    id: 'c5', canal: 'whatsapp',
-    contacto: { nombre: 'Luis Fernández', avatar: 'LF', color: '#f97316', online: false, ultVisto: 'Hace 2 días' },
-    estado: 'resuelta', etiquetas: ['cliente'], asignado: 'Diego',
-    sinLeer: 0,
-    ultimoMensaje: 'Listo el deploy a staging.',
-    fecha: 'Lun',
-    mensajes: [
-      { id: 'm1', autor: 'ellos', texto: 'Listo el deploy a staging.', hora: 'Lun 15:00', estado: 'leido' },
-    ],
-  },
-  {
-    id: 'c6', canal: 'whatsapp',
-    contacto: { nombre: 'Distribuidora Lima SAC', avatar: 'DL', color: '#0ea5e9', online: true, esEmpresa: true },
-    estado: 'abierta', etiquetas: ['proveedor', 'urgente'], asignado: 'Tú',
-    sinLeer: 1,
-    ultimoMensaje: 'Confirmamos el pedido para el viernes',
-    fecha: '14:20',
-    mensajes: [
-      { id: 'm1', autor: 'ellos', texto: 'Buenas tardes, confirmamos el pedido para el viernes', hora: '14:20', estado: 'enviado' },
-    ],
-  },
-];
-
-const QUICK_REPLIES = [
-  '¡Gracias por contactarnos!',
-  '¿En qué podemos ayudarte?',
-  'Te respondemos en breve',
-  'Compártenos tu correo',
-];
-
-// ===========================================================================
-//  Helpers
-// ===========================================================================
-const Avatar = ({ nombre, color, tamano = 40, esGrupo = false }) => crearEl('div', {
-  class: 'ch-avatar',
-  style: {
-    width: `${tamano}px`, height: `${tamano}px`,
-    background: color,
-    fontSize: `${Math.round(tamano * 0.36)}px`,
-  },
-}, [
-  esGrupo ? Icono('crm', { tamano: Math.round(tamano * 0.5) }) : nombre,
-]);
-
-const StatusDot = (estado) => {
-  if (estado === 'enviando') return Icono('reloj', { tamano: 11 });
-  if (estado === 'enviado') return crearEl('span', { class: 'ch-tick' }, ['✓']);
-  if (estado === 'entregado') return crearEl('span', { class: 'ch-tick' }, ['✓✓']);
-  if (estado === 'leido') return crearEl('span', { class: 'ch-tick ch-tick--leido' }, ['✓✓']);
-  return null;
+const MENSAJES_DEMO = {
+  mariana: [
+    { autor: 'mariana', texto: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', hora: '8:12 PM', dia: HOY() },
+    { autor: 'yo',      texto: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and typesetting industry.', hora: '8:13 PM', dia: HOY() },
+    { autor: 'yo',      texto: 'Lorem Ipsum.', hora: '8:13 PM', dia: HOY() },
+    { autor: 'mariana', texto: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', hora: '8:15 PM', dia: HOY() },
+    { autor: 'yo',      texto: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and typesetting industry.', hora: '8:16 PM', dia: HOY() },
+  ],
+  john1:   [
+    { autor: 'john1', texto: 'Hi, How are you?', hora: '4:32 PM', dia: HOY() },
+    { autor: 'yo',    texto: 'Bien, gracias. ¿Tú?', hora: '4:33 PM', dia: HOY() },
+    { autor: 'john1', texto: 'Todo perfecto. Mañana revisamos los mockups?', hora: '4:35 PM', dia: HOY() },
+    { autor: 'john1', texto: '👀', hora: '4:35 PM', dia: HOY() },
+    { autor: 'john1', texto: '¿Te paso el link?', hora: '4:36 PM', dia: HOY() },
+  ],
+  carl:    [
+    { autor: 'carl', tipo: 'foto', texto: '📷 Photo', hora: '05:20 PM', dia: HOY() },
+    { autor: 'carl', texto: '¿Qué te parece esta paleta?', hora: '05:24 PM', dia: HOY() },
+  ],
+  john2:   [{ autor: 'john2', texto: 'Hi, How are you?', hora: 'Yesterday', dia: HOY() }],
+  jensen:  [{ autor: 'jensen', tipo: 'video', texto: '🎥 Video', hora: '2 days ago', dia: HOY() }],
+  yaretzi: [{ autor: 'yaretzi', texto: 'Confirmamos campaña Q3?', hora: '4 week ago', dia: HOY() }],
+  lucia:   [{ autor: 'lucia', texto: 'Probaré el flow esta tarde 🚀', hora: '10:02 AM', dia: HOY() }],
 };
 
-const CanalBadge = (canalId) => {
-  const c = CANALES.find((x) => x.id === canalId);
-  if (!c || canalId === 'todos') return null;
-  return crearEl('span', {
-    class: 'ch-canal-badge',
-    style: { background: c.color },
-    title: c.label,
-  }, [c.emoji]);
+/* Cuántos sin leer simulamos por contacto (para los badges) */
+const SIN_LEER_DEMO = { john1: 5, carl: 3 };
+
+/* ─── SVG icons inline ─────────────────────────────────────────────────── */
+const SVG = {
+  buscar:   `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>`,
+  config:   `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.36.16.68.4 1 1z"/></svg>`,
+  chats:    `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  llamada:  `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+  contactos:`<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  video:    `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
+  phone:    `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+  userPlus: `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>`,
+  emoji:    `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>`,
+  clip:     `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>`,
+  mic:      `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
+  send:     `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`,
+  foto:     `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>`,
+  videoTipo:`<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`,
 };
 
-const EstadoBadge = (estado) => crearEl('span', {
-  class: ['ch-estado', `ch-estado--${estado}`],
-}, [estado]);
+/* ─── Helpers UI ───────────────────────────────────────────────────────── */
+const Avatar = ({ nombre, color, online, tamano = 44 }) => {
+  const iniciales = nombre.split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
+  return crearEl('div', {
+    class: ['ch-av', online && 'ch-av--online'],
+    style: { width: `${tamano}px`, height: `${tamano}px`, background: color || '#94a3b8' },
+  }, [
+    crearEl('span', { class: 'ch-av__t' }, [iniciales]),
+  ]);
+};
 
-// ===========================================================================
-//  Página principal
-// ===========================================================================
+const Icono = (svg, cls = 'ch-i') => crearEl('span', { class: cls, html: svg, 'aria-hidden': 'true' });
+
+/* Persistencia */
+const cargarEstado = () => {
+  try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch {}
+  return { activoId: 'mariana', mensajes: MENSAJES_DEMO };
+};
+const guardarEstado = (e) => localStorage.setItem(STORAGE_KEY, JSON.stringify(e));
+
+/* ─── Página ───────────────────────────────────────────────────────────── */
 export default async () => {
-  const variante = senal('whatsapp');           // 'whatsapp' | 'messenger' | 'workspace'
-  const canalActivo = senal('todos');
-  const idActiva = senal(CONVERSACIONES_DEMO[0].id);
-  const filtroBusqueda = senal('');
-  const conversaciones = senal(JSON.parse(JSON.stringify(CONVERSACIONES_DEMO)));
-  const escribiendo = senal(false);
-  const drawerAbierto = senal(false);
-  const mobileVista = senal('lista');           // 'lista' | 'conv' (solo móvil)
+  const persisted = cargarEstado();
+  const tabActiva = senal('chats');
+  const activoId  = senal(persisted.activoId || 'mariana');
+  const mensajes  = senal({ ...MENSAJES_DEMO, ...(persisted.mensajes || {}) });
+  const sinLeer   = senal({ ...SIN_LEER_DEMO });
+  const filtro    = senal('');
 
-  const wrap = crearEl('div', { class: 'ch-pagina' });
-  efecto(() => {
-    wrap.dataset.variante = variante.value;
-    wrap.dataset.mobile = mobileVista.value;
-  });
+  efecto(() => guardarEstado({ activoId: activoId.value, mensajes: mensajes.value }));
 
-  // -------------------------------------------------------------------------
-  //  Header de la página (titulo + variant switcher)
-  // -------------------------------------------------------------------------
-  const header = crearEl('div', { class: 'ch-page-header' }, [
-    crearEl('div', null, [
-      crearEl('h1', null, ['Mensajería']),
-      crearEl('p', null, ['Centraliza WhatsApp, Messenger, Email y chats internos en una sola bandeja.']),
+  /* ── Cabecera del usuario activo (yo) ── */
+  const cabYo = crearEl('header', { class: 'ch-side__yo' }, [
+    crearEl('div', { class: 'ch-side__yo-info' }, [
+      Avatar({ nombre: YO.nombre, color: YO.color, online: true, tamano: 44 }),
+      crearEl('div', { class: 'ch-side__yo-textos' }, [
+        crearEl('strong', { class: 'ch-side__yo-nombre' }, [YO.nombre]),
+        crearEl('span',   { class: 'ch-side__yo-rol' }, [YO.rol]),
+      ]),
     ]),
-    crearEl('div', { class: 'ch-variantes' },
-      [
-        { id: 'whatsapp',  label: 'WhatsApp' },
-        { id: 'messenger', label: 'Messenger' },
-        { id: 'workspace', label: 'Workspace' },
-      ].map((v) => {
-        const btn = crearEl('button', {
-          type: 'button', class: 'ch-variantes__btn',
-          onClick: () => { variante.value = v.id; },
-        }, [v.label]);
-        efecto(() => btn.classList.toggle('ch-variantes__btn--activa', variante.value === v.id));
-        return btn;
-      }),
-    ),
+    crearEl('button', { class: 'ch-iconbtn ch-iconbtn--mute', 'aria-label': 'Configuración' }, [Icono(SVG.config)]),
   ]);
 
-  // -------------------------------------------------------------------------
-  //  Sidebar de canales (vertical, izquierda)
-  // -------------------------------------------------------------------------
-  const channelsBar = crearEl('aside', { class: 'ch-channels' });
-  CANALES.forEach((c) => {
-    const total = c.id === 'todos' ? null : conversaciones.peek().filter((x) => x.canal === c.id).length;
-    const sinLeer = (c.id === 'todos'
-      ? conversaciones.peek().reduce((s, x) => s + x.sinLeer, 0)
-      : conversaciones.peek().filter((x) => x.canal === c.id).reduce((s, x) => s + x.sinLeer, 0));
-    const btn = crearEl('button', {
-      type: 'button', class: 'ch-channel',
-      title: c.label,
-      onClick: () => { canalActivo.value = c.id; },
-    }, [
-      crearEl('span', { class: 'ch-channel__ico', style: { '--c': c.color } }, [
-        c.id === 'todos' ? Icono('rejilla9', { tamano: 18 }) :
-        c.id === 'email' ? Icono('correo', { tamano: 18 }) :
-        c.id === 'telegram' ? Icono('enlace', { tamano: 18 }) :
-        c.id === 'interno' ? Icono('crm', { tamano: 18 }) :
-        Icono('chat', { tamano: 18 }),
-      ]),
-      crearEl('span', { class: 'ch-channel__lbl' }, [c.label]),
-      sinLeer > 0 && crearEl('span', { class: 'ch-channel__count' }, [String(sinLeer)]),
-    ]);
-    efecto(() => btn.classList.toggle('ch-channel--activo', canalActivo.value === c.id));
-    channelsBar.appendChild(btn);
+  /* ── Buscador ── */
+  const inputBuscar = crearEl('input', {
+    type: 'search', class: 'ch-buscar__input', placeholder: 'Search here…',
+    onInput: (e) => { filtro.value = e.target.value.toLowerCase(); },
   });
+  const buscador = crearEl('div', { class: 'ch-buscar' }, [
+    inputBuscar,
+    crearEl('button', { class: 'ch-buscar__btn', 'aria-label': 'Buscar', html: SVG.buscar }),
+  ]);
 
-  // -------------------------------------------------------------------------
-  //  Lista de conversaciones (filtrable)
-  // -------------------------------------------------------------------------
-  const listaWrap = crearEl('div', { class: 'ch-lista' });
+  /* ── Tabs (botones con icono) ── */
+  const tabBtn = (id, icono, etiqueta) => {
+    const b = crearEl('button', {
+      class: 'ch-tab', onClick: () => { tabActiva.value = id; },
+    }, [Icono(icono, 'ch-i'), crearEl('span', null, [etiqueta])]);
+    efecto(() => b.classList.toggle('ch-tab--activa', tabActiva.value === id));
+    return b;
+  };
+  const tabs = crearEl('nav', { class: 'ch-tabs', role: 'tablist' }, [
+    tabBtn('chats',     SVG.chats,    'Chats'),
+    tabBtn('calls',     SVG.llamada,  'Calls'),
+    tabBtn('contacts',  SVG.contactos,'Contacts'),
+  ]);
+
+  /* ── Lista de conversaciones ── */
+  const listaCont = crearEl('div', { class: 'ch-lista', role: 'tabpanel' });
 
   const renderLista = () => {
-    listaWrap.replaceChildren();
-    // Search bar
-    const busqueda = crearEl('div', { class: 'ch-lista__buscar' }, [
-      Icono('busqueda', { tamano: 14 }),
-      crearEl('input', {
-        type: 'search', class: 'input input--sm',
-        placeholder: 'Buscar conversación o contacto…',
-        value: filtroBusqueda.peek(),
-        onInput: (e) => { filtroBusqueda.value = e.target.value; renderLista(); },
-      }),
-    ]);
-    listaWrap.appendChild(busqueda);
+    let fuente = CONTACTOS;
+    const f = filtro.value.trim();
+    if (f) fuente = fuente.filter(x => x.nombre.toLowerCase().includes(f));
 
-    const items = crearEl('div', { class: 'ch-lista__items' });
-    const q = filtroBusqueda.value.trim().toLowerCase();
-    const filtradas = conversaciones.value.filter((c) => {
-      if (canalActivo.value !== 'todos' && c.canal !== canalActivo.value) return false;
-      if (q && !c.contacto.nombre.toLowerCase().includes(q) && !c.ultimoMensaje.toLowerCase().includes(q)) return false;
-      return true;
-    });
+    listaCont.replaceChildren(
+      crearEl('h4', { class: 'ch-lista__titulo' }, ['Recent chats']),
+      ...fuente.map((p) => {
+        const ms = mensajes.value[p.id] || [];
+        const ult = ms[ms.length - 1];
+        const sl = sinLeer.value[p.id] || 0;
 
-    if (filtradas.length === 0) {
-      items.appendChild(crearEl('div', { class: 'ch-lista__vacio' }, [
-        Icono('busqueda', { tamano: 28 }),
-        crearEl('p', null, ['Sin resultados']),
-      ]));
-    } else {
-      // Fijadas primero
-      const ordenadas = [...filtradas].sort((a, b) => (b.fijada ? 1 : 0) - (a.fijada ? 1 : 0));
-      ordenadas.forEach((c) => items.appendChild(renderItemLista(c)));
-    }
-    listaWrap.appendChild(items);
-  };
+        // Icono de tipo en el preview (foto/video)
+        const previewNodos = [];
+        if (ult?.tipo === 'foto')  previewNodos.push(Icono(SVG.foto, 'ch-conv__t'), crearEl('span', null, ['Photo']));
+        else if (ult?.tipo === 'video') previewNodos.push(Icono(SVG.videoTipo, 'ch-conv__t'), crearEl('span', null, ['Video']));
+        else previewNodos.push(crearEl('span', null, [ult?.texto || '—']));
 
-  const renderItemLista = (c) => {
-    const item = crearEl('button', {
-      type: 'button',
-      class: ['ch-conv', c.id === idActiva.value && 'ch-conv--activa'],
-      onClick: () => {
-        idActiva.value = c.id;
-        // Marcar como leída
-        const ts = JSON.parse(JSON.stringify(conversaciones.peek()));
-        const t = ts.find((x) => x.id === c.id);
-        if (t) t.sinLeer = 0;
-        conversaciones.value = ts;
-        mobileVista.value = 'conv';
-      },
-    }, [
-      crearEl('div', { class: 'ch-conv__avatar' }, [
-        Avatar({ nombre: c.contacto.avatar, color: c.contacto.color, tamano: 44, esGrupo: c.contacto.esGrupo }),
-        c.contacto.online && crearEl('span', { class: 'ch-conv__online' }),
-        CanalBadge(c.canal),
-      ]),
-      crearEl('div', { class: 'ch-conv__cuerpo' }, [
-        crearEl('div', { class: 'ch-conv__head' }, [
-          crearEl('span', { class: 'ch-conv__nombre' }, [
-            c.fijada && crearEl('span', { class: 'ch-conv__pin', title: 'Fijada' }, [Icono('marcador', { tamano: 11 })]),
-            c.contacto.nombre,
+        const item = crearEl('button', {
+          class: ['ch-conv', activoId.value === p.id && 'ch-conv--activa'],
+          onClick: () => {
+            activoId.value = p.id;
+            const sl2 = { ...sinLeer.value }; delete sl2[p.id];
+            sinLeer.value = sl2;
+          },
+        }, [
+          Avatar({ nombre: p.nombre, color: p.color, online: p.online, tamano: 44 }),
+          crearEl('div', { class: 'ch-conv__textos' }, [
+            crearEl('strong', { class: 'ch-conv__nombre' }, [p.nombre]),
+            crearEl('span', { class: 'ch-conv__preview' }, previewNodos),
           ]),
-          crearEl('span', { class: 'ch-conv__hora' }, [c.fecha]),
-        ]),
-        crearEl('div', { class: 'ch-conv__sub' }, [
-          crearEl('span', { class: 'ch-conv__msg' }, [c.ultimoMensaje]),
-          c.sinLeer > 0
-            ? crearEl('span', { class: 'ch-conv__badge' }, [String(c.sinLeer)])
-            : null,
-        ]),
-        c.etiquetas && c.etiquetas.length > 0 && crearEl('div', { class: 'ch-conv__tags' },
-          c.etiquetas.map((t) => crearEl('span', { class: ['ch-tag', `ch-tag--${t}`] }, [t])),
-        ),
-      ]),
-    ]);
-    return item;
+          crearEl('div', { class: 'ch-conv__meta' }, [
+            crearEl('span', { class: 'ch-conv__hora' }, [ult?.hora || '']),
+            sl > 0 && crearEl('span', {
+              class: 'ch-conv__badge',
+              style: { background: p.badgeColor || 'var(--primary)' },
+            }, [String(sl)]),
+          ]),
+        ]);
+        return item;
+      }),
+    );
   };
-
   efecto(renderLista);
 
-  // -------------------------------------------------------------------------
-  //  Vista de conversación (mensajes + composer + header)
-  // -------------------------------------------------------------------------
-  const convWrap = crearEl('section', { class: 'ch-conv-vista' });
+  /* ── Panel derecho ── */
+  const buscarPersona = (id) => CONTACTOS.find(x => x.id === id) || CONTACTOS[0];
 
-  const renderConv = () => {
-    const c = conversaciones.value.find((x) => x.id === idActiva.value);
-    if (!c) {
-      convWrap.replaceChildren(crearEl('div', { class: 'ch-vacio' }, [
-        Icono('chat', { tamano: 48 }),
-        crearEl('p', null, ['Selecciona una conversación para empezar']),
-      ]));
-      return;
-    }
-
-    // ===== Header =====
-    const header = crearEl('header', { class: 'ch-conv-vista__head' }, [
-      crearEl('button', {
-        type: 'button', class: 'ch-back', title: 'Volver',
-        onClick: () => mobileVista.value = 'lista',
-      }, [Icono('chevron_l', { tamano: 18 })]),
-      crearEl('div', { class: 'ch-conv-vista__avatar' }, [
-        Avatar({ nombre: c.contacto.avatar, color: c.contacto.color, tamano: 38, esGrupo: c.contacto.esGrupo }),
-        c.contacto.online && crearEl('span', { class: 'ch-conv__online ch-conv__online--md' }),
-      ]),
-      crearEl('div', { class: 'ch-conv-vista__info' }, [
-        crearEl('div', { class: 'ch-conv-vista__nombre' }, [
-          c.contacto.nombre,
-          CanalBadge(c.canal),
-        ]),
-        crearEl('div', { class: 'ch-conv-vista__estado' }, [
-          c.contacto.online ? 'en línea' :
-          c.contacto.escribiendo ? 'escribiendo…' :
-          (c.contacto.ultVisto || 'desconectado'),
-        ]),
-      ]),
-      crearEl('div', { class: 'ch-conv-vista__acciones' }, [
-        crearEl('button', { type: 'button', class: 'ch-icon-btn', title: 'Llamada de voz' }, [Icono('reloj', { tamano: 16 })]),
-        crearEl('button', { type: 'button', class: 'ch-icon-btn', title: 'Videollamada' }, [Icono('monitor_play', { tamano: 16 })]),
-        crearEl('button', { type: 'button', class: 'ch-icon-btn', title: 'Buscar' }, [Icono('busqueda', { tamano: 16 })]),
-        crearEl('button', {
-          type: 'button', class: 'ch-icon-btn', title: 'Información del contacto',
-          onClick: () => drawerAbierto.value = !drawerAbierto.peek(),
-        }, [Icono('info', { tamano: 16 })]),
-      ]),
-    ]);
-
-    // ===== Mensajes =====
-    const hilo = crearEl('div', { class: 'ch-mensajes' });
-    let ultimaFecha = '';
-    c.mensajes.forEach((m, i) => {
-      // Separador de fecha (simple — extraer del 'hora' si tiene 'Ayer' o 'Lun')
-      const fechaSep = m.hora.includes('Ayer') ? 'Ayer' : (m.hora.match(/^(Lun|Mar|Mié|Jue|Vie|Sáb|Dom)/) || [])[0];
-      if (fechaSep && fechaSep !== ultimaFecha) {
-        hilo.appendChild(crearEl('div', { class: 'ch-fecha-sep' }, [crearEl('span', null, [fechaSep])]));
-        ultimaFecha = fechaSep;
-      } else if (i === 0) {
-        hilo.appendChild(crearEl('div', { class: 'ch-fecha-sep' }, [crearEl('span', null, ['Hoy'])]));
-        ultimaFecha = 'Hoy';
-      }
-      hilo.appendChild(renderMensaje(m, c));
-    });
-
-    // Typing indicator
-    if (escribiendo.value) {
-      hilo.appendChild(crearEl('div', { class: 'ch-msg ch-msg--ellos' }, [
-        crearEl('div', { class: 'ch-bubble ch-bubble--typing' }, [
-          crearEl('span', { class: 'ch-dot' }), crearEl('span', { class: 'ch-dot' }), crearEl('span', { class: 'ch-dot' }),
-        ]),
-      ]));
-    }
-
-    // ===== Quick replies (sugeridas para bots) =====
-    const quickReplies = crearEl('div', { class: 'ch-quick' },
-      QUICK_REPLIES.map((q) => crearEl('button', {
-        type: 'button', class: 'ch-quick__btn',
-        onClick: () => enviarMensaje(q),
-      }, [q])),
-    );
-
-    // ===== Composer =====
-    const ta = crearEl('textarea', {
-      class: 'ch-composer__input',
-      placeholder: 'Escribe un mensaje…',
-      rows: 1,
-      onInput: (e) => {
-        e.target.style.height = 'auto';
-        e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
-      },
-      onKeyDown: (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          if (ta.value.trim()) { enviarMensaje(ta.value); ta.value = ''; ta.style.height = 'auto'; }
-        }
-      },
-    });
-
-    const composer = crearEl('div', { class: 'ch-composer' }, [
-      crearEl('button', { type: 'button', class: 'ch-composer__btn', title: 'Adjuntar archivo' }, [Icono('imagen_mas', { tamano: 18 })]),
-      EmojiPicker({
-        triggerEtq: '😊', tamano: 'sm',
-        onPick: (e) => { ta.value += e; ta.focus(); },
-      }),
-      crearEl('button', { type: 'button', class: 'ch-composer__btn', title: 'Plantillas' }, [Icono('texto_aa', { tamano: 18 })]),
-      ta,
-      crearEl('button', { type: 'button', class: 'ch-composer__btn', title: 'Nota de voz' }, [Icono('volumen', { tamano: 18 })]),
-      crearEl('button', {
-        type: 'button', class: 'ch-composer__send',
-        title: 'Enviar (Enter)',
-        onClick: () => { if (ta.value.trim()) { enviarMensaje(ta.value); ta.value = ''; ta.style.height = 'auto'; } },
-      }, [Icono('navegar', { tamano: 16 })]),
-    ]);
-
-    convWrap.replaceChildren(header, hilo, quickReplies, composer);
-
-    // Auto-scroll al final
-    requestAnimationFrame(() => { hilo.scrollTop = hilo.scrollHeight; });
-  };
-
-  // -------------------------------------------------------------------------
-  //  Render de un mensaje (cambia según variante)
-  // -------------------------------------------------------------------------
-  const renderMensaje = (m, conv) => {
-    const esYo = m.autor === 'yo';
-    const esBot = m.autor === 'bot';
-    const wrap = crearEl('div', {
-      class: ['ch-msg', esYo ? 'ch-msg--yo' : 'ch-msg--ellos', esBot && 'ch-msg--bot'],
-    });
-
-    // Avatar (en variante workspace se muestra al lado de cada mensaje)
-    if (!esYo && variante.value === 'workspace') {
-      wrap.appendChild(Avatar({
-        nombre: esBot ? '🤖' : conv.contacto.avatar,
-        color: esBot ? '#a855f7' : conv.contacto.color,
-        tamano: 32,
-      }));
-    }
-
-    const cuerpo = crearEl('div', { class: 'ch-msg__cuerpo' });
-
-    // Header del mensaje (solo workspace)
-    if (variante.value === 'workspace') {
-      cuerpo.appendChild(crearEl('div', { class: 'ch-msg__head' }, [
-        crearEl('span', { class: 'ch-msg__autor' }, [
-          esYo ? 'Tú' : (esBot ? (m.botName || 'Bot') : conv.contacto.nombre),
-        ]),
-        esBot && crearEl('span', { class: 'ch-msg__bot-tag' }, ['BOT']),
-        crearEl('span', { class: 'ch-msg__hora' }, [m.hora]),
-      ]));
-    }
-
-    // Bubble / contenido
-    const bubble = crearEl('div', { class: 'ch-bubble' });
-
-    if (esBot && variante.value !== 'workspace') {
-      bubble.appendChild(crearEl('div', { class: 'ch-bubble__bot-tag' }, [
-        Icono('asistente', { tamano: 11 }), m.botName || 'Bot',
-      ]));
-    }
-
-    if (m.tipo === 'imagen') {
-      bubble.appendChild(crearEl('img', {
-        class: 'ch-bubble__img',
-        src: m.url, alt: 'Adjunto',
-      }));
-    } else if (m.tipo === 'archivo') {
-      bubble.appendChild(crearEl('div', { class: 'ch-bubble__archivo' }, [
-        crearEl('div', { class: 'ch-bubble__archivo-ico' }, [Icono('reportes', { tamano: 22 })]),
-        crearEl('div', { class: 'ch-bubble__archivo-info' }, [
-          crearEl('div', { class: 'ch-bubble__archivo-nombre' }, [m.nombre]),
-          crearEl('div', { class: 'ch-bubble__archivo-meta' }, [m.tamano]),
-        ]),
-        crearEl('button', { type: 'button', class: 'ch-bubble__archivo-dl', title: 'Descargar' }, [Icono('descargar', { tamano: 14 })]),
-      ]));
-    } else {
-      bubble.appendChild(crearEl('span', { class: 'ch-bubble__texto' }, [m.texto]));
-    }
-
-    // Footer del bubble (hora + status, sólo en variantes whatsapp/messenger)
-    if (variante.value !== 'workspace') {
-      bubble.appendChild(crearEl('span', { class: 'ch-bubble__meta' }, [
-        m.hora,
-        esYo && StatusDot(m.estado),
-      ]));
-    }
-
-    cuerpo.appendChild(bubble);
-
-    // Reacciones
-    if (m.reacciones && m.reacciones.length) {
-      cuerpo.appendChild(crearEl('div', { class: 'ch-msg__reacciones' },
-        m.reacciones.map((e) => crearEl('span', { class: 'ch-reaccion' }, [e])),
-      ));
-    }
-
-    wrap.appendChild(cuerpo);
-    return wrap;
-  };
-
-  // -------------------------------------------------------------------------
-  //  Acciones
-  // -------------------------------------------------------------------------
-  const enviarMensaje = (texto) => {
-    const ts = JSON.parse(JSON.stringify(conversaciones.peek()));
-    const c = ts.find((x) => x.id === idActiva.peek());
-    if (!c) return;
-    const ahora = new Date();
-    const hora = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-    c.mensajes.push({
-      id: 'm' + Date.now(), autor: 'yo', texto, hora, estado: 'enviando',
-    });
-    c.ultimoMensaje = texto;
-    c.fecha = hora;
-    conversaciones.value = ts;
-
-    // Simular cambio de estado
-    setTimeout(() => actualizarEstadoUltimo('enviado'), 400);
-    setTimeout(() => actualizarEstadoUltimo('entregado'), 1200);
-    setTimeout(() => actualizarEstadoUltimo('leido'), 2500);
-  };
-
-  const actualizarEstadoUltimo = (estado) => {
-    const ts = JSON.parse(JSON.stringify(conversaciones.peek()));
-    const c = ts.find((x) => x.id === idActiva.peek());
-    if (!c || c.mensajes.length === 0) return;
-    c.mensajes[c.mensajes.length - 1].estado = estado;
-    conversaciones.value = ts;
-  };
-
-  // -------------------------------------------------------------------------
-  //  Drawer de detalle del contacto
-  // -------------------------------------------------------------------------
-  const drawer = crearEl('aside', { class: 'ch-drawer' });
-  const renderDrawer = () => {
-    const c = conversaciones.value.find((x) => x.id === idActiva.value);
-    if (!c) return;
-    drawer.replaceChildren(
-      crearEl('div', { class: 'ch-drawer__head' }, [
-        crearEl('h3', null, ['Información']),
-        crearEl('button', {
-          type: 'button', class: 'ch-icon-btn',
-          onClick: () => drawerAbierto.value = false,
-        }, [Icono('cerrar', { tamano: 16 })]),
-      ]),
-      crearEl('div', { class: 'ch-drawer__cuerpo' }, [
-        // Hero
-        crearEl('div', { class: 'ch-drawer__hero' }, [
-          Avatar({ nombre: c.contacto.avatar, color: c.contacto.color, tamano: 80, esGrupo: c.contacto.esGrupo }),
-          crearEl('h4', null, [c.contacto.nombre]),
-          c.contacto.telefono && crearEl('p', null, [c.contacto.telefono]),
-          crearEl('div', { class: 'ch-drawer__chips' }, [
-            crearEl('span', { class: 'ch-chip', style: { background: colorCanal(c.canal), color: '#fff' } }, [labelCanal(c.canal)]),
-            EstadoBadge(c.estado),
-          ]),
-        ]),
-        // Acciones rápidas
-        crearEl('div', { class: 'ch-drawer__acciones' }, [
-          crearEl('button', { type: 'button', class: 'ch-drawer__accion' }, [Icono('reloj', { tamano: 16 }), 'Llamar']),
-          crearEl('button', { type: 'button', class: 'ch-drawer__accion' }, [Icono('monitor_play', { tamano: 16 }), 'Video']),
-          crearEl('button', { type: 'button', class: 'ch-drawer__accion' }, [Icono('marcador', { tamano: 16 }), 'Fijar']),
-          crearEl('button', { type: 'button', class: 'ch-drawer__accion' }, [Icono('volumen_mute', { tamano: 16 }), 'Silenciar']),
-        ]),
-        // Detalles
-        crearEl('div', { class: 'ch-drawer__seccion' }, [
-          crearEl('div', { class: 'ch-drawer__lbl' }, ['Asignado a']),
-          crearEl('div', { class: 'ch-drawer__valor' }, [c.asignado || '—']),
-        ]),
-        crearEl('div', { class: 'ch-drawer__seccion' }, [
-          crearEl('div', { class: 'ch-drawer__lbl' }, ['Etiquetas']),
-          crearEl('div', { class: 'ch-conv__tags' },
-            (c.etiquetas || []).map((t) => crearEl('span', { class: ['ch-tag', `ch-tag--${t}`] }, [t])),
-          ),
-        ]),
-        crearEl('div', { class: 'ch-drawer__seccion' }, [
-          crearEl('div', { class: 'ch-drawer__lbl' }, ['Notas internas']),
-          crearEl('textarea', {
-            class: 'input', rows: 4,
-            placeholder: 'Notas privadas (no visibles para el contacto)…',
-          }),
-        ]),
-        crearEl('div', { class: 'ch-drawer__seccion' }, [
-          crearEl('div', { class: 'ch-drawer__lbl' }, ['Conversación']),
-          crearEl('div', { class: 'ch-drawer__stats' }, [
-            crearEl('div', null, [
-              crearEl('strong', null, [String(c.mensajes.length)]),
-              crearEl('span', null, ['Mensajes']),
-            ]),
-            crearEl('div', null, [
-              crearEl('strong', null, [c.contacto.online ? 'Activo' : 'Offline']),
-              crearEl('span', null, ['Estado']),
-            ]),
-          ]),
-        ]),
-      ]),
-    );
-  };
-
+  /* Cabecera del chat activo */
+  const cabActiva = crearEl('header', { class: 'ch-main__head' });
   efecto(() => {
-    drawer.classList.toggle('ch-drawer--abierto', drawerAbierto.value);
-    if (drawerAbierto.value) renderDrawer();
+    const p = buscarPersona(activoId.value);
+    cabActiva.replaceChildren(
+      crearEl('div', { class: 'ch-main__head-info' }, [
+        Avatar({ nombre: p.nombre, color: p.color, online: p.online, tamano: 44 }),
+        crearEl('div', null, [
+          crearEl('strong', { class: 'ch-main__head-nombre' }, [p.nombre]),
+          crearEl('span',   { class: 'ch-main__head-rol' }, [p.rol]),
+        ]),
+      ]),
+      crearEl('div', { class: 'ch-main__head-acciones' }, [
+        crearEl('button', { class: 'ch-iconbtn ch-iconbtn--mute', 'aria-label': 'Videollamada' }, [Icono(SVG.video)]),
+        crearEl('button', { class: 'ch-iconbtn ch-iconbtn--mute', 'aria-label': 'Llamada' }, [Icono(SVG.phone)]),
+        crearEl('button', { class: 'ch-iconbtn ch-iconbtn--mute', 'aria-label': 'Añadir' }, [Icono(SVG.userPlus)]),
+      ]),
+    );
   });
 
-  efecto(renderConv);
+  /* Mensajes */
+  const listaMsj = crearEl('div', { class: 'ch-msj scroll-discreto' });
 
-  // -------------------------------------------------------------------------
-  //  Montaje
-  // -------------------------------------------------------------------------
-  wrap.appendChild(header);
-  wrap.appendChild(crearEl('div', { class: 'ch-cuerpo' }, [
-    channelsBar,
-    listaWrap,
-    convWrap,
-    drawer,
-  ]));
-  return wrap;
+  const renderMensajes = () => {
+    const id = activoId.value;
+    const p = buscarPersona(id);
+    const yoCol = YO.color;
+    const lista = mensajes.value[id] || [];
+    const nodos = [];
+
+    lista.forEach((m) => {
+      const yo = m.autor === 'yo';
+      const av = yo
+        ? Avatar({ nombre: YO.nombre, color: yoCol, online: true, tamano: 36 })
+        : Avatar({ nombre: p.nombre, color: p.color, online: p.online, tamano: 36 });
+
+      const burbuja = crearEl('div', {
+        class: ['ch-bubble', yo ? 'ch-bubble--yo' : 'ch-bubble--ellos'],
+      }, [
+        crearEl('p', { class: 'ch-bubble__txt' }, [m.texto]),
+      ]);
+
+      const fila = crearEl('div', {
+        class: ['ch-fila', yo ? 'ch-fila--yo' : 'ch-fila--ellos'],
+      }, [
+        av,
+        crearEl('div', { class: 'ch-fila__cuerpo' }, [
+          burbuja,
+          crearEl('span', { class: 'ch-fila__hora' }, [m.hora]),
+        ]),
+      ]);
+      nodos.push(fila);
+    });
+
+    listaMsj.replaceChildren(...nodos);
+    requestAnimationFrame(() => { listaMsj.scrollTop = listaMsj.scrollHeight; });
+  };
+  efecto(renderMensajes);
+
+  /* Input + Send */
+  const inputMsj = crearEl('input', {
+    type: 'text', class: 'ch-input', placeholder: 'Type a message',
+    onKeyDown: (e) => { if (e.key === 'Enter') enviar(); },
+  });
+  const enviar = () => {
+    const txt = inputMsj.value.trim();
+    if (!txt) return;
+    const id = activoId.value;
+    const ahora = new Date();
+    const h = ahora.getHours(), m = ahora.getMinutes();
+    const hh = h % 12 || 12; const ampm = h < 12 ? 'AM' : 'PM';
+    const hora = `${hh}:${String(m).padStart(2, '0')} ${ampm}`;
+    const ms = [...(mensajes.value[id] || []), { autor: 'yo', texto: txt, hora, dia: HOY() }];
+    mensajes.value = { ...mensajes.value, [id]: ms };
+    inputMsj.value = '';
+  };
+
+  const barraInput = crearEl('footer', { class: 'ch-footer' }, [
+    crearEl('button', { class: 'ch-iconbtn ch-iconbtn--mute', 'aria-label': 'Emoji', type: 'button' }, [Icono(SVG.emoji)]),
+    crearEl('button', { class: 'ch-iconbtn ch-iconbtn--mute', 'aria-label': 'Adjuntar', type: 'button' }, [Icono(SVG.clip)]),
+    crearEl('button', { class: 'ch-iconbtn ch-iconbtn--mute', 'aria-label': 'Voz', type: 'button' }, [Icono(SVG.mic)]),
+    inputMsj,
+    crearEl('button', {
+      class: 'ch-send', type: 'button', onClick: enviar, 'aria-label': 'Enviar',
+    }, [Icono(SVG.send)]),
+  ]);
+
+  /* Composición final */
+  const sidebar = crearEl('aside', { class: 'ch-side' }, [cabYo, buscador, tabs, listaCont]);
+  const main = crearEl('section', { class: 'ch-main' }, [cabActiva, listaMsj, barraInput]);
+
+  return crearEl('div', { class: 'ch-pagina' }, [
+    crearEl('div', { class: 'ch-pagina__layout' }, [sidebar, main]),
+  ]);
 };

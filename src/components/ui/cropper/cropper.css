@@ -1,0 +1,238 @@
+/* =============================================================================
+   RecortadorImagen — UI completa para recortar + convertir imágenes.
+   Tokens-first: hereda colores y bordes del tema (claro / oscuro).
+   ============================================================================= */
+.recortador {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+/* ── Cabecera con file picker ── */
+.recortador__cabecera {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.recortador__elegir-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-size: var(--text-sm);
+}
+.recortador__file {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.recortador__elegir {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 var(--space-4);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: var(--radius);
+  font-weight: var(--weight-semibold);
+  transition: filter 160ms ease;
+}
+.recortador__elegir-wrap:hover .recortador__elegir { filter: brightness(1.06); }
+.recortador__nombre {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  max-width: 28ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Lienzo (donde vive la imagen + cropper) ── */
+.recortador__lienzo {
+  position: relative;
+  min-height: 360px;
+  max-height: 540px;
+  overflow: hidden;
+  background:
+    linear-gradient(45deg, color-mix(in srgb, var(--foreground) 6%, transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in srgb, var(--foreground) 6%, transparent) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, color-mix(in srgb, var(--foreground) 6%, transparent) 75%),
+    linear-gradient(-45deg, transparent 75%, color-mix(in srgb, var(--foreground) 6%, transparent) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.recortador__img { display: block; max-width: 100%; max-height: 100%; }
+/* Cropper inserta wrappers — neutralizamos sus dimensiones */
+.recortador__lienzo .cropper-container { max-width: 100%; }
+
+/* Placeholder cuando aún no hay imagen */
+.recortador__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--muted-foreground);
+  text-align: center;
+  padding: var(--space-6);
+}
+.recortador__placeholder svg { color: var(--muted-foreground); opacity: 0.7; }
+.recortador__placeholder p { margin: 0; font-size: var(--text-sm); }
+.recortador__placeholder small { font-size: var(--text-xs); opacity: 0.7; }
+
+/* ── Toolbar de transformación ── */
+.recortador__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ── Configuración (formato/calidad/proporción/ancho) ── */
+.recortador__config {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+}
+.recortador__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.recortador__campo-etiqueta {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--muted-foreground);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.recortador__campo--off { opacity: 0.5; }
+.recortador__campo-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.recortador__select,
+.recortador__num {
+  height: 38px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: var(--text-sm);
+  width: 100%;
+}
+.recortador__num { font-variant-numeric: tabular-nums; }
+.recortador__select:focus,
+.recortador__num:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+.recortador__range {
+  flex: 1;
+  height: 6px;
+  appearance: none;
+  background: var(--surface-muted);
+  border-radius: 999px;
+  outline: none;
+}
+.recortador__range::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: 2px solid var(--surface);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
+}
+.recortador__range::-moz-range-thumb {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: 2px solid var(--surface);
+}
+.recortador__valor {
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  min-width: 3.5ch;
+  text-align: end;
+}
+
+/* ── Acciones ── */
+.recortador__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+/* ── Resultado ── */
+.recortador__h4 {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+.recortador__resultado {
+  display: grid;
+  grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface-muted) 60%, transparent);
+}
+.recortador__resultado-vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+.recortador__resultado-img {
+  display: block;
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.recortador__resultado-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  min-width: 0;
+}
+.recortador__resultado-tamano {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.recortador__resultado-ahorro {
+  color: var(--color-success);
+  font-weight: var(--weight-semibold);
+}
+.recortador__resultado-acciones { margin-block-start: var(--space-1); }
+
+@media (max-width: 559.98px) {
+  .recortador__resultado { grid-template-columns: 1fr; }
+}

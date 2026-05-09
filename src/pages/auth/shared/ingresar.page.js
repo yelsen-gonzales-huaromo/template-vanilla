@@ -1,13 +1,10 @@
 /**
- * Página compartida — formulario de ingreso. La usan las rutas:
- *   /auth/simple/ingresar  → layout: auth-simple
- *   /auth/card/ingresar    → layout: auth-card
- *   /auth/split/ingresar   → layout: auth-split
- *   /ingresar              → layout: auth (split por compatibilidad)
- *
- * El layout aporta el chrome (marca / panel / fondo). Esta página sólo
- * devuelve el formulario.
+ * Página compartida — formulario de ingreso. Reutilizada por simple/card/split.
  */
 import { FormularioIngresar } from '../../../components/auth/auth-forms.js';
+import { aplicarPreset } from '../../../components/auth/auth-presets.js';
 
-export default async () => FormularioIngresar();
+export default async (ctx) => {
+  const { decoracion, lead, compacto, socialesEstilo, pistaAbajo } = aplicarPreset(ctx);
+  return FormularioIngresar({ decoracion, lead, compacto, socialesEstilo, pistaAbajo });
+};

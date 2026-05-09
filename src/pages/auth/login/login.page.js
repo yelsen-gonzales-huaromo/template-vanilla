@@ -1,7 +1,10 @@
 /**
- * /ingresar (legacy) — delega en el formulario compartido. El layout 'auth'
- * (= split) aporta el chrome.
+ * /ingresar (legacy) — delega en el formulario compartido.
  */
 import { FormularioIngresar } from '../../../components/auth/auth-forms.js';
+import { aplicarPreset } from '../../../components/auth/auth-presets.js';
 
-export default async () => FormularioIngresar();
+export default async (ctx) => {
+  const { decoracion, lead, compacto, socialesEstilo, pistaAbajo } = aplicarPreset(ctx);
+  return FormularioIngresar({ decoracion, lead, compacto, socialesEstilo, pistaAbajo });
+};

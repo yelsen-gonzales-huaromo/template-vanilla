@@ -8,10 +8,25 @@
  */
 import { crearEl } from '../../utils/helpers/dom.js';
 import { senal } from '../../utils/helpers/reactive.js';
-import { Campo } from '../ui/input/input.js';
 import { Boton } from '../ui/button/button.js';
 import { Avatar } from '../ui/avatar/avatar.js';
-import { CampoFormulario } from '../forms/form-field/form-field.js';
+import { FloatingPassword } from '../../pages/modulos/forms/_floating.js';
+
+/* Wrapper para FloatingPassword: añade name/required/autocomplete/autofocus
+   sobre el <input> interno sin modificar el componente original. */
+const ContrasenaCampo = (opciones = {}) => {
+  const { name, required, autocomplete, autofocus, onInput, ...rest } = opciones;
+  const wrap = FloatingPassword(rest);
+  const input = wrap.querySelector('input');
+  if (input) {
+    if (name) input.name = name;
+    if (required) input.required = true;
+    if (autocomplete) input.setAttribute('autocomplete', autocomplete);
+    if (autofocus) input.autofocus = true;
+    if (onInput) input.addEventListener('input', onInput);
+  }
+  return wrap;
+};
 import { estadoAuth } from '../../store/auth.store.js';
 import { navegarA } from '../../router/index.js';
 import { RUTAS, NOMBRES_RUTAS } from '../../config/routes.config.js';
@@ -58,11 +73,14 @@ const SvgSesionCerrada = () => {
 export const PantallaConfirmar = ({
   correo,
   rutaIngreso = RUTAS[NOMBRES_RUTAS.INGRESAR],
+  decoracion = null,
+  titulo,
+  lead,
 } = {}) => crearEl('div', { class: 'auth-contenido auth-contenido--centrada' }, [
-  SvgSobreCheck(),
-  crearEl('h1', { class: 'auth-cabecera__titulo' }, [t('auth.confirm_email_title')]),
+  decoracion || SvgSobreCheck(),
+  crearEl('h1', { class: 'auth-cabecera__titulo' }, [titulo || t('auth.confirm_email_title')]),
   crearEl('p', { class: 'auth-lead' }, [
-    t('auth.confirm_email_text'),
+    lead || t('auth.confirm_email_text'),
     correo && crearEl('span', { class: 'auth-correo-resalt' }, [` ${correo}`]),
   ]),
   crearEl('div', { class: 'auth-acciones' }, [
@@ -83,10 +101,13 @@ export const PantallaConfirmar = ({
 
 export const PantallaSalir = ({
   rutaIngreso = RUTAS[NOMBRES_RUTAS.INGRESAR],
+  decoracion = null,
+  titulo,
+  lead,
 } = {}) => crearEl('div', { class: 'auth-contenido auth-contenido--centrada' }, [
-  SvgSesionCerrada(),
-  crearEl('h1', { class: 'auth-cabecera__titulo' }, [t('auth.logout_title')]),
-  crearEl('p', { class: 'auth-lead' }, [t('auth.logout_text')]),
+  decoracion || SvgSesionCerrada(),
+  crearEl('h1', { class: 'auth-cabecera__titulo' }, [titulo || t('auth.logout_title')]),
+  crearEl('p', { class: 'auth-lead' }, [lead || t('auth.logout_text')]),
   crearEl('div', { class: 'auth-acciones' }, [
     Boton({
       texto: t('auth.logout_back_to_login'), bloque: true,
@@ -101,6 +122,8 @@ export const PantallaSalir = ({
 
 export const FormularioBloqueo = ({
   rutaPanel = RUTAS[NOMBRES_RUTAS.PANEL],
+  decoracion = null,
+  lead,
 } = {}) => {
   const u = estadoAuth.usuario.peek() || { nombre: 'Usuario', email: '' };
   const enviando = senal(false);
@@ -124,20 +147,18 @@ export const FormularioBloqueo = ({
   });
 
   return crearEl('div', { class: 'auth-contenido auth-contenido--centrada' }, [
+    decoracion,
     crearEl('div', { class: 'auth-bloqueo__avatar' }, [
       Avatar({ nombre: u.nombre, tamano: 'xl' }),
     ]),
     crearEl('h1', { class: 'auth-cabecera__titulo' }, [u.nombre]),
-    u.email && crearEl('p', { class: 'auth-lead' }, [u.email]),
+    crearEl('p', { class: 'auth-lead' }, [lead || u.email || t('auth.lock_screen')]),
 
     crearEl('form', { onSubmit: alEnviar, class: 'auth-form auth-form--bloqueo' }, [
-      CampoFormulario({
-        etiqueta: t('auth.password'),
-        obligatorio: true,
-        control: Campo({
-          name: 'password', type: 'password', autocomplete: 'current-password',
-          required: true, autofocus: true, placeholder: 'Tu contraseña',
-        }),
+      ContrasenaCampo({
+        label: t('auth.password'),
+        name: 'password', autocomplete: 'current-password',
+        required: true, autofocus: true,
       }),
       btnEnviar,
     ]),

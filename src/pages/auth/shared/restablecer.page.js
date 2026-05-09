@@ -1,7 +1,10 @@
 /**
  * Página compartida — restablecer contraseña con token (?token=...).
- * Las 3 variantes (simple/card/split) la usan con su layout propio.
  */
 import { FormularioRestablecer } from '../../../components/auth/auth-forms.js';
+import { aplicarPreset } from '../../../components/auth/auth-presets.js';
 
-export default async (ctx) => FormularioRestablecer({ token: ctx?.query?.token });
+export default async (ctx) => {
+  const { decoracion, lead } = aplicarPreset(ctx);
+  return FormularioRestablecer({ token: ctx?.query?.token, decoracion, lead });
+};

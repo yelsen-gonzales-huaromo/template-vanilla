@@ -1,7 +1,7 @@
 import { crearEl } from '../../../utils/helpers/dom.js';
 import { PaginaShowcase, Seccion } from '../../../components/common/showcase/showcase.js';
 import { VistaCodigo } from '../../../components/ui/code-preview/code-preview.js';
-import { Carrusel, CarruselGaleria } from '../../../components/ui/carousel/carousel.js';
+import { Carrusel, CarruselGaleria, CarruselMulti } from '../../../components/ui/carousel/carousel.js';
 import { corner3 } from '../../../components/ui/card/card-decoraciones.js';
 
 // ----- Slide hero (imagen full + overlay + texto al pie) -----
@@ -211,6 +211,43 @@ export default async () => PaginaShowcase({
   intervalo: 7000,                              // 7 segundos por slide
   altura: 'clamp(280px, 42vw, 520px)',          // la más alta — para fotos panorámicas
   slides: [...],
+})`,
+      })],
+    }),
+
+    // ============== MULTI-ITEM (varios items por slide) ==============
+    Seccion({
+      titulo: 'Multi-item — varios items por slide',
+      descripcion: 'Muestra N items a la vez (4 en desktop, 2 en tablet, 1 en móvil). Avanza grupos completos. Útil para galerías de productos, equipo, logos de clientes. Recalcula automáticamente al cambiar el ancho del navegador.',
+      hijos: [VistaCodigo({
+        vista: CarruselMulti({
+          itemsPorVista: 4, itemsTablet: 2, itemsMovil: 1,
+          espaciado: 16,
+          autoPlay: true, intervalo: 5000,
+          items: [
+            './public/img/gallery/2.jpg',
+            './public/img/gallery/3.jpg',
+            './public/img/gallery/4.jpg',
+            './public/img/gallery/5.jpg',
+            './public/img/gallery/2000.jpg',
+            './public/img/gallery/2001.jpg',
+            './public/img/gallery/2006.jpg',
+            './public/img/gallery/2007.jpg',
+          ].map(src => crearEl('img', {
+            src, alt: '',
+            style: {
+              width: '100%', height: '180px', objectFit: 'cover',
+              borderRadius: 'var(--radius-md)', display: 'block',
+            },
+          })),
+        }),
+        codigo: `CarruselMulti({
+  itemsPorVista: 4,        // desktop
+  itemsTablet:   2,        // <1024px
+  itemsMovil:    1,        // <600px
+  espaciado:     16,       // gap en px entre items
+  autoPlay: true, intervalo: 5000,
+  items: [nodoImg1, nodoImg2, nodoImg3, ...],
 })`,
       })],
     }),

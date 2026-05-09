@@ -24,8 +24,13 @@ export const cargarFullCalendar = () => cargarLib({ scripts: URL_JS, global: 'Fu
  * @param {Function} [opts.alClickEvento]
  * @param {Function} [opts.alClickFecha]
  * @param {Function} [opts.alSeleccionarRango]
+ * @param {Function} [opts.alSoltarExterno]    — fires al soltar (info: { draggedEl, date, dateStr, allDay })
+ * @param {Function} [opts.alRecibirEvento]    — fires DESPUÉS de que FC crea el evento (info: { event })
+ * @param {Function} [opts.alMoverEvento]      — usuario arrastró/redimensionó
  * @param {boolean}  [opts.editable=true]
+ * @param {boolean}  [opts.aceptarDropExterno=false]
  * @param {string}   [opts.alto='auto']
+ * @param {object}   [opts.opcionesExtra]      — pasa opciones extra crudas a FullCalendar
  */
 export const CalendarioCompleto = async ({
   eventos = [],
@@ -33,8 +38,13 @@ export const CalendarioCompleto = async ({
   alClickEvento,
   alClickFecha,
   alSeleccionarRango,
+  alSoltarExterno,
+  alRecibirEvento,
+  alMoverEvento,
   editable = true,
+  aceptarDropExterno = false,
   alto = 'auto',
+  opcionesExtra = {},
 } = {}) => {
   const FullCalendar = await cargarFullCalendar();
   const contenedor = document.createElement('div');
@@ -56,10 +66,16 @@ export const CalendarioCompleto = async ({
     selectable: true,
     editable,
     nowIndicator: true,
+    droppable: aceptarDropExterno,
     events: eventos,
     eventClick: alClickEvento,
     dateClick: alClickFecha,
     select: alSeleccionarRango,
+    drop: alSoltarExterno,
+    eventReceive: alRecibirEvento,
+    eventDrop: alMoverEvento,
+    eventResize: alMoverEvento,
+    ...opcionesExtra,
   });
 
   // Render cuando entra en viewport.
@@ -72,4 +88,37 @@ export const CalendarioCompleto = async ({
   observador.observe(contenedor);
 
   return { contenedor, instancia };
+};
+
+/**
+ * Convierte un contenedor con hijos `.fc-evento-externo` en draggable hacia
+ * cualquier instancia de FullCalendar. Cada hijo debe tener:
+ *   data-evento='{ "title": "...", "color": "...", "duracion": "01:00" }'
+ *
+ * Devuelve la instancia Draggable (para destruir si hace falta).
+ */
+export const hacerDraggablesExternos = async (contenedor, opciones = {}) => {
+  await cargarFullCalendar();
+  const Draggable = window.FullCalendar.Draggable;
+  if (!Draggable) {
+    console.warn('[fullcalendar] Draggable no disponible en este bundle');
+    return null;
+  }
+  return new Draggable(contenedor, {
+    itemSelector: opciones.selector || '.fc-evento-externo',
+    eventData: (el) => {
+      try {
+        const d = JSON.parse(el.dataset.evento || '{}');
+        return {
+          title:    d.title || el.textContent.trim(),
+          color:    d.color,
+          duration: d.duracion || d.duration,
+          allDay:   d.allDay,
+          extendedProps: d.extendedProps || {},
+        };
+      } catch {
+        return { title: el.textContent.trim() };
+      }
+    },
+  });
 };

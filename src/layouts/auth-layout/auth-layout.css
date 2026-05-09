@@ -70,59 +70,34 @@
 }
 .auth-form--bloqueo { gap: var(--space-3); margin-block-start: var(--space-4); }
 
-/* === Inputs grandes y suaves dentro de auth ===
-   Sobreescribimos el .input base para que se sientan "premium": altura cómoda,
-   relleno suave (no sólo border), foco con halo del color de marca. */
-.auth-form .input,
-.auth-form .input-grupo,
-.auth-form .sel-trigger,
-.auth-form .picker-trigger > .input {
-  height: 52px;
-  padding-block: var(--space-3);
-  padding-inline: var(--space-4);
-  font-size: var(--text-base);
+/* === Inputs en auth ===
+   Los formularios de auth usan FloatingInput / FloatingPassword (label que
+   flota dentro del input). Sus estilos viven en components/ui/input/input.css
+   bajo `.floating`. Aquí sólo retocamos el input "plano" (.input directo,
+   por si alguna pantalla aún lo usa) sin chocar con `.floating > .input`.
+
+   Selector :not() evita que estos overrides afecten a un input que vive
+   dentro de un wrapper `.floating`. */
+.auth-form > .input:not(.floating *),
+.auth-form > .input-grupo:not(.floating *) {
+  height: 42px;
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  font-size: var(--text-sm);
   border-radius: var(--radius);
-  background: var(--surface-muted);
-  border: 1.5px solid transparent;
+  background: var(--surface);
+  border: 1px solid var(--border);
   transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
-.auth-form .input::placeholder { color: color-mix(in srgb, var(--muted-foreground) 80%, transparent); }
-.auth-form .input:hover:not(:focus):not(:disabled),
-.auth-form .input-grupo:hover:not(:focus-within) {
-  background: color-mix(in srgb, var(--surface-muted) 70%, var(--surface));
-  border-color: var(--border);
-}
-.auth-form .input:focus,
-.auth-form .input-grupo:focus-within {
-  background: var(--surface);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent);
-  outline: none;
-}
-.auth-form .input[aria-invalid='true'] {
-  border-color: var(--color-danger);
-  background: color-mix(in srgb, var(--color-danger) 5%, var(--surface-muted));
-}
-.auth-form .input[aria-invalid='true']:focus {
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-danger) 22%, transparent);
-}
-
-/* Etiquetas más sutiles, separación más generosa entre campos */
 .auth-form .form-field { margin-block-end: 0; }
-.auth-form label {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  color: var(--foreground);
-  letter-spacing: -0.005em;
-}
 
-/* === Botón primario grande === */
+/* === Botón primario más esbelto (Metoxi-style) === */
 .auth-form button[type='submit'].btn,
 .auth-acciones .btn {
-  height: 52px;
-  font-size: var(--text-base);
-  font-weight: var(--weight-bold, 700);
-  letter-spacing: -0.005em;
+  height: 44px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0;
   border-radius: var(--radius);
 }
 .auth-form button[type='submit'].btn--primary,
@@ -229,6 +204,82 @@
 .auth-divisor::after { background: linear-gradient(90deg, var(--border), transparent); }
 .auth-divisor::before { background: linear-gradient(90deg, transparent, var(--border)); }
 
+/* ----- Modo compacto: primario + 1 social side-by-side (NobleUI-style) ----- */
+.auth-acciones-compactas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: stretch;
+}
+.auth-acciones-compactas > .btn { width: 100%; }
+.auth-social-compacto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 180ms ease, transform 140ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+.auth-social-compacto:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, #ea4335 55%, var(--border));
+  box-shadow: 0 8px 16px -10px rgba(234, 67, 53, 0.5);
+}
+.auth-social-compacto:focus-visible {
+  outline: 3px solid color-mix(in srgb, #ea4335 35%, transparent);
+  outline-offset: 2px;
+}
+.auth-social-compacto svg { flex-shrink: 0; }
+
+/* En pantallas muy estrechas, apílalos */
+@media (max-width: 419.98px) {
+  .auth-acciones-compactas { grid-template-columns: 1fr; }
+}
+
+/* ----- Botones sociales circulares (icon-only, estilo Metoxi) ----- */
+.auth-social-circulos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+.auth-social-circulo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--foreground);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  transition: border-color 180ms ease, transform 140ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+.auth-social-circulo:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--c, var(--primary)) 60%, var(--border));
+  box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--c, var(--primary)) 60%, transparent);
+}
+.auth-social-circulo:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--c, var(--primary)) 35%, transparent);
+  outline-offset: 2px;
+}
+.auth-social-circulo svg { flex-shrink: 0; width: 20px; height: 20px; }
+
 /* ----- Botones sociales (con identidad de marca) ----- */
 .auth-social-grid {
   display: grid;
@@ -240,10 +291,10 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  height: 48px;
+  height: 42px;
   padding: 0 var(--space-3);
   background: var(--surface);
-  border: 1.5px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--foreground);
   font-size: var(--text-sm);
@@ -329,6 +380,95 @@
 .auth-correo-resalt {
   font-weight: var(--weight-semibold);
   color: var(--foreground);
+}
+
+/* =============================================================================
+   HERO DECORACIÓN — bloque visual (lottie/imagen/svg) en cabecera del form.
+   Tono y forma controlados desde JS. Theme-aware mediante color-mix sobre
+   `--primary` y semánticos.
+   ============================================================================= */
+.auth-hero {
+  --auth-hero-tono: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto var(--space-2);
+  width: var(--auth-hero-alto, 110px);
+  height: var(--auth-hero-alto, 110px);
+  padding: 14px;
+  isolation: isolate;
+  transition: background 240ms ease, box-shadow 240ms ease, transform 240ms ease;
+  flex-shrink: 0;
+}
+.auth-hero > .lottie-host,
+.auth-hero > .auth-hero__svg,
+.auth-hero > .auth-hero__placeholder { width: 100% !important; height: 100% !important; }
+.auth-hero > .auth-hero__img { object-fit: contain; max-width: 100%; }
+
+/* Forma: círculo (default) — fondo suave del tono */
+.auth-hero--circulo {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 25%,
+      color-mix(in srgb, var(--auth-hero-tono) 22%, transparent) 0%,
+      color-mix(in srgb, var(--auth-hero-tono) 6%,  transparent) 60%,
+      transparent 100%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--auth-hero-tono) 10%, transparent),
+    0 14px 30px -16px color-mix(in srgb, var(--auth-hero-tono) 50%, transparent);
+}
+.auth-hero--circulo::before {
+  /* Aro fino del tono en el borde para definir la forma */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid color-mix(in srgb, var(--auth-hero-tono) 18%, transparent);
+  pointer-events: none;
+}
+
+/* Forma: cuadrado redondeado — variante para modal/asistente */
+.auth-hero--cuadrado {
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--auth-hero-tono) 8%, var(--surface-muted));
+  border: 1.5px solid color-mix(in srgb, var(--auth-hero-tono) 16%, var(--border));
+}
+
+/* Forma: sin-fondo — el lottie/imagen flotan sin background */
+.auth-hero--sin-fondo,
+.auth-hero--plano {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+.auth-hero--sin-fondo::before { display: none; }
+
+/* Tonos — cambian el color del aura (light/dark via tokens) */
+.auth-hero--tono-marca   { --auth-hero-tono: var(--primary); }
+.auth-hero--tono-exito   { --auth-hero-tono: var(--color-success); }
+.auth-hero--tono-info    { --auth-hero-tono: var(--color-info); }
+.auth-hero--tono-aviso   { --auth-hero-tono: var(--color-warning); }
+.auth-hero--tono-neutro  { --auth-hero-tono: var(--color-neutral-500); }
+
+/* En tema oscuro elevamos sutilmente la opacidad del aura para que el
+   lottie no se "trague" en fondos muy oscuros. */
+[data-theme='dark'] .auth-hero--circulo {
+  background:
+    radial-gradient(circle at 30% 25%,
+      color-mix(in srgb, var(--auth-hero-tono) 32%, transparent) 0%,
+      color-mix(in srgb, var(--auth-hero-tono) 12%, transparent) 60%,
+      transparent 100%);
+}
+
+/* En contenido centrado (confirmar, salir, bloqueo) el hero se centra. */
+.auth-contenido--centrada .auth-hero { margin-inline: auto; }
+
+/* Cabecera centrada (wizard) */
+.auth-cabecera--centrada {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 /* ╔═══════════════════════════════════════════════════════════════════════╗
@@ -559,11 +699,17 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%),
-    linear-gradient(135deg, color-mix(in srgb, var(--color-primary-700) 35%, transparent) 0%, transparent 60%);
+    linear-gradient(180deg, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.65) 100%),
+    linear-gradient(135deg, color-mix(in srgb, var(--color-primary-700) 45%, transparent) 0%, transparent 65%);
 }
 .auth-promo--imagen .auth-promo__contenido {
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+/* Compacto sobre imagen (variante card): el contenido se hace más legible */
+.auth-promo--imagen.auth-promo--compacto .auth-promo__velo {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.70) 100%),
+    linear-gradient(135deg, color-mix(in srgb, var(--color-primary-700) 55%, transparent) 0%, transparent 70%);
 }
 
 /* ─── Modo CARRUSEL: el carrusel ocupa todo el panel ─────────────────── */
@@ -645,33 +791,141 @@
   color: var(--foreground);
 }
 
-/* ─── 3.1 SIMPLE: card centrada con banner ──────────────────────────── */
+/* ─── 3.1 SIMPLE: card centrada con banner ────────────────────────────
+   - Fondo por defecto: gradiente radial sutil del color de marca + background.
+   - Cuando la página define `fondoSimple`, el layout añade la clase
+     `--simple-imagen` y aplica una imagen de fondo full-bleed con velo.
+   - Card con borde, radius y sombra para que NO se sienta "flotante" sobre
+     el fondo (especialmente en oscuro). */
 .auth-layout--simple {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-6) var(--space-4);
   background:
-    radial-gradient(80% 60% at 50% 0%, color-mix(in srgb, var(--primary) 8%, transparent) 0, transparent 70%),
+    radial-gradient(80% 60% at 50% 0%, color-mix(in srgb, var(--primary) 10%, transparent) 0, transparent 70%),
+    radial-gradient(60% 50% at 100% 100%, color-mix(in srgb, var(--color-info) 8%, transparent) 0, transparent 70%),
     var(--background);
 }
+
+/* ── Variante con fondo de imagen — estilo Metoxi ─────────────────────
+   La foto se ve casi plena (velo MUY sutil) y la card es un bloque
+   sólido (blanco en claro / dark-elevated en oscuro) que destaca por
+   contraste, no por sombra. */
+.auth-layout--simple-imagen {
+  background-color: #0f172a;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.auth-layout--simple-imagen .auth-layout__velo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Velo casi invisible — sólo aterriza la foto, no la oscurece */
+  background: linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.20) 100%);
+}
+[data-theme='light'] .auth-layout--simple-imagen .auth-layout__velo {
+  background: linear-gradient(180deg, rgba(15,23,42,0.05) 0%, rgba(15,23,42,0.15) 100%);
+}
+.auth-layout--simple-imagen .auth-layout__envoltura { position: relative; z-index: 1; }
+
 .auth-layout--simple .auth-layout__envoltura {
   width: 100%;
-  max-width: 28rem;
+  /* Más ancho para que el form respire pero se mantenga proporcionado */
+  max-width: 30rem;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
+
+/* ── CARD ── Bloque sólido con contraste real frente al fondo. */
 .auth-layout--simple .auth-layout__card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: #2a2e35;                 /* dark elevado claro y bien diferenciado */
+  border: 1px solid #3a3f47;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow:
-    0 1px 0 rgb(0 0 0 / 0.02),
-    0 18px 50px -24px rgb(15 23 42 / 0.25);
+    0 1px 0 rgb(255 255 255 / 0.04) inset,
+    0 24px 60px -20px rgb(0 0 0 / 0.55),
+    0 60px 120px -40px rgb(0 0 0 / 0.45);
 }
+[data-theme='light'] .auth-layout--simple .auth-layout__card {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  box-shadow:
+    0 1px 0 rgb(0 0 0 / 0.02),
+    0 24px 60px -20px rgb(15 23 42 / 0.20),
+    0 60px 120px -40px rgb(15 23 42 / 0.18);
+}
+
+/* Cuando hay foto detrás, la card no necesita borde fuerte: la foto la
+   "viste". Pero la sombra sí ayuda a despegarla. */
+.auth-layout--simple-imagen .auth-layout__card {
+  box-shadow:
+    0 30px 80px -20px rgb(0 0 0 / 0.65),
+    0 80px 160px -50px rgb(0 0 0 / 0.55);
+}
+
+/* ── PADDING interno del card simple — refinado (estilo Metoxi profesional) ── */
+.auth-layout--simple .auth-layout__card-cuerpo {
+  padding: clamp(1.5rem, 3.5vw, 2.25rem) clamp(1.75rem, 4vw, 2.5rem);
+}
+/* Espaciado vertical más refinado, menos altura total */
+.auth-layout--simple .auth-contenido { gap: var(--space-5); }
+.auth-layout--simple .auth-form { gap: var(--space-3); }
+/* Marca un poco más discreta */
+.auth-layout--simple .auth-layout__marca-inline { margin-block-end: var(--space-5); }
+.auth-layout--simple .auth-layout__marca-inline .auth-marca__nombre { font-size: var(--text-lg); }
+/* Título más sutil — peso 700, tamaño moderado */
+.auth-layout--simple .auth-cabecera__titulo {
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.auth-layout--simple .auth-cabecera { margin-block-end: 0; }
+.auth-layout--simple .auth-lead { font-size: var(--text-sm); margin: 0; }
+/* Etiquetas de campos: más pequeñas y de peso medio (no semibold completo) */
+.auth-layout--simple .auth-form label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+/* Sociales: divisor más compacto */
+.auth-layout--simple .auth-divisor { margin-block: var(--space-1); }
+
+/* ── INPUTS en card oscura: aplican a .floating > .input dentro de simple
+       para que el borde se vea bien sobre el card oscuro `#2a2e35` ── */
+.auth-layout--simple .floating > .input {
+  background: transparent;
+  border-color: #3a3f47;
+}
+[data-theme='light'] .auth-layout--simple .floating > .input {
+  background: #ffffff;
+  border-color: #e5e7eb;
+}
+.auth-layout--simple .floating > .input:hover:not(:focus) {
+  border-color: #4b5159;
+}
+[data-theme='light'] .auth-layout--simple .floating > .input:hover:not(:focus) {
+  border-color: #d1d5db;
+}
+.auth-layout--simple .floating > .input:focus {
+  border-color: var(--primary);
+}
+
+/* Color del label flotante en card oscura */
+.auth-layout--simple .floating > label {
+  color: var(--muted-foreground);
+}
+
+/* Botón primario en simple — el global ya lo hace esbelto, no override aquí */
+/* Sociales circulares un toque más pequeños y delicados */
+.auth-layout--simple .auth-social-circulos { gap: var(--space-3); padding-block-start: var(--space-1); }
+.auth-layout--simple .auth-social-circulo { width: 40px; height: 40px; }
+.auth-layout--simple .auth-social-circulo svg { width: 18px; height: 18px; }
+
 .auth-layout__pie {
   font-size: var(--text-xs);
   color: var(--muted-foreground);
@@ -679,8 +933,19 @@
   opacity: 0.85;
   margin: 0;
 }
+.auth-layout--simple-imagen .auth-layout__pie {
+  color: rgba(255,255,255,0.8);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+[data-theme='light'] .auth-layout--simple-imagen .auth-layout__pie {
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
 
-/* ─── 3.2 CARD: card-de-dos-mitades centrado ────────────────────────── */
+/* ─── 3.2 CARD: card-de-dos-mitades estilo NobleUI ─────────────────────
+   Foto vertical a la izquierda (sin overlay), formulario limpio a la derecha.
+   El borde redondeado se aplica al contenedor; la foto hace cover y ocupa
+   todo su lado. */
 .auth-layout--card {
   display: flex;
   align-items: center;
@@ -693,7 +958,7 @@
 }
 .auth-layout--card .auth-layout__envoltura {
   width: 100%;
-  max-width: 60rem;
+  max-width: 64rem;
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   background: var(--surface);
@@ -701,6 +966,7 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 30px 80px -28px rgb(15 23 42 / 0.35);
+  min-height: 600px;
 }
 .auth-layout--card .auth-layout__card {
   display: flex;
@@ -709,15 +975,30 @@
 }
 .auth-layout--card .auth-layout__card-cuerpo {
   width: 100%;
-  padding: clamp(var(--space-5), 4vw, var(--space-8));
+  padding: clamp(var(--space-6), 5vw, var(--space-10));
+}
+
+/* Cuando el panel es imagen sin texto (estilo NobleUI): el velo es muy
+   sutil para que la foto se vea limpia. */
+.auth-layout--card .auth-promo--imagen .auth-promo__velo {
+  background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.18) 100%);
+}
+.auth-layout--card .auth-promo {
+  min-height: 100%;
+  height: 100%;
 }
 
 @media (max-width: 767.98px) {
-  .auth-layout--card .auth-layout__envoltura { grid-template-columns: 1fr; }
+  .auth-layout--card .auth-layout__envoltura {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
   .auth-layout--card .auth-promo { display: none; }
 }
 
-/* ─── 3.3 SPLIT: panel hero a la izquierda, card a la derecha ──────── */
+/* ─── 3.3 SPLIT: panel hero a la izquierda, form pelado a la derecha ──
+   Sin card. Sin banner. Sólo marca pequeña arriba + form directo sobre
+   el background. Estilo SaaS moderno (Linear / Vercel / Stripe). */
 .auth-layout--split {
   display: grid;
   grid-template-columns: 1fr;
@@ -728,28 +1009,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-4);
+  padding: var(--space-8) var(--space-6);
+  position: relative;
 }
 .auth-layout--split .auth-layout__envoltura {
   width: 100%;
-  max-width: 28rem;
+  max-width: 26rem;
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-6);
 }
-.auth-layout--split .auth-layout__card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow:
-    0 1px 0 rgb(0 0 0 / 0.02),
-    0 18px 50px -24px rgb(15 23 42 / 0.30);
+/* Marca pequeña SÓLO visible en móvil (cuando el panel está oculto). En
+   desktop el panel ya muestra la marca, así que la escondemos para evitar
+   el "doble título". */
+.auth-layout--split .auth-layout__split-marca-movil {
+  display: flex;
+  align-items: center;
+}
+.auth-layout--split .auth-layout__split-cuerpo {
+  width: 100%;
+  /* Sin background, sin borde, sin sombra: el form vive sobre el background
+     directo. Tipografía y campos hacen toda la jerarquía. */
 }
 
 @media (min-width: 1024px) {
   .auth-layout--split { grid-template-columns: 1fr 1fr; }
   .auth-layout--split .auth-promo { display: flex; min-height: 100vh; }
+  /* Desktop: marca del lado derecho oculta — la del panel cumple ese rol. */
+  .auth-layout--split .auth-layout__split-marca-movil { display: none; }
 }
 
 /* Variante card → padding consistente para auth-promo--compacto */
@@ -808,6 +1095,28 @@
   padding: clamp(var(--space-5), 4vw, var(--space-7)) clamp(var(--space-5), 4vw, var(--space-7));
 }
 
+/* Marca inline arriba del card (estilo NobleUI/Metoxi). Reemplaza al banner
+   gradiente. Padding inferior generoso para separar del título del form. */
+.auth-layout__marca-inline {
+  display: flex;
+  align-items: center;
+  margin-block-end: var(--space-6);
+}
+.auth-layout__marca-inline .auth-marca__nombre {
+  font-size: var(--text-xl);
+  letter-spacing: -0.02em;
+}
+
+/* Pista "¿No tienes cuenta? Crear cuenta" centrada bajo el botón (Metoxi). */
+.auth-pista-bajo {
+  margin: 0;
+  padding-block-start: var(--space-2);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+.auth-pista-bajo .auth-enlace { font-weight: var(--weight-semibold); }
+
 /* ╔═══════════════════════════════════════════════════════════════════════╗
    ║  4. MODAL: cuando el form va dentro de un Modal                       ║
    ╚═══════════════════════════════════════════════════════════════════════╝ */
@@ -818,17 +1127,74 @@
   justify-content: center;
   min-height: calc(100vh - 4rem);
   text-align: center;
-  padding: var(--space-8) var(--space-4);
+  padding: var(--space-10) var(--space-5);
   gap: var(--space-5);
   background:
-    radial-gradient(80% 60% at 50% 0%, color-mix(in srgb, var(--primary) 6%, transparent) 0, transparent 70%),
+    radial-gradient(80% 60% at 50% 0%, color-mix(in srgb, var(--primary) 8%, transparent) 0, transparent 70%),
+    radial-gradient(50% 40% at 100% 100%, color-mix(in srgb, var(--color-info) 7%, transparent) 0, transparent 70%),
     var(--background);
 }
-.auth-modal-pagina__h1 { margin: 0; font-size: var(--text-3xl); letter-spacing: -0.02em; }
-.auth-modal-pagina__lead { max-width: 38rem; margin: 0; color: var(--muted-foreground); line-height: 1.6; }
+.auth-modal-pagina__cabecera { margin-block-end: var(--space-2); }
+.auth-modal-pagina__h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: -0.025em;
+  font-weight: var(--weight-bold, 700);
+  color: var(--foreground);
+}
+.auth-modal-pagina__lead { max-width: 40rem; margin: 0; color: var(--muted-foreground); line-height: 1.65; }
 .auth-modal-pagina__acciones { display: inline-flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; }
 
+.auth-modal-pagina__feats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 56rem;
+  margin-block-start: var(--space-6);
+}
+.auth-modal-pagina__feat {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-align: start;
+  transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+.auth-modal-pagina__feat:hover {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -16px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+.auth-modal-pagina__feat-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.auth-modal-pagina__feat-tit {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--foreground);
+  margin-block-end: 2px;
+}
+.auth-modal-pagina__feat-sub {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
 .auth-modal-cuerpo { padding: var(--space-2) var(--space-1); }
+.auth-modal-cuerpo .auth-hero { margin-block-end: var(--space-3); }
 
 /* ╔═══════════════════════════════════════════════════════════════════════╗
    ║  5. WIZARD: stepper moderno + grid responsivo + resumen              ║

@@ -1,0 +1,258 @@
+/* =============================================================================
+   App Calendario — layout 2 columnas, sidebar de plantillas draggable.
+   Theme-aware (claro/oscuro) vía tokens.
+   ============================================================================= */
+.cal-app {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-height: calc(100vh - 6rem);
+}
+
+.cal-app__h1 {
+  margin: 0 0 var(--space-1);
+  font-size: clamp(1.5rem, 2.4vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.cal-app__lead {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+}
+
+.cal-app__layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .cal-app__layout { grid-template-columns: 1fr; }
+}
+
+/* ─── Sidebar ────────────────────────────────────────────────────────── */
+.cal-app__sidebar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-self: flex-start;
+  position: sticky;
+  inset-block-start: var(--space-4);
+}
+.cal-app__hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  line-height: 1.5;
+  padding-block-start: var(--space-1);
+  border-block-start: 1px solid var(--border);
+  margin-block-start: var(--space-1);
+}
+.cal-app__plantillas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.cal-app__plantilla {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: grab;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  user-select: none;
+}
+.cal-app__plantilla:hover {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+  background: color-mix(in srgb, var(--primary) 6%, var(--surface-muted));
+  transform: translateX(2px);
+}
+.cal-app__plantilla:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+  box-shadow: 0 8px 20px -8px rgb(0 0 0 / 0.20);
+}
+.cal-app__plantilla-color {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cal-app__plantilla-texto {
+  flex: 1 1 auto;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cal-app__plantilla-dur {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Calendario host ────────────────────────────────────────────────── */
+.cal-app__calendar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  min-height: 600px;
+}
+.cal-app__skeleton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+}
+.cal-app__error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+}
+
+/* ─── Theming de FullCalendar (vars del propio FC) ───────────────────── */
+.cal-app__calendar {
+  --fc-border-color: var(--border);
+  --fc-page-bg-color: var(--surface);
+  --fc-neutral-bg-color: var(--surface);
+  --fc-neutral-text-color: var(--muted-foreground);
+  --fc-today-bg-color: color-mix(in srgb, var(--primary) 8%, transparent);
+  --fc-button-bg-color: var(--surface);
+  --fc-button-border-color: var(--border);
+  --fc-button-text-color: var(--foreground);
+  --fc-button-active-bg-color: var(--primary);
+  --fc-button-active-border-color: var(--primary);
+  --fc-button-active-text-color: var(--primary-foreground);
+  --fc-button-hover-bg-color: var(--surface-muted);
+  --fc-button-hover-border-color: var(--border-strong);
+  --fc-event-bg-color: var(--primary);
+  --fc-event-border-color: var(--primary);
+  --fc-event-text-color: var(--primary-foreground);
+  --fc-list-event-hover-bg-color: var(--surface-muted);
+}
+/* Algunos textos del header del FC */
+.cal-app__calendar .fc-toolbar-title {
+  color: var(--foreground);
+  font-weight: 700;
+}
+.cal-app__calendar .fc-col-header-cell-cushion,
+.cal-app__calendar .fc-daygrid-day-number {
+  color: var(--foreground);
+  text-decoration: none;
+}
+.cal-app__calendar .fc-daygrid-day-number {
+  font-size: var(--text-sm);
+  padding: 6px;
+}
+.cal-app__calendar .fc-day-other .fc-daygrid-day-number {
+  opacity: 0.4;
+}
+.cal-app__calendar .fc-button {
+  font-size: var(--text-sm);
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.cal-app__calendar .fc-event {
+  border-radius: 6px;
+  padding: 2px 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.cal-app__calendar .fc-list-event-title a { color: var(--foreground); }
+
+/* ─── Modal de evento ────────────────────────────────────────────────── */
+.cal-modal__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.cal-modal__grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+.cal-modal__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cal-modal__etiqueta {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cal-modal__input,
+.cal-modal__textarea {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: var(--text-sm);
+  font-family: inherit;
+}
+.cal-modal__textarea { resize: vertical; min-height: 80px; }
+.cal-modal__input:focus,
+.cal-modal__textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 16%, transparent);
+}
+.cal-modal__check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  cursor: pointer;
+}
+.cal-modal__paleta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cal-modal__color {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+.cal-modal__color:hover { transform: scale(1.12); }
+.cal-modal__color--activo {
+  border-color: var(--foreground);
+  transform: scale(1.12);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.cal-modal__pie {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 559.98px) {
+  .cal-modal__grid2 { grid-template-columns: 1fr; }
+}

@@ -41,6 +41,8 @@
 @import url('../pages/settings/perfil-ajustes.css');
 @import url('../pages/app/kanban/kanban.css');
 @import url('../pages/app/chat/chat.css');
+@import url('../pages/app/calendario/calendario.css');
+@import url('../pages/app/email/email.css');
 @import url('../pages/panel/dash.css');
 @import url('../components/ui/select/select.css');
 @import url('../components/ui/badge/badge.css');
@@ -75,6 +77,8 @@
 @import url('../components/ui/cookie-notice/cookie-notice.css');
 @import url('../components/ui/treeview/treeview.css');
 @import url('../components/ui/carousel/carousel.css');
+@import url('../components/ui/cropper/cropper.css');
+@import url('../components/ui/aviso/aviso.css');
 @import url('../components/ui/anchor/anchor.css');
 @import url('../components/ui/calendar/calendar.css');
 @import url('../components/ui/video/video.css');

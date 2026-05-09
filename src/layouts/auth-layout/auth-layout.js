@@ -11,62 +11,76 @@
  */
 import { crearEl } from '../../utils/helpers/dom.js';
 import { CONFIG_APP } from '../../config/app.config.js';
-import { PanelPromo } from '../../components/auth/auth-elements.js';
+import {
+  PanelPromo,
+  MarcaAuth,
+  consumirFondoSimple,
+} from '../../components/auth/auth-elements.js';
 
-/* Banner de marca en la cabecera del card — gradiente azul con shape SVG
-   decorativa y nombre de la app. Se usa en simple/split (no en card, que ya
-   tiene el panel promocional cumpliendo ese rol). */
-const BannerMarcaCard = () => crearEl('div', {
-  class: 'auth-layout__banner', 'aria-hidden': 'true',
-}, [
-  crearEl('div', { class: 'auth-layout__banner-shape' }),
-  crearEl('div', { class: 'auth-layout__banner-glow' }),
-  crearEl('a', {
-    href: '#/', class: 'auth-layout__banner-marca',
-    'aria-label': CONFIG_APP.nombre,
-  }, [CONFIG_APP.nombre]),
-]);
+/* Marca pequeña inline para la cabecera del card (estilo NobleUI). Sustituye
+   al banner gradiente que dominaba demasiado el card. */
+const MarcaInlineCard = () => crearEl('div', {
+  class: 'auth-layout__marca-inline',
+}, [MarcaAuth({ tamano: 'lg' })]);
 
 const Pie = () => crearEl('p', { class: 'auth-layout__pie' }, [
   `© ${new Date().getFullYear()} ${CONFIG_APP.nombre} · v${CONFIG_APP.version}`,
 ]);
 
-/** Simple: centrado, sin hero. Card con banner gradiente arriba. */
-export const DisenoAuthSimple = (pagina) => crearEl('div', {
-  class: 'auth-layout auth-layout--simple',
-}, [
-  crearEl('div', { class: 'auth-layout__envoltura' }, [
-    crearEl('div', { class: 'auth-layout__card' }, [
-      BannerMarcaCard(),
-      crearEl('div', { class: 'auth-layout__card-cuerpo' }, [pagina]),
+/** Simple: card centrada con marca pequeña inline (sin banner gradiente).
+ *  Algunas páginas definen un `fondoSimple` (URL) que se aplica como
+ *  background del layout entero con un velo encima. */
+export const DisenoAuthSimple = (pagina) => {
+  const fondo = consumirFondoSimple();
+  const root = crearEl('div', {
+    class: ['auth-layout', 'auth-layout--simple', fondo && 'auth-layout--simple-imagen'],
+    style: fondo ? { backgroundImage: `url('${fondo}')` } : null,
+  }, [
+    fondo && crearEl('div', { class: 'auth-layout__velo', 'aria-hidden': 'true' }),
+    crearEl('div', { class: 'auth-layout__envoltura' }, [
+      crearEl('div', { class: 'auth-layout__card' }, [
+        crearEl('div', { class: 'auth-layout__card-cuerpo' }, [
+          MarcaInlineCard(),
+          pagina,
+        ]),
+      ]),
+      Pie(),
     ]),
-    Pie(),
-  ]),
-]);
+  ]);
+  return root;
+};
 
-/** Card: card horizontal con panel promocional + form. */
+/** Card: card horizontal con panel promocional + form. La marca va inline
+ *  arriba del form (estilo NobleUI). */
 export const DisenoAuthCard = (pagina) => crearEl('div', {
   class: 'auth-layout auth-layout--card',
 }, [
   crearEl('div', { class: 'auth-layout__envoltura' }, [
     PanelPromo({ compacto: true }),
     crearEl('div', { class: 'auth-layout__card' }, [
-      crearEl('div', { class: 'auth-layout__card-cuerpo' }, [pagina]),
+      crearEl('div', { class: 'auth-layout__card-cuerpo' }, [
+        MarcaInlineCard(),
+        pagina,
+      ]),
     ]),
   ]),
 ]);
 
-/** Split: panel promocional full-height a la izquierda, card con banner. */
+/** Split: panel promocional full-height a la izquierda, form pelado a la
+ *  derecha (sin card, sin banner, sin marca duplicada — la marca vive en
+ *  el panel). En móvil, donde el panel se oculta, mostramos una marca
+ *  pequeña sólo en ese caso (vía CSS).
+ */
 export const DisenoAuthSplit = (pagina) => crearEl('div', {
   class: 'auth-layout auth-layout--split',
 }, [
   PanelPromo(),
   crearEl('main', { class: 'auth-layout__main' }, [
     crearEl('div', { class: 'auth-layout__envoltura' }, [
-      crearEl('div', { class: 'auth-layout__card' }, [
-        BannerMarcaCard(),
-        crearEl('div', { class: 'auth-layout__card-cuerpo' }, [pagina]),
+      crearEl('div', { class: 'auth-layout__split-marca-movil' }, [
+        MarcaAuth({ tamano: 'lg' }),
       ]),
+      crearEl('div', { class: 'auth-layout__split-cuerpo' }, [pagina]),
     ]),
   ]),
 ]);

@@ -41,6 +41,17 @@ export const SECCIONES = [
     id: 'app-kanban', etiqueta: 'Kanban', icono: 'kanban',
     items: [{ ruta: N.KANBAN, etiqueta: 'Kanban' }],
   },
+  {
+    id: 'app-calendario', etiqueta: 'Calendario', icono: 'calendar', ruta: N.CALENDARIO,
+  },
+  {
+    id: 'app-email', etiqueta: 'Email', icono: 'correo',
+    items: [
+      { ruta: N.EMAIL,         etiqueta: 'Bandeja' },
+      { ruta: N.EMAIL_LEER,    etiqueta: 'Leer correo' },
+      { ruta: N.EMAIL_COMPOSE, etiqueta: 'Redactar' },
+    ],
+  },
 
   // =============================== Páginas ===============================
   { grupo: 'Páginas' },
@@ -120,6 +131,7 @@ export const SECCIONES = [
         { ruta: N.FORM_INPUT_MASK,   etiqueta: 'Input mask' },
         { ruta: N.FORM_RANGE_SLIDER, etiqueta: 'Range slider' },
         { ruta: N.FORM_RATING,       etiqueta: 'Rating' },
+        { ruta: N.FORM_CROPPER,      etiqueta: 'Recortar imagen' },
       ]},
       { ruta: N.FORM_FLOATING,   etiqueta: 'Floating labels' },
       { ruta: N.FORM_WIZARD,     etiqueta: 'Wizard' },
@@ -174,6 +186,7 @@ export const SECCIONES = [
     items: [
       { ruta: N.COMP_ACORDEON,    etiqueta: 'Acordeón' },
       { ruta: N.COMP_ALERTAS,     etiqueta: 'Alertas' },
+      { ruta: N.COMP_AVISOS,      etiqueta: 'Avisos modales' },
       { ruta: N.COMP_ANCLA,       etiqueta: 'Ancla' },
       { ruta: N.COMP_ICONOS_ANIM, etiqueta: 'Iconos animados' },
       { ruta: N.COMP_FONDO,       etiqueta: 'Fondo' },

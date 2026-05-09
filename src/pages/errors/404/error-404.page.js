@@ -6,5 +6,4 @@ export default async () => PaginaError({
   titulo: t('errors.404_title'),
   texto: t('errors.404_text'),
   animacion: './public/lottie/' + encodeURIComponent('404 error lost in space astronaut.json'),
-  pista: 'Error code: 404 · Resource not found',
 });

@@ -145,6 +145,26 @@ export const rutas = [
     component: () => import('../pages/app/kanban/kanban.page.js'),
     meta: { title: 'Kanban' },
   }),
+  r(NOMBRES_RUTAS.CALENDARIO, {
+    layout: 'dashboard', guards: [guardiaAutenticacion],
+    component: () => import('../pages/app/calendario/calendario.page.js'),
+    meta: { title: 'Calendario' },
+  }),
+  r(NOMBRES_RUTAS.EMAIL, {
+    layout: 'dashboard', guards: [guardiaAutenticacion],
+    component: () => import('../pages/app/email/email.page.js'),
+    meta: { title: 'Email · Inbox' },
+  }),
+  r(NOMBRES_RUTAS.EMAIL_LEER, {
+    layout: 'dashboard', guards: [guardiaAutenticacion],
+    component: () => import('../pages/app/email/read.page.js'),
+    meta: { title: 'Email · Lectura' },
+  }),
+  r(NOMBRES_RUTAS.EMAIL_COMPOSE, {
+    layout: 'dashboard', guards: [guardiaAutenticacion],
+    component: () => import('../pages/app/email/compose.page.js'),
+    meta: { title: 'Email · Compose' },
+  }),
 
   // Páginas (settings + misc)
   r(NOMBRES_RUTAS.PERFIL, {
@@ -260,6 +280,7 @@ export const rutas = [
   r(NOMBRES_RUTAS.FORM_INPUT_MASK,   { layout: 'dashboard', guards: [guardiaAutenticacion], component: () => import('../pages/modulos/forms/advance/input-mask.page.js'),   meta: { title: 'Input mask' } }),
   r(NOMBRES_RUTAS.FORM_RANGE_SLIDER, { layout: 'dashboard', guards: [guardiaAutenticacion], component: () => import('../pages/modulos/forms/advance/range-slider.page.js'), meta: { title: 'Range slider' } }),
   r(NOMBRES_RUTAS.FORM_RATING,       { layout: 'dashboard', guards: [guardiaAutenticacion], component: () => import('../pages/modulos/forms/advance/rating.page.js'),       meta: { title: 'Rating' } }),
+  r(NOMBRES_RUTAS.FORM_CROPPER,      { layout: 'dashboard', guards: [guardiaAutenticacion], component: () => import('../pages/modulos/forms/advance/cropper.page.js'),      meta: { title: 'Recortador de imágenes' } }),
   // ===== Forms · standalone =====
   r(NOMBRES_RUTAS.FORM_FLOATING,    { layout: 'dashboard', guards: [guardiaAutenticacion], component: () => import('../pages/modulos/forms/floating.page.js'),    meta: { title: 'Floating labels' } }),
   r(NOMBRES_RUTAS.FORM_WIZARD,      { layout: 'dashboard', guards: [guardiaAutenticacion], component: () => import('../pages/modulos/forms/wizard.page.js'),      meta: { title: 'Form wizard' } }),
@@ -345,6 +366,11 @@ export const rutas = [
     layout: 'dashboard', guards: [guardiaAutenticacion],
     component: () => import('../pages/modulos/componentes/alertas.page.js'),
     meta: { title: 'Alertas' },
+  }),
+  r(NOMBRES_RUTAS.COMP_AVISOS, {
+    layout: 'dashboard', guards: [guardiaAutenticacion],
+    component: () => import('../pages/modulos/componentes/avisos.page.js'),
+    meta: { title: 'Avisos modales' },
   }),
   r(NOMBRES_RUTAS.COMP_BADGES, {
     layout: 'dashboard', guards: [guardiaAutenticacion],

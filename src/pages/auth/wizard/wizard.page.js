@@ -21,6 +21,7 @@ import { mostrarIntro } from '../../../utils/helpers/intro.js';
 import { navegarA } from '../../../router/index.js';
 import { RUTAS, NOMBRES_RUTAS } from '../../../config/routes.config.js';
 import { t } from '../../../i18n/index.js';
+import { aplicarPreset } from '../../../components/auth/auth-presets.js';
 
 const PASOS = [
   { id: 'cuenta',       titulo: 'Cuenta',       descripcion: 'Tus credenciales' },
@@ -45,7 +46,9 @@ const formatear = (clave, valor) => {
   return ocultar(clave, valor);
 };
 
-export default async () => {
+export default async (ctx) => {
+  const { decoracion } = aplicarPreset(ctx);
+
   const pasoActual = senal(0);
   const datos = senal({});
 
@@ -176,7 +179,8 @@ export default async () => {
 
   /* ─────────────────────── Composición final ─────────────────────────── */
   return crearEl('div', { class: 'auth-contenido auth-wizard' }, [
-    crearEl('header', { class: 'auth-cabecera' }, [
+    decoracion,
+    crearEl('header', { class: 'auth-cabecera auth-cabecera--centrada' }, [
       crearEl('div', null, [
         crearEl('h1', { class: 'auth-cabecera__titulo' }, ['Asistente de registro']),
         crearEl('p',  { class: 'auth-lead' }, ['Configura tu cuenta en cuatro pasos.']),

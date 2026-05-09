@@ -1,7 +1,11 @@
 /**
- * Página compartida — flujo "olvidé mi contraseña". Las 3 variantes la
- * reutilizan vía rutas distintas (simple/card/split).
+ * Página compartida — flujo "olvidé mi contraseña". El preset adapta el visual
+ * a la variante (simple/card/split).
  */
 import { FormularioRecuperar } from '../../../components/auth/auth-forms.js';
+import { aplicarPreset } from '../../../components/auth/auth-presets.js';
 
-export default async () => FormularioRecuperar();
+export default async (ctx) => {
+  const { decoracion, lead } = aplicarPreset(ctx);
+  return FormularioRecuperar({ decoracion, lead });
+};

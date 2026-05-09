@@ -338,9 +338,65 @@ export default async () => PaginaShowcase({
       })],
     }),
 
-    // ============== 10. HORIZONTAL (order tracking) ==============
+    // ============== 10. TARJETAS (clásico pro — fecha inline derecha) ==============
     Seccion({
-      titulo: '10 · Horizontal — order tracking / wizard steps',
+      titulo: '10 · Tarjetas — fecha inline derecha (clásico pro)',
+      descripcion: 'Variante `tarjetas`: cards apiladas con la línea a la izquierda y un punto outline sobre cada card. Título a la izquierda + fecha alineada a la derecha en la misma fila. Idéntico al patrón clásico de "event timeline" / "session schedule". El item activo destaca con punto de marca y título en color primary.',
+      hijos: [VistaCodigo({
+        vista: LineaTiempo({
+          variante: 'tarjetas',
+          items: [
+            { titulo: 'Día 1 — Orientación', fecha: 'Lun, 9 ene 2026 · 7:00', mensaje: 'Bienvenida al campus, introducción y arranque del tour.' },
+            { titulo: 'Día 2 — Sesiones',   fecha: 'Mar, 10 ene 2026 · 8:30', mensaje: 'Inscríbete en las sesiones que coincidan con tu plan de estudios. Conocerás a los instructores.', color: 'primary', acciones: [Boton({ texto: 'Ver detalle', tamano: 'sm', variante: 'secondary' })] },
+            { titulo: 'Día 3 — Sesiones',   fecha: 'Mié, 11 ene 2026 · 8:30', mensaje: 'Talleres de profundización. Cobertura completa de los tópicos del syllabus con prácticas guiadas y revisión por pares.' },
+            { titulo: 'Día 4 — Cierre',     fecha: 'Jue, 12 ene 2026 · 11:30', mensaje: 'Únete al almuerzo de cierre en la cafetería del Campus Center.' },
+          ],
+        }),
+        codigo: `LineaTiempo({
+  variante: 'tarjetas',
+  items: [
+    { titulo: 'Día 1 — Orientación',
+      fecha: 'Lun, 9 ene 2026 · 7:00',
+      mensaje: 'Bienvenida al campus…' },
+    { titulo: 'Día 2 — Sesiones',
+      fecha: 'Mar, 10 ene 2026 · 8:30',
+      mensaje: 'Inscríbete a las sesiones…',
+      color: 'primary' },                  // resalta como activo
+    // …
+  ],
+})`,
+      })],
+    }),
+
+    // ============== 11. ALTERNA (cards alternadas + línea central) ==============
+    Seccion({
+      titulo: '11 · Alterna — cards alternadas izq/der',
+      descripcion: 'Variante `alterna`: como tarjetas pero los items se distribuyen alternando izquierda y derecha de la línea central. Mismo cabezal con título + fecha inline. Útil para roadmaps simétricos o agendas. En móvil colapsa a una sola columna automáticamente.',
+      hijos: [VistaCodigo({
+        vista: LineaTiempo({
+          variante: 'alterna',
+          items: [
+            { titulo: 'Día 1 — Orientación', fecha: '9 ene 2026 · 7:00',  mensaje: 'Bienvenida al campus, introducción y arranque del tour.' },
+            { titulo: 'Día 2 — Sesiones',   fecha: '10 ene 2026 · 8:30', mensaje: 'Inscríbete en las sesiones que coincidan con tu plan. Conoce a los instructores.', color: 'primary', acciones: [Boton({ texto: 'Ver detalle', tamano: 'sm', variante: 'secondary' })] },
+            { titulo: 'Día 3 — Sesiones',   fecha: '11 ene 2026 · 8:30', mensaje: 'Talleres de profundización con prácticas guiadas y revisión por pares.' },
+            { titulo: 'Día 4 — Cierre',     fecha: '12 ene 2026 · 11:30', mensaje: 'Almuerzo de cierre en la cafetería del Campus Center.' },
+          ],
+        }),
+        codigo: `LineaTiempo({
+  variante: 'alterna',
+  items: [
+    { titulo: 'Día 1 — Orientación',
+      fecha: '9 ene 2026 · 7:00',
+      mensaje: 'Bienvenida al campus…' },
+    // … alternarán automáticamente izq/der
+  ],
+})`,
+      })],
+    }),
+
+    // ============== 12. HORIZONTAL (order tracking) ==============
+    Seccion({
+      titulo: '12 · Horizontal — order tracking / wizard steps',
       descripcion: '`LineaTiempoHorizontal` muestra pasos secuenciales. Completados con gradient verde + sombra, activo con ring primary + scale(1.05), futuros grises. Línea conectora con `scaleX(0→1)` cuando se completa.',
       hijos: [VistaCodigo({
         vista: LineaTiempoHorizontal({

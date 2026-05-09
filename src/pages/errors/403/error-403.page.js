@@ -6,5 +6,4 @@ export default async () => PaginaError({
   titulo: t('errors.403_title'),
   texto: t('errors.403_text'),
   animacion: './public/lottie/' + encodeURIComponent('404 error page with cat.json'),
-  pista: 'Error code: 403 · Forbidden',
 });

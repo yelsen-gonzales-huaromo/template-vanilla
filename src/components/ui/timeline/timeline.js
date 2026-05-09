@@ -2,10 +2,12 @@
  * LineaTiempo — lista de eventos cronológicos.
  *
  *   LineaTiempo({
- *     variante: 'default' | 'centrada' | 'compacta' | 'glass' | 'simple',
+ *     variante: 'default' | 'centrada' | 'compacta' | 'glass' | 'simple'
+ *             | 'tarjetas'  // estilo pro: titulo + fecha en la misma fila (derecha)
+ *             | 'alterna',  // como 'tarjetas' pero alternando izq/der (línea central)
  *     items: [
  *       {
- *         fecha: '12 mar',                  // texto opcional sobre el título
+ *         fecha: '12 mar',                  // texto (en 'tarjetas'/'alterna' va inline)
  *         titulo: 'Pedido recibido',
  *         mensaje: '...' | nodo,
  *         icono: Icono('check'),            // dentro del punto coloreado
@@ -23,41 +25,55 @@
  */
 import { crearEl } from '../../../utils/helpers/dom.js';
 
-const renderItem = (it) => crearEl('li', {
-  class: ['linea-tiempo__item', it.pendiente && 'linea-tiempo__item--pendiente'],
-}, [
-  // Punto / avatar
-  it.avatar
-    ? crearEl('span', { class: 'linea-tiempo__avatar' }, [it.avatar])
-    : crearEl('span', {
-        class: [
-          'linea-tiempo__punto',
-          it.color && `linea-tiempo__punto--${it.color}`,
-          it.pendiente && 'linea-tiempo__punto--pendiente',
-        ],
-        'aria-hidden': 'true',
-      }, [it.icono]),
-  // Cuerpo
-  crearEl('div', { class: 'linea-tiempo__cuerpo' }, [
-    it.fecha && crearEl('span', { class: 'linea-tiempo__fecha' }, [it.fecha]),
-    (it.titulo || it.etiqueta) && crearEl('div', { class: 'linea-tiempo__cabezal' }, [
+/* En las variantes 'tarjetas' y 'alterna' la fecha va inline a la derecha
+   del título (no arriba como un eyebrow). Esto da un look más limpio y
+   profesional, idéntico a los ejemplos clásicos de timeline. */
+const FECHA_INLINE = new Set(['tarjetas', 'alterna']);
+
+const renderItem = (it, variante) => {
+  const fechaInline = FECHA_INLINE.has(variante);
+
+  const cabezal = (it.titulo || it.etiqueta || (fechaInline && it.fecha))
+    && crearEl('div', { class: 'linea-tiempo__cabezal' }, [
       it.titulo && crearEl('h4', { class: 'linea-tiempo__titulo' }, [it.titulo]),
       it.etiqueta && crearEl('span', { class: 'linea-tiempo__etiqueta' }, [it.etiqueta]),
+      fechaInline && it.fecha && crearEl('span', { class: 'linea-tiempo__fecha-inline' }, [it.fecha]),
+    ]);
+
+  return crearEl('li', {
+    class: ['linea-tiempo__item', it.pendiente && 'linea-tiempo__item--pendiente'],
+  }, [
+    // Punto / avatar
+    it.avatar
+      ? crearEl('span', { class: 'linea-tiempo__avatar' }, [it.avatar])
+      : crearEl('span', {
+          class: [
+            'linea-tiempo__punto',
+            it.color && `linea-tiempo__punto--${it.color}`,
+            it.pendiente && 'linea-tiempo__punto--pendiente',
+          ],
+          'aria-hidden': 'true',
+        }, [it.icono]),
+    // Cuerpo
+    crearEl('div', { class: 'linea-tiempo__cuerpo' }, [
+      // Fecha "eyebrow" sólo en variantes que NO la pintan inline
+      !fechaInline && it.fecha && crearEl('span', { class: 'linea-tiempo__fecha' }, [it.fecha]),
+      cabezal,
+      it.mensaje && crearEl('p', { class: 'linea-tiempo__mensaje' },
+        [typeof it.mensaje === 'string' ? it.mensaje : it.mensaje]),
+      it.adjuntos && it.adjuntos.length && crearEl('div', { class: 'linea-tiempo__adjuntos' },
+        it.adjuntos.map((a) => crearEl('span', { class: 'linea-tiempo__adjunto' }, [
+          a.icono, crearEl('span', null, [a.nombre]),
+          a.tamano && crearEl('span', { class: 'linea-tiempo__adjunto-tam' }, [a.tamano]),
+        ]))),
+      it.acciones && it.acciones.length && crearEl('div', { class: 'linea-tiempo__acciones' }, it.acciones),
     ]),
-    it.mensaje && crearEl('p', { class: 'linea-tiempo__mensaje' },
-      [typeof it.mensaje === 'string' ? it.mensaje : it.mensaje]),
-    it.adjuntos && it.adjuntos.length && crearEl('div', { class: 'linea-tiempo__adjuntos' },
-      it.adjuntos.map((a) => crearEl('span', { class: 'linea-tiempo__adjunto' }, [
-        a.icono, crearEl('span', null, [a.nombre]),
-        a.tamano && crearEl('span', { class: 'linea-tiempo__adjunto-tam' }, [a.tamano]),
-      ]))),
-    it.acciones && it.acciones.length && crearEl('div', { class: 'linea-tiempo__acciones' }, it.acciones),
-  ]),
-]);
+  ]);
+};
 
 export const LineaTiempo = ({ items = [], variante = 'default' } = {}) => crearEl('ol', {
   class: ['linea-tiempo', `linea-tiempo--${variante}`],
-}, items.map(renderItem));
+}, items.map((it) => renderItem(it, variante)));
 
 // ============================================================================
 //  LineaTiempoHorizontal — para steps de checkout, order tracking
