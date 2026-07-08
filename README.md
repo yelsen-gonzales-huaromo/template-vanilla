@@ -4,7 +4,7 @@
 > Sin Vite, sin webpack, sin npm, sin paso de build. El navegador carga los archivos tal cual.
 
 <p align="center">
-  <img src="public/img/Panel · template-vanilla.png" alt="Panel template-vanilla" width="100%">
+  <img src="public/img/Panel%20%C2%B7%20template-vanilla.png" alt="Panel template-vanilla" width="100%">
 </p>
 
 template-vanilla es una plantilla SPA pensada para servirse desde cualquier backend
