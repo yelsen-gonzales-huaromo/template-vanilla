@@ -66,7 +66,7 @@ export default async () => crearEl('div', null, [
     Panel({
       titulo: 'Páginas más visitadas',
       hijos: Lista([
-        { icono: 'pagina', titulo: '/inicio',         sub: '/launchpad.dev',  valor: '12.4K', delta: '+8%', tendencia: 'up' },
+        { icono: 'pagina', titulo: '/inicio',         sub: '/template-vanilla.dev',  valor: '12.4K', delta: '+8%', tendencia: 'up' },
         { icono: 'pagina', titulo: '/precios',        sub: '/precios',        valor: '8.2K',  delta: '+15%', tendencia: 'up' },
         { icono: 'pagina', titulo: '/blog/v2',        sub: 'Anuncio v2',      valor: '6.7K',  delta: '+42%', tendencia: 'up' },
         { icono: 'pagina', titulo: '/docs/api',       sub: 'Docs',            valor: '4.1K',  delta: '-3%', tendencia: 'down' },

@@ -145,7 +145,7 @@ export default async () => PaginaShowcase({
           slides: [
             slideHero('./public/img/gallery/2000.jpg', 'Paso 1 · Crea tu cuenta',          'Sólo necesitas un email válido'),
             slideHero('./public/img/gallery/2001.jpg', 'Paso 2 · Verifica tu email',       'Te enviamos un código de 6 dígitos'),
-            slideHero('./public/img/gallery/2008.jpg', 'Paso 3 · Empieza a usar Launchpad','Tu equipo ya puede colaborar contigo'),
+            slideHero('./public/img/gallery/2008.jpg', 'Paso 3 · Empieza a usar template-vanilla','Tu equipo ya puede colaborar contigo'),
           ],
         }),
         codigo: `Carrusel({ autoPlay: false, indicadores: false, altura: 'clamp(220px, 30vw, 360px)', slides: [...] })`,

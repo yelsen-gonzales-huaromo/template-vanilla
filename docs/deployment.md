@@ -14,8 +14,8 @@ or container.
 ## Docker
 
 ```bash
-docker build -t launchpad:latest -f docker/Dockerfile .
-docker run --rm -p 8080:80 launchpad:latest
+docker build -t template-vanilla:latest -f docker/Dockerfile .
+docker run --rm -p 8080:80 template-vanilla:latest
 ```
 
 The Dockerfile is multi-stage:

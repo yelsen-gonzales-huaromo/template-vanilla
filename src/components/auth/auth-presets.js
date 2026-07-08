@@ -64,7 +64,7 @@ const POR_PAGINA = {
     tono: 'exito',
     imagen: IMG('bg-2.jpg'),
     fondoSimple: IMG('bg-2.jpg'),
-    panelTitulo: 'Únete a Launchpad',
+    panelTitulo: 'Únete a template-vanilla',
     panelSub: 'Crea tu cuenta y empieza a desplegar interfaces empresariales en minutos.',
     leadSimple: 'Tu equipo en producción en menos de 5 minutos.',
   },

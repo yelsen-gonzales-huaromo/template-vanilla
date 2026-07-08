@@ -566,14 +566,14 @@ const buildOpenURL = (modo, { lat, lng }) => {
           crearEl('div', null, [
             crearEl('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 10px', background: 'color-mix(in srgb, var(--primary) 14%, transparent)', color: 'var(--primary)', borderRadius: '999px', fontSize: '11px', fontWeight: 800, letterSpacing: '0.04em', textTransform: 'uppercase' } },
               [Icono('pin', { tamano: 12 }), 'Sede central']),
-            crearEl('h3', { style: { margin: '8px 0 4px', fontSize: 'var(--text-xl)', fontWeight: 800 } }, ['Launchpad SL']),
+            crearEl('h3', { style: { margin: '8px 0 4px', fontSize: 'var(--text-xl)', fontWeight: 800 } }, ['template-vanilla SL']),
             crearEl('div', { style: { color: 'var(--muted-foreground)', fontSize: 'var(--text-sm)', lineHeight: 1.55 } },
               ['Calle Gran Vía 28, 4ª planta', crearEl('br'), '28013 Madrid, España']),
 
             crearEl('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px', marginBlockStart: 'var(--space-3)', paddingBlockStart: 'var(--space-3)', borderBlockStart: '1px solid var(--border)' } },
               [
                 ['📞', '+34 911 23 45 67'],
-                ['✉️', 'hola@launchpad.dev'],
+                ['✉️', 'hola@template-vanilla.dev'],
                 ['🕐', 'Lun–Vie · 9:00 – 18:00'],
                 ['🚇', 'Metro Gran Vía (líneas 1 y 5)'],
               ].map(([ic, t]) => crearEl('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', fontSize: 'var(--text-sm)' } }, [
@@ -760,7 +760,7 @@ const cerca = [
           }, [
             crearEl('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 10px', background: 'var(--surface)', borderRadius: '999px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' } },
               ['📅 SÁBADO 14 · 19:00']),
-            crearEl('h3', { style: { margin: '8px 0 4px', fontSize: 'var(--text-2xl)', fontWeight: 800, letterSpacing: '-0.02em' } }, ['Launchpad Conf 2026']),
+            crearEl('h3', { style: { margin: '8px 0 4px', fontSize: 'var(--text-2xl)', fontWeight: 800, letterSpacing: '-0.02em' } }, ['template-vanilla Conf 2026']),
             crearEl('div', { style: { color: 'var(--muted-foreground)', fontSize: 'var(--text-sm)' } }, ['📍 Teatro Real · Plaza de Isabel II, Madrid']),
           ]),
           GoogleMap({

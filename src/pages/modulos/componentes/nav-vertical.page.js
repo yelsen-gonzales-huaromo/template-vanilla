@@ -7,7 +7,7 @@ import { corner1 } from '../../../components/ui/card/card-decoraciones.js';
 // ============================================================================
 //  Helpers — bloques de la app mockeada
 // ============================================================================
-const brand = (texto = 'Launchpad') => crearEl('div', { class: 'mock-brand' }, [
+const brand = (texto = 'template-vanilla') => crearEl('div', { class: 'mock-brand' }, [
   crearEl('span', { class: 'mock-brand__logo' }, ['L']),
   crearEl('span', null, [texto]),
 ]);
@@ -48,7 +48,7 @@ const contentSkeleton = () => crearEl('div', { class: 'mock-content' }, [
 ]);
 
 // ============================================================================
-//  1. Sidebar completo (default Launchpad)
+//  1. Sidebar completo (default template-vanilla)
 // ============================================================================
 const sidebarCompleto = () => crearEl('div', { class: 'mock-app' }, [
   crearEl('div', { class: 'mock-layout' }, [
@@ -152,7 +152,7 @@ const sidebarConPerfil = () => crearEl('div', { class: 'mock-app' }, [
         ]),
         crearEl('div', { class: 'mock-sidebar__seccion' }, [
           sidebarLabel('Favoritos'),
-          sidebarItem({ icono: 'estrella', etiqueta: 'Launchpad Web' }),
+          sidebarItem({ icono: 'estrella', etiqueta: 'template-vanilla Web' }),
           sidebarItem({ icono: 'estrella', etiqueta: 'API Core' }),
         ]),
       ]),
@@ -168,7 +168,7 @@ const sidebarConPerfil = () => crearEl('div', { class: 'mock-app' }, [
         crearEl('div', { class: 'mock-avatar' }, ['MG']),
         crearEl('div', { style: { flex: 1, minWidth: 0 } }, [
           crearEl('div', { style: { fontSize: 'var(--text-sm)', fontWeight: 600 } }, ['María García']),
-          crearEl('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, ['maria@launchpad.dev']),
+          crearEl('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, ['maria@template-vanilla.dev']),
         ]),
         crearEl('button', { class: 'mock-icono-btn', style: { width: '28px', height: '28px' } }, [Icono('utilidades', { tamano: 14 })]),
       ]),
@@ -195,7 +195,7 @@ const sidebarOscuro = () => crearEl('div', { class: 'mock-app' }, [
     }, [
       crearEl('div', { class: 'mock-brand', style: { color: '#fff' } }, [
         crearEl('span', { class: 'mock-brand__logo', style: { background: '#fff', color: '#000' } }, ['L']),
-        crearEl('span', null, ['Launchpad']),
+        crearEl('span', null, ['template-vanilla']),
       ]),
       crearEl('div', { class: 'mock-sidebar__seccion' }, [
         ...['Dashboard', 'Proyectos', 'Tareas', 'Equipo', 'Reportes'].map((t, i) => crearEl('a', {
@@ -223,18 +223,18 @@ const sidebarOscuro = () => crearEl('div', { class: 'mock-app' }, [
 // ============================================================================
 export default async () => PaginaShowcase({
   titulo: 'Navbar Vertical',
-  descripcion: 'Sidebar fijo a la izquierda + topbar. Layout activo por defecto en Launchpad. 4 patrones reales: completo con secciones, mini sólo-iconos, con workspace switcher + perfil abajo, y dark sidebar estilo Linear.',
+  descripcion: 'Sidebar fijo a la izquierda + topbar. Layout activo por defecto en template-vanilla. 4 patrones reales: completo con secciones, mini sólo-iconos, con workspace switcher + perfil abajo, y dark sidebar estilo Linear.',
   decoracion: corner1(),
   migas: [{ etiqueta: 'Componentes', href: '#/modulos/componentes' }],
   hijos: [
 
     Seccion({
-      titulo: '1 · Sidebar completo (Launchpad default)',
+      titulo: '1 · Sidebar completo (template-vanilla default)',
       descripcion: 'Patrón estándar SaaS — brand arriba, items agrupados por sección con label uppercase. Items con icono + etiqueta y badge opcional para counts (mensajes, pedidos pendientes).',
       hijos: [VistaCodigo({
         vista: sidebarCompleto(),
         codigo: `crearEl('aside', { class: 'mock-sidebar' }, [
-  brand('Launchpad'),
+  brand('template-vanilla'),
 
   crearEl('div', { class: 'mock-sidebar__seccion' }, [
     sidebarItem({ icono: 'panel',     etiqueta: 'Dashboard', activo: true }),

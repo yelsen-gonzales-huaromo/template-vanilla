@@ -136,7 +136,7 @@ const abrirNuevoProyecto = () => {
   const { cerrar } = Modal.abrir({
     titulo: 'Nuevo proyecto',
     cuerpo: crearEl('div', { style: { display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' } }, [
-      campoConLabel('Nombre del proyecto', { placeholder: 'Ej. Launchpad Web' }),
+      campoConLabel('Nombre del proyecto', { placeholder: 'Ej. template-vanilla Web' }),
       campoConLabel('Descripción (opcional)', { placeholder: 'Breve descripción' }),
       crearEl('label', { style: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: 'var(--text-sm)' } }, [
         crearEl('input', { type: 'checkbox' }),
@@ -164,7 +164,7 @@ const abrirEditarPerfil = () => {
           campoConLabel('Nombre',   { value: 'María' }),
           campoConLabel('Apellido', { value: 'García' }),
         ]),
-        campoConLabel('Email', { type: 'email', value: 'maria@launchpad.dev' }),
+        campoConLabel('Email', { type: 'email', value: 'maria@template-vanilla.dev' }),
         campoConLabel('Bio',   { placeholder: 'Cuéntanos sobre ti…' }),
         campoConLabel('Sitio web', { type: 'url', placeholder: 'https://' }),
       ]),
@@ -290,7 +290,7 @@ const abrirDrawerIzquierda = () => {
   }, [Icono(icono, { tamano: 18 }), crearEl('span', null, [etiqueta])]);
 
   ({ cerrar } = Modal.abrir({
-    titulo: 'Launchpad',
+    titulo: 'template-vanilla',
     posicion: 'izquierda',
     tamano: 'sm',
     cuerpo: crearEl('div', { style: { display: 'flex', flexDirection: 'column', gap: '4px' } }, [
@@ -749,11 +749,11 @@ const abrirSelectorColor = () => {
 
 const abrirAsignarUsuario = () => {
   const personas = [
-    { nombre: 'Sara Chen',     email: 'sara@launchpad.dev',    rol: 'Designer' },
-    { nombre: 'Marcus Lee',    email: 'marcus@launchpad.dev',  rol: 'Engineer' },
-    { nombre: 'Priya Patel',   email: 'priya@launchpad.dev',   rol: 'Eng Manager' },
-    { nombre: 'Jorge Ramírez', email: 'jorge@launchpad.dev',   rol: 'iOS Dev' },
-    { nombre: 'Lina Kowalski', email: 'lina@launchpad.dev',    rol: 'Data Analyst' },
+    { nombre: 'Sara Chen',     email: 'sara@template-vanilla.dev',    rol: 'Designer' },
+    { nombre: 'Marcus Lee',    email: 'marcus@template-vanilla.dev',  rol: 'Engineer' },
+    { nombre: 'Priya Patel',   email: 'priya@template-vanilla.dev',   rol: 'Eng Manager' },
+    { nombre: 'Jorge Ramírez', email: 'jorge@template-vanilla.dev',   rol: 'iOS Dev' },
+    { nombre: 'Lina Kowalski', email: 'lina@template-vanilla.dev',    rol: 'Data Analyst' },
   ];
   const elegido = senal(null);
   const lista = crearEl('div', { style: { display: 'flex', flexDirection: 'column', gap: '4px', maxHeight: '320px', overflowY: 'auto' } });
@@ -798,7 +798,7 @@ const abrirCompartir = () => {
     titulo: 'Compartir documento',
     cuerpo: crearEl('div', { style: { display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' } }, [
       crearEl('div', { style: { display: 'flex', gap: 'var(--space-2)' } }, [
-        Campo({ value: 'https://launchpad.dev/d/abc-xyz-123', style: { flex: 1 } }),
+        Campo({ value: 'https://template-vanilla.dev/d/abc-xyz-123', style: { flex: 1 } }),
         Boton({ texto: 'Copiar', variante: 'secondary', onClick: () => notificar.exito('Copiado') }),
       ]),
       crearEl('label', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } }, [
@@ -831,7 +831,7 @@ const abrirTabsHorizontales = () => {
       { id: 'general', etiqueta: 'General',
         contenido: crearEl('div', { style: { display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' } }, [
           campoConLabel('Nombre del workspace', { value: 'Acme Inc.' }),
-          campoConLabel('URL personalizada',     { value: 'acme.launchpad.dev' }),
+          campoConLabel('URL personalizada',     { value: 'acme.template-vanilla.dev' }),
         ]) },
       { id: 'miembros',     etiqueta: 'Miembros',
         contenido: crearEl('p', { style: { color: 'var(--muted-foreground)' } }, ['Lista de los 12 miembros del workspace…']) },
@@ -876,7 +876,7 @@ const abrirTabsLaterales = () => {
     const contenidos = {
       cuenta: crearEl('div', { style: { display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' } }, [
         campoConLabel('Nombre',  { value: 'María García' }),
-        campoConLabel('Email',   { type: 'email', value: 'maria@launchpad.dev' }),
+        campoConLabel('Email',   { type: 'email', value: 'maria@template-vanilla.dev' }),
         campoConLabel('Cargo',   { value: 'Product Designer' }),
       ]),
       seguridad: crearEl('div', { style: { display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' } }, [
@@ -938,7 +938,7 @@ const abrirBienvenida = () => {
     cuerpo: crearEl('div', null, [
       crearEl('div', { class: 'modal-hero' }, [
         crearEl('div', { class: 'modal-hero__icono' }, [Icono('brillos', { tamano: 32 })]),
-        crearEl('strong', { style: { fontSize: 'var(--text-xl)', fontWeight: 700 } }, ['¡Bienvenido a Launchpad!']),
+        crearEl('strong', { style: { fontSize: 'var(--text-xl)', fontWeight: 700 } }, ['¡Bienvenido a template-vanilla!']),
         crearEl('p', { style: { margin: 0, fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' } },
           ['Estamos contentos de tenerte aquí. Te guiamos en 30 segundos.']),
       ]),
@@ -1129,7 +1129,7 @@ export default async () => PaginaShowcase({
         codigo: `Modal.abrir({
   titulo: 'Nuevo proyecto',
   cuerpo: crearEl('div', null, [
-    campoConLabel('Nombre',      { placeholder: 'Ej. Launchpad Web' }),
+    campoConLabel('Nombre',      { placeholder: 'Ej. template-vanilla Web' }),
     campoConLabel('Descripción', { placeholder: 'Breve descripción' }),
   ]),
   pie: piePar('Cancelar', 'Crear proyecto', 'primary', onCrear),

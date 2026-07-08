@@ -420,9 +420,9 @@ Tarjeta({ hijos: [titulo, valor, BarraProgreso({ valor: 68 })] })`,
             { valor: '320',   etiqueta: 'Posts' },
             { valor: '4.9',   etiqueta: 'Rating' },
           ]),
-          cardContacto('Carlos Ruiz', 'Tech Lead · Equipo Backend', 'carlos@launchpad.app', '+34 611 222 333'),
+          cardContacto('Carlos Ruiz', 'Tech Lead · Equipo Backend', 'carlos@template-vanilla.app', '+34 611 222 333'),
           cardTestimonial(
-            'Migrar a Launchpad redujo nuestro time-to-market a la mitad. Los componentes simplemente funcionan.',
+            'Migrar a template-vanilla redujo nuestro time-to-market a la mitad. Los componentes simplemente funcionan.',
             'Ana Torres', 'CTO · Acme Corp',
           ),
         ),
@@ -502,7 +502,7 @@ Tarjeta({ hijos: [
           cardArticulo('Reactividad sin frameworks',
             'Construyendo primitivas reactivas (senal, efecto, calculado) en vanilla JS.',
             'Carlos R.', '8 abr 2026', 'Ingeniería', './public/img/gallery/2006.jpg'),
-          cardArticulo('De Falcon a Launchpad',
+          cardArticulo('De Falcon a template-vanilla',
             'Migrando una plantilla Bootstrap a vanilla JS modular sin perder calidad visual.',
             'Ana T.', '2 abr 2026', 'Producto',  './public/img/gallery/2010.jpg'),
         ),
@@ -539,7 +539,7 @@ Tarjeta({ variante: 'sin-borde', hijos: [Avatar, accion, sub, tiempo, accionInli
         vista: grid2(
           cardArchivo('Plan-financiero-2026.pdf',     '2.4', 'pdf', '12 abr'),
           cardArchivo('Reporte-mensual.xlsx',          '1.1', 'xls', 'hace 2 días'),
-          cardArchivo('Logo-launchpad-final.png',      '0.8', 'img', 'hace 1 semana'),
+          cardArchivo('Logo-template-vanilla-final.png',      '0.8', 'img', 'hace 1 semana'),
           cardArchivo('Brief-cliente.docx',            '0.5', 'doc', '5 abr'),
           cardArchivo('Backup-2026-04-01.zip',         '128', 'zip', '1 abr'),
           cardArchivo('Presentacion-board.pdf',        '4.2', 'pdf', '28 mar'),
@@ -557,7 +557,7 @@ Tarjeta({ variante: 'sin-borde', hijos: [Avatar, accion, sub, tiempo, accionInli
       descripcion: 'Para project management — Trello, Notion, Linear style.',
       hijos: [VistaCodigo({
         vista: grid2(
-          cardProyecto('Migración a Launchpad',
+          cardProyecto('Migración a template-vanilla',
             'Reescribir todos los componentes en vanilla JS reactivo.',
             68, ['María L.', 'Carlos R.', 'Ana T.'], '12 jun',
             { texto: 'En curso', variante: 'primary' }),
@@ -1408,7 +1408,7 @@ Tarjeta({
       descripcion: 'Para A/B, antes/después, comparar planes/productos.',
       hijos: [VistaCodigo({
         vista: Tarjeta({
-          titulo: 'Antes vs después · Migración a Launchpad',
+          titulo: 'Antes vs después · Migración a template-vanilla',
           hijos: crearEl('div', { style: { display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 'var(--space-4)', alignItems: 'center' } }, [
             crearEl('div', null, [
               crearEl('strong', { style: { color: 'var(--color-danger)' } }, ['ANTES']),

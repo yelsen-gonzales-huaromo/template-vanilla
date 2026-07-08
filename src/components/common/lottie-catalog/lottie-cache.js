@@ -19,8 +19,8 @@
  *   estadoLottieCache(url) → 'cached' | 'remoto' | 'fallido'
  */
 
-const PREFIJO = 'launchpad.lottie.';
-const PREFIJO_FALLO = 'launchpad.lottie.fail.';
+const PREFIJO = 'template-vanilla.lottie.';
+const PREFIJO_FALLO = 'template-vanilla.lottie.fail.';
 
 const hashUrl = (url) => {
   // Hash simple determinístico (FNV-1a básico) — suficiente para clave única.

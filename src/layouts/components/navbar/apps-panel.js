@@ -4,7 +4,7 @@
  * Referencia visual: Falcon — grid 3 columnas, iconos grandes redondeados con
  * color de marca por app, nombre debajo, footer con selector + acciones.
  *
- * Las apps internas (productos del propio launchpad) navegan por el router.
+ * Las apps internas (productos del propio template-vanilla) navegan por el router.
  * Las apps externas abren en una nueva pestaña.
  */
 import { crearEl } from '../../../utils/helpers/dom.js';

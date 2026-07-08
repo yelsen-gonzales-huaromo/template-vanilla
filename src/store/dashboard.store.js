@@ -9,7 +9,7 @@
 import { senal, calculado } from '../utils/helpers/reactive.js';
 import { almacenamientoLocal } from '../utils/helpers/storage.js';
 
-const CLAVE_RANGO = 'launchpad.dashboard.rango';
+const CLAVE_RANGO = 'template-vanilla.dashboard.rango';
 
 /** Rangos disponibles — clave usada para mostrar / filtrar / persistir. */
 export const RANGOS = Object.freeze({

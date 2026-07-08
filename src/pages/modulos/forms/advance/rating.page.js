@@ -154,7 +154,7 @@ Pulgares({
           });
           return crearEl('div', { style: { maxWidth: '480px' } }, [
             crearEl('h4', { style: { margin: '0 0 12px', fontSize: '14px', fontWeight: 600 } }, [
-              '¿Qué tan probable es que recomiendes Launchpad a un colega?',
+              '¿Qué tan probable es que recomiendes template-vanilla a un colega?',
             ]),
             NPS({ onChange: (n) => v.value = n }),
             interpretacion,

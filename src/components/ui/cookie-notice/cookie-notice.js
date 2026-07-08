@@ -27,8 +27,8 @@ import { almacenamientoLocal } from '../../../utils/helpers/storage.js';
 import { Boton } from '../button/button.js';
 import { Icono } from '../icon/icons.js';
 
-const CLAVE = 'launchpad.cookies.aceptado';
-const CLAVE_GDPR = 'launchpad.cookies.preferencias';
+const CLAVE = 'template-vanilla.cookies.aceptado';
+const CLAVE_GDPR = 'template-vanilla.cookies.preferencias';
 
 // ============================================================================
 //  AvisoCookies — banner simple

@@ -1,11 +1,11 @@
 /**
  * Configuración de la aplicación.
- * Leemos de `window.LAUNCHPAD_CONFIG` (definido inline en index.html) para que
+ * Leemos de `window.TEMPLATE_VANILLA_CONFIG` (definido inline en index.html) para que
  * el código sea 100% vanilla sin depender de un bundler. El backend (Razor,
  * Spring, Blade…) puede sobreescribir estos valores antes de cargar main.js.
  */
 const POR_DEFECTO = {
-  nombre:  'Launchpad',
+  nombre:  'template-vanilla',
   version: '1.0.0',
   ambiente: 'development',
 
@@ -72,5 +72,5 @@ const fundir = (base, sobre) => {
 
 export const CONFIG_APP = Object.freeze(fundir(
   POR_DEFECTO,
-  typeof window !== 'undefined' && window.LAUNCHPAD_CONFIG ? window.LAUNCHPAD_CONFIG : {},
+  typeof window !== 'undefined' && window.TEMPLATE_VANILLA_CONFIG ? window.TEMPLATE_VANILLA_CONFIG : {},
 ));

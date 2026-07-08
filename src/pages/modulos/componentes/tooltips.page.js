@@ -324,14 +324,14 @@ Tooltip({ tema: 'primary', ... })   // gradient azul · CTA / highlight`,
           crearEl('div', { style: { display: 'flex', alignItems: 'center', gap: 'var(--space-3)', maxWidth: '400px' } }, [
             crearEl('span', { style: { fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' } }, ['Email:']),
             Tooltip({
-              texto: 'maria.garcia.fernandez@launchpad.dev',
+              texto: 'maria.garcia.fernandez@template-vanilla.dev',
               hijos: crearEl('span', {
                 style: {
                   fontSize: 'var(--text-sm)', fontWeight: 500,
                   whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                   maxWidth: '180px', display: 'inline-block', cursor: 'help',
                 },
-              }, ['maria.garcia.fernandez@launchpad.dev']),
+              }, ['maria.garcia.fernandez@template-vanilla.dev']),
             }),
           ]),
           crearEl('div', { style: { display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: 'var(--text-sm)' } }, [
@@ -358,7 +358,7 @@ Tooltip({ tema: 'primary', ... })   // gradient azul · CTA / highlight`,
         ),
         codigo: `// Texto truncado con ellipsis — el tooltip muestra el completo
 Tooltip({
-  texto: 'maria.garcia.fernandez@launchpad.dev',
+  texto: 'maria.garcia.fernandez@template-vanilla.dev',
   hijos: crearEl('span', { style: {
     overflow: 'hidden', textOverflow: 'ellipsis',
     maxWidth: '180px', cursor: 'help',

@@ -67,7 +67,7 @@ const seccionPersonal = (u) => Stack(
     FloatingInput({ label: 'Nombre', value: u.nombre || u.name || 'María', requerido: true }),
     FloatingInput({ label: 'Apellido', value: u.apellido || 'García', requerido: true }),
   ),
-  FloatingInput({ label: 'Correo electrónico', type: 'email', value: u.email || 'maria@launchpad.dev', requerido: true,
+  FloatingInput({ label: 'Correo electrónico', type: 'email', value: u.email || 'maria@template-vanilla.dev', requerido: true,
     icono: Icono('correo', { tamano: 14 }) }),
   Campo({ label: 'Teléfono', hijos: PhoneInput({ pais: 'pe', placeholder: '999 888 777' }) }),
   Grid2(
@@ -114,7 +114,7 @@ const seccionEmpresa = () => Stack(
     }) }),
   ),
   Grid2(
-    FloatingInput({ label: 'Sitio web', type: 'url', value: 'https://launchpad.dev',
+    FloatingInput({ label: 'Sitio web', type: 'url', value: 'https://template-vanilla.dev',
       icono: Icono('utilidades', { tamano: 14 }) }),
     FloatingInput({ label: 'LinkedIn', value: 'maria-garcia',
       icono: Icono('crm', { tamano: 14 }) }),
@@ -147,7 +147,7 @@ const seccionVerificacion = () => {
       crearEl('p', null, ['Verifica tus datos para desbloquear todas las funciones de la plataforma.']),
     ]),
     crearEl('div', { class: 'perfil-verif-lista' }, [
-      verifItem({ icono: 'correo', titulo: 'Correo electrónico', desc: 'maria@launchpad.dev', estado: 'ok' }),
+      verifItem({ icono: 'correo', titulo: 'Correo electrónico', desc: 'maria@template-vanilla.dev', estado: 'ok' }),
       verifItem({ icono: 'reloj', titulo: 'Teléfono', desc: '+51 999 888 777', estado: 'ok' }),
       verifItem({ icono: 'tarjeta', titulo: 'Documento de identidad', desc: 'DNI peruano · 8 dígitos', estado: 'pendiente' }),
       verifItem({ icono: 'utilidades', titulo: 'Dirección postal', desc: 'Verificación con código por correo físico', estado: 'pendiente' }),
@@ -196,7 +196,7 @@ const seccionPreferencias = () => Stack(
     crearEl('p', null, ['Para configuración avanzada visita Ajustes.']),
   ]),
   crearEl('div', { class: 'perfil-prefs' }, [
-    Switch({ label: 'Hacer perfil público', descripcion: 'Cualquiera puede ver tu perfil en launchpad.dev/maria', checked: true }),
+    Switch({ label: 'Hacer perfil público', descripcion: 'Cualquiera puede ver tu perfil en template-vanilla.dev/maria', checked: true }),
     Switch({ label: 'Mostrar email en perfil', descripcion: 'Tu email es visible para otros usuarios', checked: false }),
     Switch({ label: 'Permitir mensajes directos', descripcion: 'Otros usuarios pueden enviarte DMs', checked: true }),
     Switch({ label: 'Notificaciones por email', descripcion: 'Resumen semanal de actividad', checked: true }),
@@ -215,7 +215,7 @@ const TABS = [
 ];
 
 export default async () => {
-  const u = estadoAuth.usuario.peek() || { nombre: 'María García', email: 'maria@launchpad.dev' };
+  const u = estadoAuth.usuario.peek() || { nombre: 'María García', email: 'maria@template-vanilla.dev' };
   const tabActiva = senal('personal');
 
   const wrap = crearEl('div', { class: 'perfil-pagina' });

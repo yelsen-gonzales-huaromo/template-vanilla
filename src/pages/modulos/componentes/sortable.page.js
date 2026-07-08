@@ -426,7 +426,7 @@ const demoInbox = () => {
   const items = senal([
     { autor: 'Emma Watson',     foto: FOTO(1), asunto: 'Re: Propuesta de diseño',    tiempo: 'Hace 2m', noLeido: true },
     { autor: 'Marcus Lee',      foto: FOTO(2), asunto: 'Reunión semanal',             tiempo: 'Hace 1h', noLeido: true },
-    { autor: 'GitHub',          foto: FOTO(3), asunto: '[launchpad] PR #142 abierto', tiempo: 'Hace 3h' },
+    { autor: 'GitHub',          foto: FOTO(3), asunto: '[template-vanilla] PR #142 abierto', tiempo: 'Hace 3h' },
     { autor: 'María García',    foto: FOTO(4), asunto: 'Aprobación Q3 lista',         tiempo: 'Ayer' },
     { autor: 'Sara Chen',       foto: FOTO(5), asunto: 'Mockups para revisar',        tiempo: '2 días' },
   ]);

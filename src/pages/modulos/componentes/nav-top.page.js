@@ -7,7 +7,7 @@ import { corner2 } from '../../../components/ui/card/card-decoraciones.js';
 // ============================================================================
 //  Helpers
 // ============================================================================
-const brand = (texto = 'Launchpad') => crearEl('div', { class: 'mock-brand' }, [
+const brand = (texto = 'template-vanilla') => crearEl('div', { class: 'mock-brand' }, [
   crearEl('span', { class: 'mock-brand__logo' }, ['L']),
   crearEl('span', null, [texto]),
 ]);
@@ -111,7 +111,7 @@ const topNavCentered = () => crearEl('div', { class: 'mock-app' }, [
       navLink('Soluciones'),
       navLink('Precios'),
     ]),
-    brand('Launchpad'),
+    brand('template-vanilla'),
     crearEl('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '4px' } }, [
       navLink('Iniciar sesión'),
       crearEl('button', { class: 'mock-cta', style: { padding: '6px 12px' } }, ['Empezar']),
@@ -135,7 +135,7 @@ const topNavCentered = () => crearEl('div', { class: 'mock-app' }, [
 // ============================================================================
 const topNavMarketing = () => crearEl('div', { class: 'mock-app' }, [
   crearEl('div', { class: 'mock-topbar' }, [
-    brand('Launchpad'),
+    brand('template-vanilla'),
     crearEl('div', { style: { display: 'flex', gap: '4px', marginInlineStart: 'var(--space-5)' } }, [
       navLink('Producto'),
       navLink('Precios'),
@@ -189,7 +189,7 @@ const topNavBreadcrumbs = () => crearEl('div', { class: 'mock-app' }, [
       crearEl('span', { style: { opacity: 0.4 } }, ['/']),
       crearEl('a', { href: '#', style: { color: 'var(--muted-foreground)', textDecoration: 'none' } }, ['Proyectos']),
       crearEl('span', { style: { opacity: 0.4 } }, ['/']),
-      crearEl('span', { style: { color: 'var(--foreground)', fontWeight: 600 } }, ['Launchpad Web']),
+      crearEl('span', { style: { color: 'var(--foreground)', fontWeight: 600 } }, ['template-vanilla Web']),
     ]),
     crearEl('div', { class: 'mock-topbar__acciones' }, [
       iconoBtn('mas'),
@@ -292,7 +292,7 @@ crearEl('button', { class: 'mock-cta' }, ['Empieza gratis'])`,
   crearEl('span', null, ['/']),
   crearEl('a', { href: '#' }, ['Proyectos']),
   crearEl('span', null, ['/']),
-  crearEl('span', { style: { fontWeight: 600 } }, ['Launchpad Web']),
+  crearEl('span', { style: { fontWeight: 600 } }, ['template-vanilla Web']),
 ])`,
       })],
     }),

@@ -133,7 +133,7 @@ export default async () => PaginaShowcase({
           breadcrumbsNav([
             { etiqueta: 'Inicio',     icono: 'panel' },
             { etiqueta: 'Proyectos',  icono: 'proyectos' },
-            { etiqueta: 'Launchpad Web' },
+            { etiqueta: 'template-vanilla Web' },
             { etiqueta: 'Configuración', activo: true },
           ]),
           breadcrumbsNav([
@@ -146,7 +146,7 @@ export default async () => PaginaShowcase({
         codigo: `breadcrumbsNav([
   { etiqueta: 'Inicio',    icono: 'panel' },
   { etiqueta: 'Proyectos', icono: 'proyectos' },
-  { etiqueta: 'Launchpad Web' },
+  { etiqueta: 'template-vanilla Web' },
   { etiqueta: 'Configuración', activo: true },
 ])`,
       })],

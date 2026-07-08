@@ -1,5 +1,5 @@
 /**
- * Intro overlay — pantalla "Iniciando Launchpad…" mostrada únicamente como
+ * Intro overlay — pantalla "Iniciando template-vanilla…" mostrada únicamente como
  * transición deliberada entre el submit del login (o registro) y la llegada
  * al panel. NO se usa en cold load / F5: ahí el router muestra esqueleto.
  *

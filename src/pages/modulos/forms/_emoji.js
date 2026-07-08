@@ -48,7 +48,7 @@ const EMOJIS = {
 // ---------------------------------------------------------------------------
 //  Recientes (localStorage)
 // ---------------------------------------------------------------------------
-const STORAGE_KEY = 'launchpad:emojis-recientes';
+const STORAGE_KEY = 'template-vanilla:emojis-recientes';
 const MAX_RECIENTES = 32;
 
 const leerRecientes = () => {

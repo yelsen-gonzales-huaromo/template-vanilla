@@ -26,7 +26,7 @@ export default async () => PaginaShowcase({
           Campo({ label: 'Contraseña',      hijos: Input({ type: 'password', placeholder: '••••••••' }) }),
           Campo({ label: 'Número',          hijos: Input({ type: 'number',   placeholder: '0', min: 0, max: 100 }) }),
           Campo({ label: 'Búsqueda',        hijos: Input({ type: 'search',   placeholder: 'Buscar productos…' }) }),
-          Campo({ label: 'URL',             hijos: Input({ type: 'url',      placeholder: 'https://launchpad.dev' }) }),
+          Campo({ label: 'URL',             hijos: Input({ type: 'url',      placeholder: 'https://template-vanilla.dev' }) }),
           Campo({ label: 'Teléfono',        hijos: PhoneInput({ pais: 'pe', placeholder: '999 888 777' }) }),
           Campo({ label: 'Fecha',           hijos: DatePicker({ placeholder: 'DD/MM/YYYY' }) }),
           Campo({ label: 'Hora (24h)',      hijos: TimePicker({ value: '14:30', formato: '24' }) }),
@@ -71,11 +71,11 @@ Campo({ label: 'Color', hijos: ColorPicker({ value: '#3b82f6' }) })`,
           Campo({ label: 'Read-only', hijos: Input({ value: 'Solo lectura', readonly: true }) }),
           Campo({
             label: 'Válido', hint: 'Email disponible',
-            hijos: Input({ value: 'maria@launchpad.dev', valido: true }),
+            hijos: Input({ value: 'maria@template-vanilla.dev', valido: true }),
           }),
           Campo({
             label: 'Inválido', error: 'Este email ya está registrado',
-            hijos: Input({ value: 'admin@launchpad.dev', invalido: true }),
+            hijos: Input({ value: 'admin@template-vanilla.dev', invalido: true }),
           }),
         ),
         codigo: `Input({ valido: true })           // borde verde + ring verde al focus

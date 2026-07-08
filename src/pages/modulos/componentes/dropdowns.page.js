@@ -129,7 +129,7 @@ const ejemploPerfil = () => {
     Avatar({ nombre: 'María García', tamano: 'md' }),
     crearEl('div', { class: 'dropdown__user-text' }, [
       crearEl('strong', null, ['María García']),
-      crearEl('span', null, ['maria@launchpad.dev']),
+      crearEl('span', null, ['maria@template-vanilla.dev']),
     ]),
   ]);
   const pie = crearEl('div', { class: 'dropdown__pie' }, [
@@ -369,13 +369,13 @@ const ejemploIdiomas = () => {
 const ejemploBusqueda = () => {
   const filtro = senal('');
   const proyectos = [
-    { id: 1, nombre: 'Launchpad Web',     desc: 'Frontend principal' },
-    { id: 2, nombre: 'Launchpad Mobile',  desc: 'App iOS / Android' },
+    { id: 1, nombre: 'template-vanilla Web',     desc: 'Frontend principal' },
+    { id: 2, nombre: 'template-vanilla Mobile',  desc: 'App iOS / Android' },
     { id: 3, nombre: 'API Core',          desc: 'Backend Node.js' },
     { id: 4, nombre: 'API Auth',          desc: 'OAuth + sesiones' },
-    { id: 5, nombre: 'Marketing Site',    desc: 'launchpad.dev' },
-    { id: 6, nombre: 'Documentación',     desc: 'docs.launchpad.dev' },
-    { id: 7, nombre: 'Status page',       desc: 'status.launchpad.dev' },
+    { id: 5, nombre: 'Marketing Site',    desc: 'template-vanilla.dev' },
+    { id: 6, nombre: 'Documentación',     desc: 'docs.template-vanilla.dev' },
+    { id: 7, nombre: 'Status page',       desc: 'status.template-vanilla.dev' },
     { id: 8, nombre: 'Admin Dashboard',   desc: 'Panel interno' },
   ];
 
@@ -568,7 +568,7 @@ MenuDesplegable({
     Avatar({ nombre: 'María García' }),
     crearEl('div', { class: 'dropdown__user-text' }, [
       crearEl('strong', null, ['María García']),
-      crearEl('span',   null, ['maria@launchpad.dev']),
+      crearEl('span',   null, ['maria@template-vanilla.dev']),
     ]),
   ]),
   pie: crearEl('div', { class: 'dropdown__pie' }, [

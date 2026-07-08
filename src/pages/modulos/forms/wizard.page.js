@@ -153,7 +153,7 @@ WizardHorizontal({
               contenido: () => crearEl('div'),
             },
             {
-              id: 'uso', titulo: '¿Para qué usarás Launchpad?',
+              id: 'uso', titulo: '¿Para qué usarás template-vanilla?',
               opciones: [
                 { id: 'personal', titulo: 'Proyecto personal', desc: 'Solo yo', icono: Icono('perfil', { tamano: 20 }) },
                 { id: 'equipo', titulo: 'Equipo pequeño', desc: '2-10 personas', icono: Icono('crm', { tamano: 20 }) },

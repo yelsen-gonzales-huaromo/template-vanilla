@@ -149,7 +149,7 @@ Ancla({ href: 'https://github.com', texto: 'GitHub', externo: true })`,
           ' o consulta los ',
           Ancla({ href: '#', texto: 'términos del servicio', estilo: 'subrayado' }),
           '. Si tienes dudas, ',
-          Ancla({ href: 'mailto:soporte@launchpad.app', texto: 'escríbenos' }),
+          Ancla({ href: 'mailto:soporte@template-vanilla.app', texto: 'escríbenos' }),
           ' o visita ',
           EnlaceExterno({ href: '#', texto: 'el centro de ayuda' }),
           '.',
@@ -230,8 +230,8 @@ Ancla({ href: 'https://github.com', texto: 'GitHub', externo: true })`,
       descripcion: '`mailto:`, `tel:`, anchors internos `#seccion`, skip-links de accesibilidad.',
       hijos: [VistaCodigo({
         vista: stack(
-          Ancla({ href: 'mailto:hola@launchpad.app',
-            texto: 'hola@launchpad.app',
+          Ancla({ href: 'mailto:hola@template-vanilla.app',
+            texto: 'hola@template-vanilla.app',
             icono: Icono('correo', { tamano: 14 }) }),
           Ancla({ href: 'tel:+34123456789',
             texto: '+34 123 456 789',
@@ -243,7 +243,7 @@ Ancla({ href: 'https://github.com', texto: 'GitHub', externo: true })`,
             texto: 'Saltar al contenido principal',
             estilo: 'subrayado', tamano: 'sm', variante: 'neutral' }),
         ),
-        codigo: `Ancla({ href: 'mailto:hola@launchpad.app', texto: '...' })
+        codigo: `Ancla({ href: 'mailto:hola@template-vanilla.app', texto: '...' })
 Ancla({ href: 'tel:+34123456789', texto: '...' })
 Ancla({ href: '#variantes', texto: 'Saltar a sección...' })
 Ancla({ href: '#main', texto: 'Saltar al contenido' })  // skip link`,

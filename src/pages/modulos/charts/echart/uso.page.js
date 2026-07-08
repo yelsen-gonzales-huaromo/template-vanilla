@@ -7,7 +7,7 @@ import { corner3 } from '../../../../components/ui/card/card-decoraciones.js';
 
 export default async () => PaginaShowcase({
   titulo: 'ECharts · Cómo usar',
-  descripcion: 'Guía práctica para integrar ECharts en Launchpad: cargar la lib, crear instancias, montar lazy, hacer responsive, actualizar datos en vivo, sincronizar con tema oscuro/claro, escuchar eventos y los pitfalls comunes.',
+  descripcion: 'Guía práctica para integrar ECharts en template-vanilla: cargar la lib, crear instancias, montar lazy, hacer responsive, actualizar datos en vivo, sincronizar con tema oscuro/claro, escuchar eventos y los pitfalls comunes.',
   decoracion: corner3(),
   migas: [
     { etiqueta: 'Módulos', href: '#/modulos' },
@@ -17,7 +17,7 @@ export default async () => PaginaShowcase({
 
     Seccion({
       titulo: '1 · Setup mínimo (3 líneas)',
-      descripcion: 'El "hello world" más corto posible. ECharts ya está en el bundle de Launchpad — sólo importas el adapter y le pasas un `option`.',
+      descripcion: 'El "hello world" más corto posible. ECharts ya está en el bundle de template-vanilla — sólo importas el adapter y le pasas un `option`.',
       hijos: [VistaCodigo({
         vista: Echart({
           alto: '260px',

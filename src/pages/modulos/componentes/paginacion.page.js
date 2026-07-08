@@ -38,7 +38,7 @@ const generarUsuarios = (n) => Array.from({ length: n }, (_, i) => ({
   id: i + 1,
   nombre: ['Ana Becker', 'Carlos Diaz', 'Eva Fernández', 'Gonzalo H.', 'Inés Jiménez',
            'Karla L.', 'Marcos N.', 'Olga Pérez', 'Quique R.', 'Sofía Torres'][i % 10],
-  email: `usuario${i + 1}@launchpad.dev`,
+  email: `usuario${i + 1}@template-vanilla.dev`,
   rol: ['Admin', 'Editor', 'Viewer'][i % 3],
   estado: i % 7 === 0 ? 'Inactivo' : 'Activo',
 }));

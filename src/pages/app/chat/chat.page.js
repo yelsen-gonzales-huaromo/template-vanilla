@@ -10,7 +10,7 @@ import { crearEl } from '../../../utils/helpers/dom.js';
 import { senal, efecto } from '../../../utils/helpers/reactive.js';
 
 /* ─── Constantes ───────────────────────────────────────────────────────── */
-const STORAGE_KEY = 'launchpad:chat:v2';
+const STORAGE_KEY = 'template-vanilla:chat:v2';
 const YO = { id: 'yo', nombre: 'Amiah Burton', rol: 'Software Developer', color: '#a78bfa' };
 const HOY = () => new Date().toISOString().slice(0, 10);
 

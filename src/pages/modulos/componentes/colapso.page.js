@@ -62,8 +62,8 @@ const ejemploFAQ = () => crearEl('div', {
   },
 }, [
   ColapsoFAQ({
-    pregunta: '¿Necesito un build step para usar Launchpad?',
-    respuesta: 'No. Launchpad es JavaScript puro con módulos ES nativos — sólo abre `index.html` o sirve la carpeta con cualquier servidor estático. Sin webpack, sin vite, sin npm install.',
+    pregunta: '¿Necesito un build step para usar template-vanilla?',
+    respuesta: 'No. template-vanilla es JavaScript puro con módulos ES nativos — sólo abre `index.html` o sirve la carpeta con cualquier servidor estático. Sin webpack, sin vite, sin npm install.',
     inicial: true,
   }),
   ColapsoFAQ({
@@ -72,7 +72,7 @@ const ejemploFAQ = () => crearEl('div', {
   }),
   ColapsoFAQ({
     pregunta: '¿Puedo usar mis propios componentes?',
-    respuesta: 'Sí — todos los helpers `crearEl` retornan nodos DOM normales. Mezclas Launchpad con tu código vanilla, con Web Components, o incluso con un fragmento de React/Vue montado dentro de un nodo (aunque pierdes la simplicidad).',
+    respuesta: 'Sí — todos los helpers `crearEl` retornan nodos DOM normales. Mezclas template-vanilla con tu código vanilla, con Web Components, o incluso con un fragmento de React/Vue montado dentro de un nodo (aunque pierdes la simplicidad).',
   }),
   ColapsoFAQ({
     pregunta: '¿Funciona en producción?',

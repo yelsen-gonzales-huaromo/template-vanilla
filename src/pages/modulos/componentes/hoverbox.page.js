@@ -358,7 +358,7 @@ crearEl('div', { style: {
       hijos: [VistaCodigo({
         vista: grid('300px',
           hoverPlay(FOTO(2010), 'Tour por Islandia en 4K', '12:34'),
-          hoverPlay(FOTO(2006), 'Tutorial: configurar Launchpad', '8:20'),
+          hoverPlay(FOTO(2006), 'Tutorial: configurar template-vanilla', '8:20'),
           hoverPlay(FOTO(3),    'Detrás de cámaras del shoot urbano', '5:47'),
         ),
         codigo: `// Botón play: empieza scale(0.85), crece al hover

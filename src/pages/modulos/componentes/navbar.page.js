@@ -8,7 +8,7 @@ import { corner6 } from '../../../components/ui/card/card-decoraciones.js';
 // ============================================================================
 //  Helpers — bloques reutilizables
 // ============================================================================
-const brand = (texto = 'Launchpad', tamano = '') => crearEl('div', {
+const brand = (texto = 'template-vanilla', tamano = '') => crearEl('div', {
   class: ['mock-brand', tamano && `mock-brand--${tamano}`],
 }, [
   crearEl('span', { class: 'mock-brand__logo' }, ['L']),
@@ -90,7 +90,7 @@ const navbarConTabs = () => crearEl('div', { class: 'mock-app' }, [
 // ============================================================================
 const navbarMarketing = () => crearEl('div', { class: 'mock-app' }, [
   crearEl('div', { class: 'mock-topbar' }, [
-    brand('Launchpad', 'lg'),
+    brand('template-vanilla', 'lg'),
     crearEl('div', { style: { display: 'flex', gap: '4px', marginInlineStart: 'var(--space-5)' } }, [
       navLink('Producto'),
       navLink('Precios'),
@@ -251,7 +251,7 @@ export default async () => PaginaShowcase({
 
     Seccion({
       titulo: '1 · Default — SaaS dashboard',
-      descripcion: 'Brand a la izquierda, search central con atajo ⌘K, acciones a la derecha (ayuda, notificaciones con badge, avatar). El layout que ya usa Launchpad por defecto.',
+      descripcion: 'Brand a la izquierda, search central con atajo ⌘K, acciones a la derecha (ayuda, notificaciones con badge, avatar). El layout que ya usa template-vanilla por defecto.',
       hijos: [VistaCodigo({
         vista: navbarDefault(),
         codigo: `crearEl('div', { class: 'mock-topbar' }, [
@@ -293,7 +293,7 @@ crearEl('div', { class: 'mock-topbar', style: { paddingBlockEnd: 0 } }, [
       hijos: [VistaCodigo({
         vista: navbarMarketing(),
         codigo: `crearEl('div', { class: 'mock-topbar' }, [
-  brand('Launchpad', 'lg'),
+  brand('template-vanilla', 'lg'),
   navLinks(['Producto', 'Precios', 'Clientes', 'Recursos', 'Blog']),
   crearEl('div', { class: 'mock-topbar__acciones' }, [
     crearEl('a', null, ['Iniciar sesión']),

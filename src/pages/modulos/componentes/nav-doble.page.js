@@ -7,7 +7,7 @@ import { corner3 } from '../../../components/ui/card/card-decoraciones.js';
 // ============================================================================
 //  Helpers
 // ============================================================================
-const brand = (texto = 'Launchpad') => crearEl('div', { class: 'mock-brand' }, [
+const brand = (texto = 'template-vanilla') => crearEl('div', { class: 'mock-brand' }, [
   crearEl('span', { class: 'mock-brand__logo' }, ['L']),
   crearEl('span', null, [texto]),
 ]);
@@ -71,7 +71,7 @@ const dobleBrandingNav = () => crearEl('div', { class: 'mock-app' }, [
   }, [
     crearEl('div', { class: 'mock-brand', style: { color: '#fff' } }, [
       crearEl('span', { class: 'mock-brand__logo', style: { background: '#fff', color: '#000', width: '22px', height: '22px', fontSize: '0.625rem' } }, ['L']),
-      crearEl('span', { style: { fontSize: 'var(--text-xs)' } }, ['Launchpad']),
+      crearEl('span', { style: { fontSize: 'var(--text-xs)' } }, ['template-vanilla']),
     ]),
     crearEl('span', { style: { color: 'rgba(255,255,255,0.4)' } }, ['/']),
     crearEl('a', { href: '#', style: { color: 'rgba(255,255,255,0.7)', textDecoration: 'none' } }, ['Acme Inc.']),
@@ -176,7 +176,7 @@ const dobleBreadcrumbs = () => crearEl('div', { class: 'mock-app' }, [
       crearEl('span', { style: { opacity: 0.4 } }, ['/']),
       crearEl('a', { href: '#', style: { color: 'var(--muted-foreground)', textDecoration: 'none' } }, ['Proyectos']),
       crearEl('span', { style: { opacity: 0.4 } }, ['/']),
-      crearEl('span', { style: { color: 'var(--foreground)', fontWeight: 600 } }, ['Launchpad Web']),
+      crearEl('span', { style: { color: 'var(--foreground)', fontWeight: 600 } }, ['template-vanilla Web']),
     ]),
     crearEl('button', {
       type: 'button',

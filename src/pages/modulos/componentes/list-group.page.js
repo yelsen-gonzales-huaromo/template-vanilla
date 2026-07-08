@@ -254,7 +254,7 @@ export default async () => PaginaShowcase({
           }), alClick: () => {} },
           { contenido: itemMensaje({
             autor: 'GitHub',
-            asunto: '[launchpad] Pull request #142 abierto',
+            asunto: '[template-vanilla] Pull request #142 abierto',
             preview: 'feat(carousel): add dynamic heights and gallery variant',
             tiempo: 'Hace 3 h',
           }), alClick: () => {} },
@@ -359,7 +359,7 @@ export default async () => PaginaShowcase({
               accion: botonIcono('descargar', 'Descargar'),
             }), alClick: () => {} },
             { contenido: itemArchivo({
-              tipo: 'zip', nombre: 'launchpad-assets.zip',
+              tipo: 'zip', nombre: 'template-vanilla-assets.zip',
               tamano: '24.6 MB', fecha: 'Hace 2 semanas',
               accion: botonIcono('descargar', 'Descargar'),
             }), alClick: () => {} },

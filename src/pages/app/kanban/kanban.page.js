@@ -15,7 +15,7 @@ import { SelectModerno, SelectMulti, SelectSegmentado } from '../../modulos/form
 // ===========================================================================
 //  Constantes y datos iniciales
 // ===========================================================================
-const STORAGE_KEY = 'launchpad:kanban:tablero';
+const STORAGE_KEY = 'template-vanilla:kanban:tablero';
 
 const PRIORIDADES = [
   { value: 'critica', label: 'Crítica', color: '#ef4444' },

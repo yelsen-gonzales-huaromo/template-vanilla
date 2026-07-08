@@ -3,7 +3,7 @@
  *  https://github.com/mattboldt/typed.js/
  *
  *   const { contenedor } = await TextoAnimado({
- *     frases: ['Bienvenido', 'a Launchpad', 'una plantilla nativa'],
+ *     frases: ['Bienvenido', 'a template-vanilla', 'una plantilla nativa'],
  *     velocidad: 60,
  *   });
  */

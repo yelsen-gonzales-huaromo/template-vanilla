@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Launchpad",
+    "name": "template-vanilla",
     "tagline": "Native enterprise template — reactive, scalable, modern"
   },
   "actions": {
@@ -60,7 +60,7 @@
     "privacy": "privacy policy",
     "modal_open": "Open sign-in modal",
     "modal_intro": "Demo of an auth flow inside a modal — useful when a visitor tries to access a protected action without leaving the page.",
-    "trust_pitch": "Teams in 30+ countries trust Launchpad for their internal dashboards.",
+    "trust_pitch": "Teams in 30+ countries trust template-vanilla for their internal dashboards.",
     "secure_pitch": "Secure connection · encrypted in transit and at rest"
   },
   "nav": {

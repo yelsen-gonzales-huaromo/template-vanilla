@@ -149,7 +149,7 @@ export const generarEmpleados = (n = 50) => {
     out.push({
       id: 1000 + i,
       nombre,
-      email: nombre.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z.]/g, '') + '@launchpad.dev',
+      email: nombre.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z.]/g, '') + '@template-vanilla.dev',
       rol: pick(ROLES),
       departamento: pick(DEPARTAMENTOS),
       pais: pick(PAISES),

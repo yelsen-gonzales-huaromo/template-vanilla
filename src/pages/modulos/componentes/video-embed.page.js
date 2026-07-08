@@ -22,17 +22,17 @@ const VIDEO = {
 };
 
 const POSTER = {
-  hero:    'https://picsum.photos/seed/launchpad-hero/1280/720',
-  webinar: 'https://picsum.photos/seed/launchpad-webinar/640/360',
-  curso:   'https://picsum.photos/seed/launchpad-curso/640/360',
-  tutorial:'https://picsum.photos/seed/launchpad-tutorial/640/360',
-  evento:  'https://picsum.photos/seed/launchpad-evento/640/360',
-  demo:    'https://picsum.photos/seed/launchpad-demo/640/360',
-  podcast: 'https://picsum.photos/seed/launchpad-podcast/640/360',
-  noticia: 'https://picsum.photos/seed/launchpad-noticia/640/360',
-  marketing:'https://picsum.photos/seed/launchpad-marketing/1280/720',
-  docs:    'https://picsum.photos/seed/launchpad-docs/640/360',
-  social:  'https://picsum.photos/seed/launchpad-social/640/640',
+  hero:    'https://picsum.photos/seed/template-vanilla-hero/1280/720',
+  webinar: 'https://picsum.photos/seed/template-vanilla-webinar/640/360',
+  curso:   'https://picsum.photos/seed/template-vanilla-curso/640/360',
+  tutorial:'https://picsum.photos/seed/template-vanilla-tutorial/640/360',
+  evento:  'https://picsum.photos/seed/template-vanilla-evento/640/360',
+  demo:    'https://picsum.photos/seed/template-vanilla-demo/640/360',
+  podcast: 'https://picsum.photos/seed/template-vanilla-podcast/640/360',
+  noticia: 'https://picsum.photos/seed/template-vanilla-noticia/640/360',
+  marketing:'https://picsum.photos/seed/template-vanilla-marketing/1280/720',
+  docs:    'https://picsum.photos/seed/template-vanilla-docs/640/360',
+  social:  'https://picsum.photos/seed/template-vanilla-social/640/640',
 };
 
 // ============================================================================
@@ -164,7 +164,7 @@ EmbedVideo({ src, ratio: '9/16' })  // Reels / Shorts`,
             crearEl('h2', { style: { margin: '12px 0', fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.15 } },
               ['Tu equipo, ', crearEl('span', { style: { background: 'linear-gradient(90deg, #06b6d4, #8b5cf6)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' } }, ['más rápido.'])]),
             crearEl('p', { style: { color: 'var(--muted-foreground)', fontSize: 'var(--text-base)', lineHeight: 1.55, marginBlockEnd: 'var(--space-4)' } },
-              ['Mira en 90 segundos cómo Launchpad reemplaza 4 herramientas. Sin instalar nada.']),
+              ['Mira en 90 segundos cómo template-vanilla reemplaza 4 herramientas. Sin instalar nada.']),
             crearEl('div', { style: { display: 'flex', gap: 'var(--space-2)' } }, [
               Boton({ texto: 'Empezar gratis →', variante: 'primary' }),
               Boton({ texto: 'Hablar con ventas', variante: 'ghost' }),
@@ -193,10 +193,10 @@ crearEl('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1.4fr' } },
         vista: GaleriaVideos({
           columnas: 3,
           items: [
-            { poster: POSTER.webinar,  titulo: 'Webinar: Reactividad en Vanilla JS sin frameworks', autor: 'Launchpad', vistas: '12K vistas · hace 2 días', duracion: '54:12', badge: { tipo: 'directo', texto: '● DIRECTO' } },
+            { poster: POSTER.webinar,  titulo: 'Webinar: Reactividad en Vanilla JS sin frameworks', autor: 'template-vanilla', vistas: '12K vistas · hace 2 días', duracion: '54:12', badge: { tipo: 'directo', texto: '● DIRECTO' } },
             { poster: POSTER.curso,    titulo: 'Curso completo: Componentes UI desde cero',         autor: 'María García', vistas: '8.4K vistas · hace 1 semana', duracion: '2:14:30', badge: { tipo: 'premium', texto: 'PREMIUM' } },
             { poster: POSTER.tutorial, titulo: 'Tutorial: Patrón Portal con vanilla JS',            autor: 'Carlos Méndez', vistas: '4.1K vistas · hace 3 días', duracion: '12:48', badge: { tipo: 'nuevo', texto: 'NUEVO' } },
-            { poster: POSTER.demo,     titulo: 'Demo en vivo: De Figma a producción en 30min',       autor: 'Launchpad', vistas: '2.8K vistas · hoy', duracion: '32:15' },
+            { poster: POSTER.demo,     titulo: 'Demo en vivo: De Figma a producción en 30min',       autor: 'template-vanilla', vistas: '2.8K vistas · hoy', duracion: '32:15' },
             { poster: POSTER.evento,   titulo: 'Conferencia LA Tech 2026 — keynote completo',       autor: 'LA Tech', vistas: '24K vistas · hace 1 mes', duracion: '1:08:42' },
             { poster: POSTER.podcast,  titulo: 'Podcast #14: El futuro del desarrollo web',          autor: 'Tech Pals', vistas: '6.2K vistas · hace 5 días', duracion: '48:20' },
           ],
@@ -240,7 +240,7 @@ crearEl('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1.4fr' } },
           }, [
             crearEl('div', { style: { padding: 'var(--space-3)', borderBottom: '1px solid var(--border)' } }, [
               crearEl('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' } }, ['MÓDULO 2 · 8 lecciones']),
-              crearEl('div', { style: { fontSize: 'var(--text-sm)', fontWeight: 700, marginBlockStart: '4px' } }, ['Fundamentos de Launchpad']),
+              crearEl('div', { style: { fontSize: 'var(--text-sm)', fontWeight: 700, marginBlockStart: '4px' } }, ['Fundamentos de template-vanilla']),
             ]),
             crearEl('div', { style: { overflow: 'auto', flex: 1 } },
               [
@@ -313,7 +313,7 @@ crearEl('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1.4fr' } },
             EmbedVideo({
               src: VIDEO.ytTearsSteel,
               poster: POSTER.webinar,
-              titulo: 'Webinar: Q&A con el equipo de Launchpad',
+              titulo: 'Webinar: Q&A con el equipo de template-vanilla',
               lazy: true,
             }),
             crearEl('div', { style: { display: 'flex', alignItems: 'center', gap: '12px', marginBlockStart: '12px', color: '#fff', flexWrap: 'wrap' } }, [
@@ -330,7 +330,7 @@ crearEl('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1.4fr' } },
               crearEl('span', { style: { fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.7)' } }, ['1,247 espectadores']),
               crearEl('span', { style: { fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.7)' } }, ['comenzó hace 14 min']),
             ]),
-            crearEl('h3', { style: { margin: '12px 0 4px', color: '#fff', fontSize: 'var(--text-xl)', fontWeight: 700 } }, ['Q&A con el equipo de Launchpad']),
+            crearEl('h3', { style: { margin: '12px 0 4px', color: '#fff', fontSize: 'var(--text-xl)', fontWeight: 700 } }, ['Q&A con el equipo de template-vanilla']),
             crearEl('div', { style: { color: 'rgba(255,255,255,0.6)', fontSize: 'var(--text-sm)' } }, ['Maria García · Carlos Méndez · 32 likes']),
           ]),
           crearEl('div', {
@@ -346,11 +346,11 @@ crearEl('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1.4fr' } },
               [
                 ['#06b6d4', 'maria_dev', '¡Hola! 👋'],
                 ['#f59e0b', 'mod', '¿La grabación quedará disponible?'],
-                ['#10b981', 'launchpad_team', 'Sí, todos los registrados la reciben mañana 📩'],
+                ['#10b981', 'template-vanilla_team', 'Sí, todos los registrados la reciben mañana 📩'],
                 ['#8b5cf6', 'carlos_g', '¿Soporte para SSR cuando?'],
                 ['#ec4899', 'pixelpat', 'Esto se ve genial 🔥'],
                 ['#06b6d4', 'newbie_99', '¿Qué editor usan?'],
-                ['#10b981', 'launchpad_team', '@newbie_99 VS Code + extensión propia'],
+                ['#10b981', 'template-vanilla_team', '@newbie_99 VS Code + extensión propia'],
               ].map(([color, user, msg]) => crearEl('div', { style: { lineHeight: 1.45, color: 'rgba(255,255,255,0.92)' } }, [
                 crearEl('strong', { style: { color, marginInlineEnd: '6px', fontWeight: 700 } }, [user, ':']),
                 msg,
@@ -398,7 +398,7 @@ crearEl('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1.4fr' } },
           crearEl('div', null, [
             crearEl('div', { style: { fontSize: '48px', lineHeight: 1, color: 'var(--primary)', marginBlockEnd: '8px', fontFamily: 'serif' } }, ['"']),
             crearEl('p', { style: { fontSize: 'var(--text-lg)', lineHeight: 1.5, fontWeight: 500, marginBlockEnd: 'var(--space-4)' } },
-              ['Pasamos de tardar 3 semanas a tardar 3 días en lanzar features. Launchpad es ahora parte central de cómo trabajamos.']),
+              ['Pasamos de tardar 3 semanas a tardar 3 días en lanzar features. template-vanilla es ahora parte central de cómo trabajamos.']),
             crearEl('div', { style: { display: 'flex', alignItems: 'center', gap: '12px' } }, [
               crearEl('img', {
                 src: 'https://i.pravatar.cc/64?img=47',
@@ -524,16 +524,16 @@ const timestamps = [
               crearEl('img', { src: 'https://i.pravatar.cc/40?img=12', style: { width: '40px', height: '40px', borderRadius: '50%' } }),
               crearEl('div', { style: { flex: 1 } }, [
                 crearEl('div', { style: { display: 'flex', alignItems: 'center', gap: '4px' } }, [
-                  crearEl('strong', { style: { fontSize: 'var(--text-sm)' } }, ['Launchpad']),
+                  crearEl('strong', { style: { fontSize: 'var(--text-sm)' } }, ['template-vanilla']),
                   crearEl('span', { style: { color: 'var(--primary)', display: 'inline-flex' } }, [Icono('check', { tamano: 14 })]),
-                  crearEl('span', { style: { fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' } }, ['@launchpad_dev · 2h']),
+                  crearEl('span', { style: { fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' } }, ['@template-vanilla_dev · 2h']),
                 ]),
               ]),
               crearEl('button', { style: { background: 'transparent', border: 0, color: 'var(--muted-foreground)', cursor: 'pointer', padding: '4px' } }, ['•••']),
             ]),
             // Texto del post
             crearEl('div', { style: { padding: '0 var(--space-3) var(--space-3)', fontSize: 'var(--text-sm)', lineHeight: 1.55 } },
-              ['🎬 Demo del nuevo motor de transiciones — 60fps en cualquier device.', crearEl('br'), crearEl('span', { style: { color: 'var(--primary)' } }, ['#launchpad #vanillaJS #webdev'])]),
+              ['🎬 Demo del nuevo motor de transiciones — 60fps en cualquier device.', crearEl('br'), crearEl('span', { style: { color: 'var(--primary)' } }, ['#template-vanilla #vanillaJS #webdev'])]),
             // Video cuadrado
             EmbedVideo({
               src: VIDEO.ytBunny,

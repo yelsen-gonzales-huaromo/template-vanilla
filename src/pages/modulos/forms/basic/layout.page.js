@@ -52,7 +52,7 @@ export default async () => PaginaShowcase({
       hijos: [VistaCodigo({
         vista: FormaCol(
           Campo({ label: 'Nombre', requerido: true, hijos: Input({ placeholder: 'María García' }) }),
-          Campo({ label: 'Email', requerido: true, hijos: Input({ type: 'email', placeholder: 'maria@launchpad.dev' }) }),
+          Campo({ label: 'Email', requerido: true, hijos: Input({ type: 'email', placeholder: 'maria@template-vanilla.dev' }) }),
           Campo({ label: 'Mensaje', hijos: Textarea({ placeholder: '¿Cómo podemos ayudarte?', filas: 3 }) }),
           crearEl('div', { class: 'layout-acciones-inicio' }, [Btn('Enviar', 'primary', { type: 'submit' })]),
         ),
@@ -73,7 +73,7 @@ export default async () => PaginaShowcase({
         vista: crearEl('form', { class: 'layout-form layout-form--horizontal', onSubmit: (e) => e.preventDefault() },
           [
             ['Nombre completo', 'María García'],
-            ['Email de trabajo', 'maria@launchpad.dev'],
+            ['Email de trabajo', 'maria@template-vanilla.dev'],
             ['Empresa', 'Acme Inc.'],
             ['Cargo', 'Founder · CTO'],
             ['Teléfono', '+51 999 888 777'],
@@ -108,7 +108,7 @@ export default async () => PaginaShowcase({
         vista: crearEl('form', { class: 'layout-form layout-form--grid', onSubmit: (e) => e.preventDefault() }, [
           Campo({ label: 'Nombre', hijos: Input({ placeholder: 'María' }) }),
           Campo({ label: 'Apellido', hijos: Input({ placeholder: 'García' }) }),
-          Campo({ label: 'Email', hijos: Input({ type: 'email', placeholder: 'maria@launchpad.dev' }) }),
+          Campo({ label: 'Email', hijos: Input({ type: 'email', placeholder: 'maria@template-vanilla.dev' }) }),
           Campo({ label: 'Teléfono', hijos: Input({ type: 'tel', placeholder: '+51 999 888 777' }) }),
           Campo({ label: 'Ciudad', hijos: Input({ placeholder: 'Lima' }) }),
           Campo({ label: 'Código postal', hijos: Input({ placeholder: '15001' }) }),
@@ -139,7 +139,7 @@ export default async () => PaginaShowcase({
         vista: FormaCol(
           SeccionTitulo('Información de la cuenta', 'Datos básicos para identificarte en la plataforma.'),
           Campo({ label: 'Nombre', hijos: Input({ placeholder: 'María García' }) }),
-          Campo({ label: 'Email', hijos: Input({ type: 'email', placeholder: 'maria@launchpad.dev' }) }),
+          Campo({ label: 'Email', hijos: Input({ type: 'email', placeholder: 'maria@template-vanilla.dev' }) }),
 
           SeccionTitulo('Empresa', 'Cómo te identifica tu organización.'),
           Campo({ label: 'Empresa', hijos: Input({ placeholder: 'Acme Inc.' }) }),
@@ -254,7 +254,7 @@ export default async () => PaginaShowcase({
             crearEl('form', { class: 'layout-form', onSubmit: (e) => e.preventDefault() }, [
               SeccionTitulo('Datos personales'),
               Campo({ label: 'Nombre', hijos: Input({ value: 'María García' }) }),
-              Campo({ label: 'Email', hijos: Input({ value: 'maria@launchpad.dev' }) }),
+              Campo({ label: 'Email', hijos: Input({ value: 'maria@template-vanilla.dev' }) }),
               Campo({ label: 'Teléfono', hijos: Input({ value: '+51 999 888 777' }) }),
               SeccionTitulo('Empresa'),
               Campo({ label: 'Empresa', hijos: Input({ value: 'Acme Inc.' }) }),

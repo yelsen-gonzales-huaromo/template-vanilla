@@ -50,22 +50,22 @@ const FOTO = (n) => `./public/img/team/${n}.jpg`;
 const FRUTAS = ['Manzana', 'Banana', 'Cereza', 'Damasco', 'Frambuesa', 'Granada', 'Mandarina', 'Naranja', 'Pera', 'Sandía', 'Uva', 'Kiwi'];
 
 const PERSONAS = [
-  { id: 1, nombre: 'María García',     email: 'maria@launchpad.dev',    rol: 'Diseñadora Senior',   dpto: 'Diseño',     foto: FOTO(1), estado: 'online' },
-  { id: 2, nombre: 'Sara Chen',        email: 'sara@launchpad.dev',     rol: 'Frontend Engineer',   dpto: 'Engineering', foto: FOTO(2), estado: 'ausente' },
-  { id: 3, nombre: 'Marcus Lee',       email: 'marcus@launchpad.dev',   rol: 'Backend Engineer',    dpto: 'Engineering', foto: FOTO(3), estado: 'online' },
-  { id: 4, nombre: 'Lina Park',        email: 'lina@launchpad.dev',     rol: 'Data Analyst',        dpto: 'Data',       foto: FOTO(4), estado: 'ocupado' },
-  { id: 5, nombre: 'Jorge Ramírez',    email: 'jorge@launchpad.dev',    rol: 'iOS Developer',       dpto: 'Mobile',     foto: FOTO(5), estado: 'offline' },
-  { id: 6, nombre: 'Priya Patel',      email: 'priya@launchpad.dev',    rol: 'Eng Manager',         dpto: 'Engineering', foto: FOTO(6), estado: 'online' },
-  { id: 7, nombre: 'Carlos Núñez',     email: 'carlos@launchpad.dev',   rol: 'DevOps Engineer',     dpto: 'Infra',      foto: FOTO(7), estado: 'online' },
-  { id: 8, nombre: 'Eva Fernández',    email: 'eva@launchpad.dev',      rol: 'Product Designer',    dpto: 'Diseño',     foto: FOTO(8), estado: 'ausente' },
+  { id: 1, nombre: 'María García',     email: 'maria@template-vanilla.dev',    rol: 'Diseñadora Senior',   dpto: 'Diseño',     foto: FOTO(1), estado: 'online' },
+  { id: 2, nombre: 'Sara Chen',        email: 'sara@template-vanilla.dev',     rol: 'Frontend Engineer',   dpto: 'Engineering', foto: FOTO(2), estado: 'ausente' },
+  { id: 3, nombre: 'Marcus Lee',       email: 'marcus@template-vanilla.dev',   rol: 'Backend Engineer',    dpto: 'Engineering', foto: FOTO(3), estado: 'online' },
+  { id: 4, nombre: 'Lina Park',        email: 'lina@template-vanilla.dev',     rol: 'Data Analyst',        dpto: 'Data',       foto: FOTO(4), estado: 'ocupado' },
+  { id: 5, nombre: 'Jorge Ramírez',    email: 'jorge@template-vanilla.dev',    rol: 'iOS Developer',       dpto: 'Mobile',     foto: FOTO(5), estado: 'offline' },
+  { id: 6, nombre: 'Priya Patel',      email: 'priya@template-vanilla.dev',    rol: 'Eng Manager',         dpto: 'Engineering', foto: FOTO(6), estado: 'online' },
+  { id: 7, nombre: 'Carlos Núñez',     email: 'carlos@template-vanilla.dev',   rol: 'DevOps Engineer',     dpto: 'Infra',      foto: FOTO(7), estado: 'online' },
+  { id: 8, nombre: 'Eva Fernández',    email: 'eva@template-vanilla.dev',      rol: 'Product Designer',    dpto: 'Diseño',     foto: FOTO(8), estado: 'ausente' },
 ];
 
 const PROYECTOS = [
-  { id: 1, titulo: 'Launchpad Web',     desc: 'Frontend principal del producto' },
-  { id: 2, titulo: 'Launchpad Mobile',  desc: 'App iOS / Android' },
+  { id: 1, titulo: 'template-vanilla Web',     desc: 'Frontend principal del producto' },
+  { id: 2, titulo: 'template-vanilla Mobile',  desc: 'App iOS / Android' },
   { id: 3, titulo: 'API Core',          desc: 'Backend Node.js + PostgreSQL' },
-  { id: 4, titulo: 'Marketing Site',    desc: 'launchpad.dev landing y blog' },
-  { id: 5, titulo: 'Documentación',     desc: 'docs.launchpad.dev — guías y API ref' },
+  { id: 4, titulo: 'Marketing Site',    desc: 'template-vanilla.dev landing y blog' },
+  { id: 5, titulo: 'Documentación',     desc: 'docs.template-vanilla.dev — guías y API ref' },
 ];
 
 const ARCHIVOS = [
@@ -570,7 +570,7 @@ const demoAutocomplete = () => {
 // ============================================================================
 const demoRecientes = () => {
   const filtro = senal('');
-  const recientes = senal(['React hooks', 'launchpad pricing', 'María García', 'cómo desplegar']);
+  const recientes = senal(['React hooks', 'template-vanilla pricing', 'María García', 'cómo desplegar']);
   const dropdown = crearEl('div');
 
   efecto(() => {
@@ -822,7 +822,7 @@ efecto(() => {
 
     Seccion({
       titulo: '10 · Command palette (⌘K)',
-      descripcion: 'Búsqueda global con atajo de teclado. Combina autocomplete + agrupados + acciones rápidas. Ya integrado en Launchpad — disponible desde cualquier página.',
+      descripcion: 'Búsqueda global con atajo de teclado. Combina autocomplete + agrupados + acciones rápidas. Ya integrado en template-vanilla — disponible desde cualquier página.',
       hijos: [VistaCodigo({
         vista: Boton({
           texto: 'Abrir command palette',

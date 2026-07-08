@@ -99,7 +99,7 @@ FloatingInput({ label: '...', tamano: 'lg' })`,
         vista: Grid2(
           FloatingInput({ label: 'Email', type: 'email', icono: Icono('correo', { tamano: 14 }) }),
           FloatingInput({ label: 'Buscar productos', icono: Icono('busqueda', { tamano: 14 }) }),
-          FloatingInput({ label: 'Sitio web', icono: Icono('utilidades', { tamano: 14 }), value: 'launchpad.dev' }),
+          FloatingInput({ label: 'Sitio web', icono: Icono('utilidades', { tamano: 14 }), value: 'template-vanilla.dev' }),
           FloatingInput({ label: 'Ubicación', icono: Icono('pin', { tamano: 14 }) }),
         ),
         codigo: `FloatingInput({

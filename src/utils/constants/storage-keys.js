@@ -1,21 +1,21 @@
 /** Claves de almacenamiento centralizadas — nunca referenciar cadenas crudas en componentes. */
 export const CLAVES_ALMACENAMIENTO = Object.freeze({
-  TOKEN_AUTH:        'launchpad.auth.token',
-  TOKEN_REFRESH:     'launchpad.auth.refresh',
-  USUARIO_AUTH:      'launchpad.auth.user',
+  TOKEN_AUTH:        'template-vanilla.auth.token',
+  TOKEN_REFRESH:     'template-vanilla.auth.refresh',
+  USUARIO_AUTH:      'template-vanilla.auth.user',
 
   // Apariencia
-  TEMA:              'launchpad.ui.theme',
-  IDIOMA:            'launchpad.ui.locale',
-  DIRECCION:         'launchpad.ui.dir',
-  ESTADO_BARRA:      'launchpad.ui.sidebar',
-  POSICION_NAV:      'launchpad.ui.navPos',
-  ESTILO_SIDEBAR:    'launchpad.ui.sidebarStyle',
-  DENSIDAD:          'launchpad.ui.density',
-  TAMANO_FUENTE:     'launchpad.ui.fontSize',
-  FUENTE:            'launchpad.ui.fontFamily',
-  COLOR_MARCA:       'launchpad.ui.accent',
+  TEMA:              'template-vanilla.ui.theme',
+  IDIOMA:            'template-vanilla.ui.locale',
+  DIRECCION:         'template-vanilla.ui.dir',
+  ESTADO_BARRA:      'template-vanilla.ui.sidebar',
+  POSICION_NAV:      'template-vanilla.ui.navPos',
+  ESTILO_SIDEBAR:    'template-vanilla.ui.sidebarStyle',
+  DENSIDAD:          'template-vanilla.ui.density',
+  TAMANO_FUENTE:     'template-vanilla.ui.fontSize',
+  FUENTE:            'template-vanilla.ui.fontFamily',
+  COLOR_MARCA:       'template-vanilla.ui.accent',
 
   // Otros
-  RUTAS_RECIENTES:   'launchpad.ui.recent',
+  RUTAS_RECIENTES:   'template-vanilla.ui.recent',
 });

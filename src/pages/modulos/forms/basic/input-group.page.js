@@ -50,7 +50,7 @@ export default async () => PaginaShowcase({
             hijos: InputGrupo({ suffix: 'kg', type: 'number', value: '12.5', placeholder: '0' }),
           }),
           Campo({ label: 'URL del subdominio',
-            hijos: InputGrupo({ suffix: '.launchpad.dev', placeholder: 'mi-empresa' }),
+            hijos: InputGrupo({ suffix: '.template-vanilla.dev', placeholder: 'mi-empresa' }),
           }),
           Campo({ label: 'API key',
             hijos: InputGrupo({ prefix: Icono('candado', { tamano: 13 }), suffix: crearEl('button', { onClick: () => {} }, [Icono('copia', { tamano: 13 }), 'Copiar']), value: 'sk_live_••••••••••••f9ab', readonly: true }),
@@ -58,7 +58,7 @@ export default async () => PaginaShowcase({
         ),
         codigo: `// Suffix puede ser texto, ícono o un botón
 InputGrupo({ prefix: '$', suffix: 'USD', type: 'number' })
-InputGrupo({ suffix: '.launchpad.dev' })
+InputGrupo({ suffix: '.template-vanilla.dev' })
 InputGrupo({ prefix: Icono('candado'), suffix: <button>Copiar</button> })`,
       })],
     }),
@@ -135,10 +135,10 @@ InputGrupo({
       hijos: [VistaCodigo({
         vista: Stack(
           Campo({ label: 'Email — disponible', hint: '✓ Este email está disponible',
-            hijos: InputGrupo({ prefix: Icono('correo', { tamano: 14 }), suffix: Icono('check', { tamano: 14 }), value: 'yo@launchpad.dev', valido: true }),
+            hijos: InputGrupo({ prefix: Icono('correo', { tamano: 14 }), suffix: Icono('check', { tamano: 14 }), value: 'yo@template-vanilla.dev', valido: true }),
           }),
           Campo({ label: 'Subdominio — ocupado', error: 'Ya existe una cuenta con este subdominio',
-            hijos: InputGrupo({ suffix: '.launchpad.dev', value: 'acme', invalido: true }),
+            hijos: InputGrupo({ suffix: '.template-vanilla.dev', value: 'acme', invalido: true }),
           }),
         ),
         codigo: `InputGrupo({ valido: true,    suffix: Icono('check') })

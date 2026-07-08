@@ -70,7 +70,7 @@ export default async () => PaginaShowcase({
             fontSize: 'var(--text-xs)', fontWeight: 700,
             color: 'var(--muted-foreground)',
             textTransform: 'uppercase', letterSpacing: '0.1em',
-          } }, ['LAUNCHPAD · Vanilla JS toolkit']),
+          } }, ['TEMPLATE_VANILLA · Vanilla JS toolkit']),
           crearEl('h1', { style: {
             margin: '0 0 var(--space-3)',
             fontSize: 'clamp(1.75rem, 4vw, 3rem)',
@@ -129,7 +129,7 @@ export default async () => PaginaShowcase({
           crearEl('h2', { style: { margin: 0, fontSize: 'clamp(1.5rem, 3.2vw, 2.25rem)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.2 } }, [
             'Soy María García, ',
             TextoTipeado({
-              frases: ['Diseñadora UX.', 'Frontend Engineer.', 'Founder de Launchpad.', 'Ciclista de fin de semana.'],
+              frases: ['Diseñadora UX.', 'Frontend Engineer.', 'Founder de template-vanilla.', 'Ciclista de fin de semana.'],
               color: 'gradient',
               cursor: 'block',
               velocidadTipeo: 70,
@@ -154,7 +154,7 @@ export default async () => PaginaShowcase({
       descripcion: 'Look terminal con monospace font + fondo negro + texto verde + cursor block. Para landings de devtools (Vercel, Railway, Fly.io) o demos de comandos.',
       hijos: [VistaCodigo({
         vista: terminal(
-          crearEl('div', { style: { color: '#a3a3a3', marginBlockEnd: '6px' } }, ['~/proyectos/launchpad']),
+          crearEl('div', { style: { color: '#a3a3a3', marginBlockEnd: '6px' } }, ['~/proyectos/template-vanilla']),
           crearEl('div', null, [
             crearEl('span', { style: { color: '#10b981', marginInlineEnd: '8px' } }, ['$']),
             TextoTipeado({
@@ -162,7 +162,7 @@ export default async () => PaginaShowcase({
                 'npm install — instalando dependencias…',
                 'npm run dev — servidor en :5173',
                 'npm run build — bundle 32kb gzipped',
-                'npm run deploy — deployed to launchpad.dev',
+                'npm run deploy — deployed to template-vanilla.dev',
               ],
               cursor: 'block', color: 'foreground',
               velocidadTipeo: 50,
@@ -197,7 +197,7 @@ crearEl('div', { style: { background: '#0a0a0a', fontFamily: 'monospace' } }, [
             color: '#fff',
             borderRadius: 'var(--radius-md) var(--radius-md) 4px var(--radius-md)',
             fontSize: 'var(--text-sm)',
-          } }, ['¿Qué hace especial a Launchpad?']),
+          } }, ['¿Qué hace especial a template-vanilla?']),
           // AI response
           chatAI(
             crearEl('span', { style: {
@@ -210,7 +210,7 @@ crearEl('div', { style: { background: '#0a0a0a', fontFamily: 'monospace' } }, [
             crearEl('div', { style: { flex: 1, fontSize: 'var(--text-sm)', lineHeight: 1.55 } }, [
               TextoTipeado({
                 frases: [
-                  'Launchpad es un toolkit de JS vanilla con primitivas reactivas nativas.',
+                  'template-vanilla es un toolkit de JS vanilla con primitivas reactivas nativas.',
                   'No requiere build step ni npm install — funciona abriendo index.html.',
                   'Usa señales y efectos para reactividad sin overhead de virtual DOM.',
                   'Despliegas a cualquier host estático en segundos.',
@@ -394,7 +394,7 @@ TextoTipeado({
             flexShrink: 0,
           } }, [Icono('correo', { tamano: 18 })]),
           crearEl('div', { style: { flex: 1, minWidth: 0 } }, [
-            crearEl('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontWeight: 600, marginBlockEnd: 2 } }, ['DE: notificaciones@launchpad.dev']),
+            crearEl('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontWeight: 600, marginBlockEnd: 2 } }, ['DE: notificaciones@template-vanilla.dev']),
             crearEl('div', { style: { fontSize: 'var(--text-sm)', fontWeight: 600 } }, [
               TextoTipeado({
                 frases: [

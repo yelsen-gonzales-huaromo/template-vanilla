@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Launchpad",
+    "name": "template-vanilla",
     "tagline": "Plantilla empresarial nativa, reactiva y escalable"
   },
   "actions": {
@@ -60,7 +60,7 @@
     "privacy": "política de privacidad",
     "modal_open": "Abrir modal de ingreso",
     "modal_intro": "Demostración del flujo auth dentro de un modal — útil cuando un visitante intenta acceder a una acción protegida sin abandonar la página.",
-    "trust_pitch": "Equipos en 30+ países confían en Launchpad para sus paneles internos.",
+    "trust_pitch": "Equipos en 30+ países confían en template-vanilla para sus paneles internos.",
     "secure_pitch": "Conexión segura · cifrado en tránsito y en reposo"
   },
   "nav": {

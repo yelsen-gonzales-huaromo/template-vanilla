@@ -1,6 +1,6 @@
 {
-  "name": "Launchpad — Enterprise Native Template",
-  "short_name": "Launchpad",
+  "name": "template-vanilla — Enterprise Native Template",
+  "short_name": "template-vanilla",
   "description": "Plantilla empresarial nativa, reactiva y escalable.",
   "start_url": "/",
   "display": "standalone",

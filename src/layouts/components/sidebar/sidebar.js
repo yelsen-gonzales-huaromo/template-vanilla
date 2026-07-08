@@ -15,8 +15,8 @@ import { CONFIG_APP } from '../../../config/app.config.js';
 
 const N = NOMBRES_RUTAS;
 
-const CLAVE_SECCION = 'launchpad.ui.sidebar.seccion';
-const CLAVE_SUBABIERTAS = 'launchpad.ui.sidebar.subabiertas';
+const CLAVE_SECCION = 'template-vanilla.ui.sidebar.seccion';
+const CLAVE_SUBABIERTAS = 'template-vanilla.ui.sidebar.subabiertas';
 
 const irA = (ruta) => (e) => {
   e.preventDefault();

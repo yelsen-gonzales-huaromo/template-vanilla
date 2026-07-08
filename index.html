@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#3b82f6" />
-  <meta name="description" content="Launchpad — plantilla empresarial nativa, reactiva y escalable." />
+  <meta name="description" content="template-vanilla — plantilla empresarial nativa, reactiva y escalable." />
 
-  <title>Launchpad · Plantilla empresarial nativa</title>
+  <title>template-vanilla · Plantilla empresarial nativa</title>
 
   <link rel="apple-touch-icon" sizes="180x180" href="./public/favicons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="./public/favicons/favicon-32x32.png" />
@@ -26,8 +26,8 @@
     Edita estos valores o sobreescríbelos antes de cargar main.js (p. ej. desde Razor/Blade/Spring).
   -->
   <script>
-    window.LAUNCHPAD_CONFIG = Object.freeze({
-      nombre:   'Launchpad',
+    window.TEMPLATE_VANILLA_CONFIG = Object.freeze({
+      nombre:   'template-vanilla',
       version:  '1.0.0',
       ambiente: 'development',
       api: {
@@ -51,7 +51,7 @@
 
         // Headline + lead del panel (opcional — defaults si no se definen).
         panelTitulo: 'Plantilla empresarial nativa, reactiva y escalable',
-        panelLead:   'Equipos en 30+ países confían en Launchpad para sus paneles internos.',
+        panelLead:   'Equipos en 30+ países confían en template-vanilla para sus paneles internos.',
 
         // Stats del pie (3-4 items recomendados).
         panelStats: [
@@ -84,8 +84,8 @@
   <script>
     (function () {
       try {
-        var tema = JSON.parse(localStorage.getItem('launchpad.ui.theme'));
-        var dir  = JSON.parse(localStorage.getItem('launchpad.ui.dir'));
+        var tema = JSON.parse(localStorage.getItem('template-vanilla.ui.theme'));
+        var dir  = JSON.parse(localStorage.getItem('template-vanilla.ui.dir'));
         var resuelto = (!tema || tema === 'system')
           ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
           : tema;

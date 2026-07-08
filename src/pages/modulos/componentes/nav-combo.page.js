@@ -7,7 +7,7 @@ import { corner4 } from '../../../components/ui/card/card-decoraciones.js';
 // ============================================================================
 //  Helpers
 // ============================================================================
-const brand = (texto = 'Launchpad') => crearEl('div', { class: 'mock-brand' }, [
+const brand = (texto = 'template-vanilla') => crearEl('div', { class: 'mock-brand' }, [
   crearEl('span', { class: 'mock-brand__logo' }, ['L']),
   crearEl('span', null, [texto]),
 ]);

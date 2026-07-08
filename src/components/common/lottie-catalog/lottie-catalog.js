@@ -11,8 +11,8 @@
  *   3) Añade aquí la entrada con `local: '/public/lottie/<archivo>.json'`
  */
 
-// Ruta RELATIVA — la app vive en /launchpad/index.html, así que `./public/`
-// resuelve correctamente a 127.0.0.1:5500/launchpad/public/lottie/...
+// Ruta RELATIVA — la app vive en /template-vanilla/index.html, así que `./public/`
+// resuelve correctamente a 127.0.0.1:5500/template-vanilla/public/lottie/...
 const RUTA = './public/lottie/';
 
 // Helper — encodea espacios y caracteres especiales para URL

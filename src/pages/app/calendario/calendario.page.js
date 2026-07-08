@@ -26,7 +26,7 @@ import {
 } from '../../../integrations/fullcalendar/index.js';
 
 /* ─── Constantes ───────────────────────────────────────────────────────── */
-const STORAGE_KEY = 'launchpad:calendario:eventos';
+const STORAGE_KEY = 'template-vanilla:calendario:eventos';
 
 const PLANTILLAS = [
   { id: 'plan',     titulo: 'Planificación',     color: '#10b981', duracion: '01:00' },

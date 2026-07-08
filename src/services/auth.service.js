@@ -8,7 +8,7 @@ import { CONFIG_APP } from '../config/app.config.js';
 
 const dormir = (ms) => new Promise(r => setTimeout(r, ms));
 
-const sesionDemo = (correo = 'demo@launchpad.dev') => ({
+const sesionDemo = (correo = 'demo@template-vanilla.dev') => ({
   usuario: {
     id: 'demo-1',
     nombre: correo.split('@')[0]
@@ -36,7 +36,7 @@ export const iniciarSesion = async (credenciales) => {
 export const registrar = async (datos) => {
   if (CONFIG_APP.modoDemo) {
     await dormir(250);
-    return sesionDemo(datos?.email || 'nuevo@launchpad.dev');
+    return sesionDemo(datos?.email || 'nuevo@template-vanilla.dev');
   }
   return clienteHttp.post('/auth/register', datos, { _meta: { omitirAuth: true } });
 };

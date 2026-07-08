@@ -1,6 +1,6 @@
 # Arquitectura
 
-> Launchpad es una plantilla JavaScript **nativa** (sin frameworks) diseñada para
+> template-vanilla es una plantilla JavaScript **nativa** (sin frameworks) diseñada para
 > escalar de un panel admin sencillo a un dashboard empresarial/gubernamental
 > sin reescribirla. Todo el código fuente está en español.
 
@@ -78,9 +78,9 @@ y devuelven JSON. Las páginas y hooks consumen los servicios, nunca `fetch` dir
 4. Envuelve la página en un layout (`dashboard | auth | blank`) y la monta.
 5. Intercepta clicks en `<a>` para mantener navegación SPA.
 
-## Inventario migrado (Falcon → Launchpad)
+## Inventario migrado (Falcon → template-vanilla)
 
-| Sección Falcon              | Páginas migradas en Launchpad |
+| Sección Falcon              | Páginas migradas en template-vanilla |
 |-----------------------------|-------------------------------|
 | 7 dashboards                | analitica, crm, comercio, lms, proyectos, saas, soporte |
 | Auth (3 variantes × 7)      | login, registro, recuperar, restablecer, confirmar-correo, bloqueo, asistente-registro |
@@ -92,7 +92,7 @@ y devuelven JSON. Las páginas y hooks consumen los servicios, nunca `fetch` dir
 | Errores (3)                 | 403, 404, 500 |
 | Configuración (4)           | perfil, seguridad, preferencias, reportes |
 
-**Total: 71 páginas** (Falcon tenía ~209 páginas-HTML repetidas en 3 variantes de auth, 4 layouts de navbar, etc. — Launchpad consolida y reescribe en español).
+**Total: 71 páginas** (Falcon tenía ~209 páginas-HTML repetidas en 3 variantes de auth, 4 layouts de navbar, etc. — template-vanilla consolida y reescribe en español).
 
 ## Theming
 

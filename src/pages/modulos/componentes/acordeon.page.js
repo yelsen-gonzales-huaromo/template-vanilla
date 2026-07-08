@@ -9,7 +9,7 @@ import { corner1 } from '../../../components/ui/card/card-decoraciones.js';
 const lorem = (txt) => crearEl('p', { style: { margin: 0 } }, [txt]);
 
 const FAQ = [
-  { id: 'a', titulo: '¿Qué es Launchpad?',
+  { id: 'a', titulo: '¿Qué es template-vanilla?',
     contenido: 'Una plantilla admin construida en JavaScript vanilla con primitivas reactivas propias (sin frameworks).' },
   { id: 'b', titulo: '¿Necesita build?',
     contenido: 'No. Funciona directamente abriendo el index.html — usa ES modules nativos y CSS imports.' },
@@ -33,7 +33,7 @@ export default async () => PaginaShowcase({
         codigo: `Acordeon({
   iniciales: ['a'],
   items: [
-    { id: 'a', titulo: '¿Qué es Launchpad?', contenido: '...' },
+    { id: 'a', titulo: '¿Qué es template-vanilla?', contenido: '...' },
     { id: 'b', titulo: '¿Necesita build?',    contenido: '...' },
     { id: 'c', titulo: '¿Cómo cambio el tema?', contenido: '...' },
   ],

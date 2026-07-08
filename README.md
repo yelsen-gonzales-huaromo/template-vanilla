@@ -4,10 +4,10 @@
 > Sin Vite, sin webpack, sin npm, sin paso de build. El navegador carga los archivos tal cual.
 
 <p align="center">
-  <img src="public/img/Panel · Launchpad.png" alt="Panel Launchpad" width="100%">
+  <img src="public/img/Panel · template-vanilla.png" alt="Panel template-vanilla" width="100%">
 </p>
 
-Launchpad es una plantilla SPA pensada para servirse desde cualquier backend
+template-vanilla es una plantilla SPA pensada para servirse desde cualquier backend
 (Spring Boot, ASP.NET Razor, Laravel, Django, nginx) o como sitio estático puro.
 Todo el código fuente está escrito en **español** —nombres de variables,
 funciones, archivos, rutas, mensajes y documentación— y está organizado por
@@ -16,9 +16,9 @@ reescribir la base.
 
 ---
 
-## Qué es realmente Launchpad
+## Qué es realmente template-vanilla
 
-Launchpad **no** es un framework, **no** es una librería npm, **no** es un
+template-vanilla **no** es un framework, **no** es una librería npm, **no** es un
 boilerplate de Vite. Es una **aplicación SPA completa, sin compilación**, que
 se ejecuta directamente en el navegador usando módulos ES nativos (`<script
 type="module">`). El backend (si lo hay) sólo sirve los archivos estáticos y
@@ -72,8 +72,8 @@ email y contraseña inician sesión).
 ## Estructura del proyecto
 
 ```
-launchpad/
-├─ index.html            ← Punto de entrada. Define window.LAUNCHPAD_CONFIG.
+template-vanilla/
+├─ index.html            ← Punto de entrada. Define window.TEMPLATE_VANILLA_CONFIG.
 ├─ public/
 │   ├─ favicons/
 │   └─ manifest.json
@@ -124,14 +124,14 @@ launchpad/
 
 ## Configuración
 
-Edita `window.LAUNCHPAD_CONFIG` en `index.html`. El backend puede sobreescribir
+Edita `window.TEMPLATE_VANILLA_CONFIG` en `index.html`. El backend puede sobreescribir
 estos valores antes de cargar `main.js` (por ejemplo desde Razor / Blade /
 Spring):
 
 ```html
 <script>
-  window.LAUNCHPAD_CONFIG = Object.freeze({
-    nombre:   'Launchpad',
+  window.TEMPLATE_VANILLA_CONFIG = Object.freeze({
+    nombre:   'template-vanilla',
     version:  '1.0.0',
     ambiente: 'production',          // o 'development'
     api: { urlBase: '/api', tiempoEspera: 15000 },
@@ -160,7 +160,7 @@ backend.
 
 ## Despliegue con backend
 
-Copia toda la carpeta `launchpad/` (sin `docs/` ni `README.md`) al directorio
+Copia toda la carpeta `template-vanilla/` (sin `docs/` ni `README.md`) al directorio
 estático de tu backend:
 
 | Backend                    | Carpeta destino                      |
@@ -239,7 +239,7 @@ arquitectónico y el mapa de nombres en español.
 
 ## Integraciones de terceros (lazy)
 
-Launchpad **no incluye** estas librerías en su bundle. Cuando un componente o
+template-vanilla **no incluye** estas librerías en su bundle. Cuando un componente o
 una página las necesita, `src/integrations/_loader.js` las descarga desde un
 CDN público y cachea la promesa. Hay adaptadores para:
 

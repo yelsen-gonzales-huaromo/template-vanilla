@@ -21,7 +21,7 @@ const Btn = (texto, variante = 'primary', extra = {}) => crearEl('button', {
 }, [texto]);
 
 // "Servidor" simulado para async validation
-const usuariosTomados = new Set(['admin', 'maria', 'carlos', 'launchpad', 'root', 'test']);
+const usuariosTomados = new Set(['admin', 'maria', 'carlos', 'template-vanilla', 'root', 'test']);
 const verificarUsername = (val) => new Promise((resolve) => {
   setTimeout(() => {
     if (val.length < 3) resolve('Mínimo 3 caracteres');
@@ -31,7 +31,7 @@ const verificarUsername = (val) => new Promise((resolve) => {
   }, 600);
 });
 
-const emailsTomados = new Set(['admin@empresa.com', 'maria@launchpad.dev', 'soporte@stripe.com']);
+const emailsTomados = new Set(['admin@empresa.com', 'maria@template-vanilla.dev', 'soporte@stripe.com']);
 const verificarEmail = (val) => new Promise((resolve) => {
   setTimeout(() => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) resolve('Formato de email no válido');
@@ -63,11 +63,11 @@ export default async () => PaginaShowcase({
             type: 'tel', placeholder: '+51 999 888 777',
             validar: [v.telefono()] }),
           CampoValidado({ label: 'Sitio web (URL)',
-            type: 'url', placeholder: 'https://launchpad.dev',
+            type: 'url', placeholder: 'https://template-vanilla.dev',
             validar: [v.url()] }),
           CampoValidado({ label: 'Username (3-20, alfanumérico)', requerido: true,
             placeholder: 'mariag',
-            hint: 'Tu URL pública será launchpad.dev/[username]',
+            hint: 'Tu URL pública será template-vanilla.dev/[username]',
             validar: [v.min(3), v.max(20), v.alfanumerico()] }),
           CampoValidado({ label: 'DNI Perú (8 dígitos)',
             placeholder: '12345678',
@@ -105,13 +105,13 @@ v.passwordFuerte()`,
           CampoAsync({
             label: 'Username (verificación en vivo)',
             placeholder: 'Empieza a tipear…',
-            hint: '(Tomados: admin, maria, carlos, launchpad, root, test)',
+            hint: '(Tomados: admin, maria, carlos, template-vanilla, root, test)',
             cargar: verificarUsername,
           }),
           CampoAsync({
             label: 'Email (verifica si ya está registrado)',
             placeholder: 'tu@empresa.com',
-            hint: '(Tomados: admin@empresa.com, maria@launchpad.dev)',
+            hint: '(Tomados: admin@empresa.com, maria@template-vanilla.dev)',
             cargar: verificarEmail,
             debounceMs: 700,
           }),
@@ -371,7 +371,7 @@ const form = crearFormValidator();
           CampoValidado({ label: 'Email — escribe algo, haz Tab para validar', type: 'email',
             placeholder: 'tu@email.com', validar: [v.email()] }),
           CampoValidado({ label: 'URL — mismo patrón', type: 'url',
-            placeholder: 'https://launchpad.dev', validar: [v.url()] }),
+            placeholder: 'https://template-vanilla.dev', validar: [v.url()] }),
         ),
         codigo: `// Patrón recomendado:
 let tocado = false;

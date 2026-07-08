@@ -170,7 +170,7 @@ const PanelPromoCarrusel = ({ slides, compacto = false }) => {
 const PanelPromoGradiente = ({ compacto = false }) => {
   const a = cfgAuth();
 
-  // Stats (configurable). Defaults representan el pitch de Launchpad.
+  // Stats (configurable). Defaults representan el pitch de template-vanilla.
   const stats = Array.isArray(a.panelStats) && a.panelStats.length > 0
     ? a.panelStats
     : [

@@ -213,7 +213,7 @@ Migas({ items: itemsLarga, separador: 'chevron', maxVisible: 4 })
             Migas({ items: [
               { etiqueta: 'Inicio', href: '/', icono: Icono('panel', { tamano: 16 }) },
               { etiqueta: 'Blog',    href: '#' },
-              { etiqueta: '¿Cómo construimos Launchpad?' },
+              { etiqueta: '¿Cómo construimos template-vanilla?' },
             ], separador: 'flecha', tamano: 'lg' })),
         ),
         codigo: `// Admin con icono home
