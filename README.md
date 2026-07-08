@@ -1,7 +1,11 @@
-# Launchpad
+# template-vanilla
 
 > **Plantilla de panel administrativo empresarial — JavaScript / HTML / CSS 100% nativo.**
 > Sin Vite, sin webpack, sin npm, sin paso de build. El navegador carga los archivos tal cual.
+
+<p align="center">
+  <img src="public/img/Panel · Launchpad.png" alt="Panel Launchpad" width="100%">
+</p>
 
 Launchpad es una plantilla SPA pensada para servirse desde cualquier backend
 (Spring Boot, ASP.NET Razor, Laravel, Django, nginx) o como sitio estático puro.
